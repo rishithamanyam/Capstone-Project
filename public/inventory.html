@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventory — SIMS</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<div id="root"></div>
+
+<div class="overlay" id="item-modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modal-ttl">Add New Item</h3>
+      <button class="xbtn" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="eid" />
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Item Name *</label><input type="text" id="fn" class="inp" placeholder="e.g. Dell Laptop" /></div>
+        <div class="form-group"><label class="form-label">Category *</label>
+          <select id="fc" class="inp">
+            <option value="">Select category</option>
+            <option>Electronics</option><option>Furniture</option><option>Stationery</option>
+            <option>Office</option><option>Appliances</option><option>Hygiene</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Quantity *</label><input type="number" id="fq" class="inp" placeholder="0" min="0" /></div>
+        <div class="form-group"><label class="form-label">Unit Price (USD) *</label><input type="number" id="fp" class="inp" placeholder="0.00" min="0" step="0.01" /></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Min Stock Level</label>
+          <input type="number" id="fm" class="inp" placeholder="10" min="0" />
+          <div class="form-hint">Triggers low stock alert below this</div>
+        </div>
+        <div class="form-group"><label class="form-label">Supplier</label><input type="text" id="fs" class="inp" placeholder="Supplier name" /></div>
+      </div>
+      <div class="form-group"><label class="form-label">Description</label><textarea id="fd" class="inp" rows="2" placeholder="Optional notes about this item" style="resize:vertical"></textarea></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" id="save-btn" onclick="saveItem()">Add Item</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="del-modal">
+  <div class="modal" style="max-width:400px">
+    <div class="modal-head"><h3>Confirm Delete</h3><button class="xbtn" onclick="closeDelModal()">✕</button></div>
+    <div class="modal-body">
+      <div style="text-align:center;padding:8px 0">
+        <div style="font-size:48px;margin-bottom:12px">🗑️</div>
+        <p>Are you sure you want to delete <strong id="del-name"></strong>?</p>
+        <p style="color:#94a3b8;font-size:12.5px;margin-top:8px">This action cannot be undone.</p>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-outline" onclick="closeDelModal()">Cancel</button><button class="btn btn-danger" id="del-btn" onclick="confirmDelete()">Delete Item</button></div>
+  </div>
+</div>
+
+<script src="/js/app.js"></script>
+<script>
+if (!requireAuth()) throw '';
+
+document.getElementById('root').innerHTML = `
+  ${sidebar('inventory')}
+  <div class="main">
+    ${topbar('Inventory', 'SIMS / Inventory')}
+    <div class="content">
+      <div class="card">
+        <div class="card-head">
+          <h3>📦 All Inventory Items</h3>
+          <button class="btn btn-primary" onclick="openAdd()">+ Add Item</button>
+        </div>
+        <div class="card-body">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;align-items:center">
+            <div class="search-inp"><span>🔍</span><input type="text" id="s-search" placeholder="Search items or supplier..." oninput="filter()" style="width:200px" /></div>
+            <select id="s-cat" class="inp" style="width:160px" onchange="filter()"><option value="all">All Categories</option></select>
+            <select id="s-sts" class="inp" style="width:150px" onchange="filter()">
+              <option value="all">All Status</option>
+              <option value="good">Good Stock</option>
+              <option value="med">Medium</option>
+              <option value="low">Low Stock</option>
+              <option value="out">Out of Stock</option>
+            </select>
+            <span id="count-lbl" style="font-size:13px;color:#94a3b8;margin-left:4px"></span>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>#</th><th>Item Name</th><th>Category</th><th>Stock Level</th><th>Min</th><th>Unit Price</th><th>Total Value</th><th>Supplier</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="inv-body"><tr><td colspan="10" style="text-align:center;padding:32px;color:#94a3b8">Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+let allItems = [], delId = null;
+
+async function loadItems() {
+  const data = await get('/inventory');
+  if (!data) return;
+  allItems = data;
+  await loadCats();
+  render(allItems);
+  loadNbadge();
+}
+
+async function loadCats() {
+  const cats = await get('/inventory/categories');
+  if (!cats) return;
+  const sel = document.getElementById('s-cat');
+  cats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; sel.appendChild(o); });
+}
+
+function render(items) {
+  document.getElementById('count-lbl').textContent = items.length + ' item' + (items.length !== 1 ? 's' : '');
+  const body = document.getElementById('inv-body');
+  if (!items.length) {
+    body.innerHTML = `<tr><td colspan="10"><div class="empty-state"><div class="ei">📦</div><h4>No items found</h4><p>Adjust filters or add a new item.</p></div></td></tr>`;
+    return;
+  }
+  body.innerHTML = items.map((i, idx) => {
+    const pct = Math.min(100, Math.round((i.quantity / Math.max(i.min_stock * 3, 1)) * 100));
+    const col = i.quantity === 0 ? '#ef4444' : i.quantity <= i.min_stock ? '#f59e0b' : '#10b981';
+    const rowCls = i.quantity === 0 ? 'row-out' : i.quantity <= i.min_stock ? 'row-low' : '';
+    return `<tr class="${rowCls}">
+      <td style="color:#94a3b8">${idx+1}</td>
+      <td><div style="font-weight:600">${i.name}</div>${i.description ? `<div style="font-size:11.5px;color:#94a3b8;margin-top:2px">${i.description}</div>` : ''}</td>
+      <td>${catBadge(i.category)}</td>
+      <td><div class="stock-bar"><strong style="color:${col};min-width:30px;font-size:14px">${i.quantity}</strong><div class="stock-track"><div class="stock-fill" style="width:${pct}%;background:${col}"></div></div></div></td>
+      <td style="color:#94a3b8">${i.min_stock}</td>
+      <td>${fmt(i.price)}</td>
+      <td style="font-weight:600">${fmt(i.quantity * i.price)}</td>
+      <td style="color:#64748b">${i.supplier || '—'}</td>
+      <td>${stockBadge(i.quantity, i.min_stock)}</td>
+      <td><div style="display:flex;gap:6px"><button class="iBtn edit" onclick="openEdit(${i.id})" title="Edit">✏️</button><button class="iBtn del" onclick="openDel(${i.id},'${i.name.replace(/'/g,"\\'")}')" title="Delete">🗑️</button></div></td>
+    </tr>`;
+  }).join('');
+}
+
+function filter() {
+  const q = document.getElementById('s-search').value.toLowerCase();
+  const cat = document.getElementById('s-cat').value;
+  const sts = document.getElementById('s-sts').value;
+  render(allItems.filter(i => {
+    const ms = !q || i.name.toLowerCase().includes(q) || (i.supplier||'').toLowerCase().includes(q);
+    const mc = cat === 'all' || i.category === cat;
+    let mv = true;
+    if (sts === 'out') mv = i.quantity === 0;
+    else if (sts === 'low') mv = i.quantity > 0 && i.quantity <= i.min_stock;
+    else if (sts === 'med') mv = i.quantity > i.min_stock && i.quantity <= i.min_stock * 2;
+    else if (sts === 'good') mv = i.quantity > i.min_stock * 2;
+    return ms && mc && mv;
+  }));
+}
+
+function openAdd() {
+  document.getElementById('modal-ttl').textContent = 'Add New Item';
+  document.getElementById('eid').value = '';
+  document.getElementById('save-btn').textContent = 'Add Item';
+  ['fn','fc','fq','fp','fm','fs','fd'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('item-modal').classList.add('open');
+}
+
+async function openEdit(id) {
+  const item = await get('/inventory/' + id);
+  if (!item) return;
+  document.getElementById('modal-ttl').textContent = 'Edit Item';
+  document.getElementById('eid').value   = item.id;
+  document.getElementById('fn').value    = item.name;
+  document.getElementById('fc').value    = item.category;
+  document.getElementById('fq').value    = item.quantity;
+  document.getElementById('fp').value    = item.price;
+  document.getElementById('fm').value    = item.min_stock;
+  document.getElementById('fs').value    = item.supplier || '';
+  document.getElementById('fd').value    = item.description || '';
+  document.getElementById('save-btn').textContent = 'Save Changes';
+  document.getElementById('item-modal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('item-modal').classList.remove('open'); }
+
+async function saveItem() {
+  const id = document.getElementById('eid').value;
+  const name = document.getElementById('fn').value.trim();
+  const cat  = document.getElementById('fc').value;
+  const qty  = document.getElementById('fq').value;
+  const price= document.getElementById('fp').value;
+  if (!name || !cat || qty === '' || price === '') { showToast('Fill in all required fields', 'warning'); return; }
+
+  const btn = document.getElementById('save-btn');
+  btn.textContent = 'Saving...'; btn.disabled = true;
+
+  const body = { name, category: cat, quantity: parseInt(qty), price: parseFloat(price), min_stock: parseInt(document.getElementById('fm').value)||10, supplier: document.getElementById('fs').value.trim(), description: document.getElementById('fd').value.trim() };
+  const res = await send(id ? '/inventory/'+id : '/inventory', id ? 'PUT' : 'POST', body);
+  btn.textContent = id ? 'Save Changes' : 'Add Item'; btn.disabled = false;
+
+  if (res && res.success) { showToast(res.message, 'success'); closeModal(); loadItems(); }
+  else if (res) showToast(res.error, 'error');
+}
+
+function openDel(id, name) {
+  delId = id;
+  document.getElementById('del-name').textContent = name;
+  document.getElementById('del-modal').classList.add('open');
+}
+function closeDelModal() { document.getElementById('del-modal').classList.remove('open'); delId = null; }
+
+async function confirmDelete() {
+  const btn = document.getElementById('del-btn');
+  btn.textContent = 'Deleting...'; btn.disabled = true;
+  const res = await send('/inventory/' + delId, 'DELETE');
+  btn.textContent = 'Delete Item'; btn.disabled = false;
+  if (res && res.success) { showToast(res.message, 'success'); closeDelModal(); loadItems(); }
+  else if (res) showToast(res.error, 'error');
+}
+
+loadItems();
+</script>
+</body>
+</html>

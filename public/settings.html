@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings — SIMS</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<div id="root"></div>
+
+<div class="overlay" id="add-user-modal">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-head"><h3>Add New User</h3><button class="xbtn" onclick="document.getElementById('add-user-modal').classList.remove('open')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">Full Name</label><input type="text" id="nu-name" class="inp" placeholder="Full name" /></div>
+      <div class="form-group"><label class="form-label">Email Address</label><input type="email" id="nu-email" class="inp" placeholder="email@example.com" /></div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" id="nu-pass" class="inp" placeholder="Min 6 characters" /></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-outline" onclick="document.getElementById('add-user-modal').classList.remove('open')">Cancel</button>
+      <button class="btn btn-primary" onclick="addUser()">Create User</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/app.js"></script>
+<script>
+if (!requireAuth()) throw '';
+
+const u = getUser();
+const ini = (u.name||'U')[0].toUpperCase();
+const isAdmin = u.role === 'admin';
+
+document.getElementById('root').innerHTML = `
+  ${sidebar('settings')}
+  <div class="main">
+    ${topbar('Settings', 'SIMS / Settings')}
+    <div class="content">
+
+      <div class="g2">
+        <div class="card">
+          <div class="card-head"><h3>👤 My Profile</h3></div>
+          <div class="card-body">
+            <div style="display:flex;align-items:center;gap:18px;margin-bottom:24px;padding:18px;background:linear-gradient(135deg,#eef2ff,#f5f3ff);border-radius:12px;border:1px solid #c7d2fe">
+              <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#a855f7);display:flex;align-items:center;justify-content:center;color:white;font-size:24px;font-weight:800;flex-shrink:0;box-shadow:0 4px 12px rgba(79,70,229,0.35)">${ini}</div>
+              <div>
+                <div style="font-size:17px;font-weight:800;letter-spacing:-0.2px">${u.name||'—'}</div>
+                <div style="color:#64748b;font-size:13px;margin-top:2px">${u.email||'—'}</div>
+                <span class="badge b-indigo" style="margin-top:6px;display:inline-flex">${u.role||'staff'}</span>
+              </div>
+            </div>
+            <div class="form-group"><label class="form-label">Full Name</label><input type="text" id="p-name" class="inp" value="${u.name||''}" /></div>
+            <div class="form-group"><label class="form-label">Email Address</label><input type="email" id="p-email" class="inp" value="${u.email||''}" /></div>
+            <button class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head"><h3>🔒 Change Password</h3></div>
+          <div class="card-body">
+            <div class="form-group"><label class="form-label">Current Password</label><input type="password" id="pw-cur" class="inp" placeholder="Enter current password" /></div>
+            <div class="form-group"><label class="form-label">New Password</label><input type="password" id="pw-new" class="inp" placeholder="At least 6 characters" /></div>
+            <div class="form-group"><label class="form-label">Confirm New Password</label><input type="password" id="pw-con" class="inp" placeholder="Repeat new password" /></div>
+            <button class="btn btn-warning" onclick="changePw()">Update Password</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h3>ℹ️ System Information</h3></div>
+        <div class="card-body">
+          <div class="g3">
+            <div class="info-tile"><div class="info-tile-lbl">Project</div><div class="info-tile-val">Smart Inventory Management System</div></div>
+            <div class="info-tile"><div class="info-tile-lbl">Developer</div><div class="info-tile-val">Rishitha Manyam</div></div>
+            <div class="info-tile"><div class="info-tile-lbl">Organization</div><div class="info-tile-val">Wipro Capstone Project</div></div>
+            <div class="info-tile"><div class="info-tile-lbl">Backend</div><div class="info-tile-val">Node.js + Express.js</div></div>
+            <div class="info-tile"><div class="info-tile-lbl">Database</div><div class="info-tile-val">JSON Store (Microservice-ready)</div></div>
+            <div class="info-tile"><div class="info-tile-lbl">Authentication</div><div class="info-tile-val">JWT + bcrypt RBAC</div></div>
+          </div>
+        </div>
+      </div>
+
+      ${isAdmin ? `
+      <div class="card">
+        <div class="card-head">
+          <h3>👥 User Management</h3>
+          <button class="btn btn-primary btn-sm" onclick="document.getElementById('add-user-modal').classList.add('open')">+ Add User</button>
+        </div>
+        <div class="card-body">
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Role</th><th>Joined</th><th>Actions</th></tr></thead>
+              <tbody id="users-body"><tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8">Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>` : ''}
+
+    </div>
+  </div>`;
+
+async function saveProfile() {
+  const name  = document.getElementById('p-name').value.trim();
+  const email = document.getElementById('p-email').value.trim();
+  if (!name || !email) { showToast('Name and email are required', 'warning'); return; }
+  const res = await send('/users/' + u.id, 'PUT', { name, email });
+  if (res && res.success) {
+    localStorage.setItem('sims_user', JSON.stringify({ ...u, name, email }));
+    showToast('Profile updated!', 'success');
+  } else if (res) showToast(res.error, 'error');
+}
+
+async function changePw() {
+  const cur = document.getElementById('pw-cur').value;
+  const nw  = document.getElementById('pw-new').value;
+  const con = document.getElementById('pw-con').value;
+  if (!cur || !nw || !con) { showToast('All password fields required', 'warning'); return; }
+  if (nw !== con) { showToast('New passwords do not match', 'error'); return; }
+  const res = await send('/auth/change-password', 'PUT', { currentPassword: cur, newPassword: nw });
+  if (res && res.success) {
+    showToast('Password updated!', 'success');
+    ['pw-cur','pw-new','pw-con'].forEach(id => document.getElementById(id).value = '');
+  } else if (res) showToast(res.error, 'error');
+}
+
+async function loadUsers() {
+  if (!isAdmin) return;
+  const users = await get('/users');
+  if (!users) return;
+  document.getElementById('users-body').innerHTML = users.map((usr, i) => `
+    <tr>
+      <td style="color:#94a3b8">${i+1}</td>
+      <td style="font-weight:600">${usr.name}</td>
+      <td style="color:#64748b">${usr.email}</td>
+      <td><span class="badge ${usr.role==='admin'?'b-purple':'b-cyan'}">${usr.role}</span></td>
+      <td style="color:#94a3b8">${new Date(usr.created_at).toLocaleDateString()}</td>
+      <td>${usr.id !== u.id ? `<button class="btn btn-xs btn-danger" onclick="delUser(${usr.id},'${usr.name.replace(/'/g,"\\'")}')">Remove</button>` : '<span style="font-size:12px;color:#94a3b8">You</span>'}</td>
+    </tr>`).join('');
+}
+
+async function addUser() {
+  const name  = document.getElementById('nu-name').value.trim();
+  const email = document.getElementById('nu-email').value.trim();
+  const pass  = document.getElementById('nu-pass').value;
+  if (!name || !email || !pass) { showToast('All fields required', 'warning'); return; }
+  const res = await send('/auth/register', 'POST', { name, email, password: pass });
+  if (res && res.success) {
+    showToast('User created!', 'success');
+    document.getElementById('add-user-modal').classList.remove('open');
+    ['nu-name','nu-email','nu-pass'].forEach(id => document.getElementById(id).value = '');
+    loadUsers();
+  } else if (res) showToast(res.error, 'error');
+}
+
+async function delUser(id, name) {
+  if (!confirm(`Remove "${name}" from the system?`)) return;
+  const res = await send('/users/' + id, 'DELETE');
+  if (res && res.success) { showToast(res.message, 'success'); loadUsers(); }
+  else if (res) showToast(res.error, 'error');
+}
+
+loadUsers();
+loadNbadge();
+</script>
+</body>
+</html>

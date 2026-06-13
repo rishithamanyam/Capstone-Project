@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics — SIMS</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script src="/js/app.js"></script>
+<script>
+if (!requireAuth()) throw '';
+
+document.getElementById('root').innerHTML = `
+  ${sidebar('analytics')}
+  <div class="main">
+    ${topbar('Analytics & Reports', 'SIMS / Analytics')}
+    <div class="content">
+
+      <div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+        <div class="scard gi"><div class="scard-top"><div><div class="scard-val" id="a-items">—</div><div class="scard-lbl">Total SKUs</div></div><div class="scard-ico">📦</div></div><div class="scard-wave"><svg viewBox="0 0 200 40"><path d="M0 25 Q50 5 100 25 Q150 45 200 25 L200 40 L0 40 Z" fill="rgba(255,255,255,0.12)"/></svg></div></div>
+        <div class="scard ge"><div class="scard-top"><div><div class="scard-val" id="a-val">—</div><div class="scard-lbl">Total Value</div></div><div class="scard-ico">💰</div></div><div class="scard-wave"><svg viewBox="0 0 200 40"><path d="M0 30 Q60 10 110 26 Q160 40 200 18 L200 40 L0 40 Z" fill="rgba(255,255,255,0.12)"/></svg></div></div>
+        <div class="scard ga"><div class="scard-top"><div><div class="scard-val" id="a-low">—</div><div class="scard-lbl">Need Restocking</div></div><div class="scard-ico">⚠️</div></div><div class="scard-wave"><svg viewBox="0 0 200 40"><path d="M0 20 Q70 40 120 18 Q165 0 200 24 L200 40 L0 40 Z" fill="rgba(255,255,255,0.12)"/></svg></div></div>
+        <div class="scard gc"><div class="scard-top"><div><div class="scard-val" id="a-cats">—</div><div class="scard-lbl">Categories</div></div><div class="scard-ico">🏷️</div></div><div class="scard-wave"><svg viewBox="0 0 200 40"><path d="M0 28 Q55 8 110 28 Q160 44 200 22 L200 40 L0 40 Z" fill="rgba(255,255,255,0.12)"/></svg></div></div>
+      </div>
+
+      <div class="g2">
+        <div class="card">
+          <div class="card-head"><h3>💰 Portfolio Value by Category</h3></div>
+          <div class="card-body"><div class="chart-wrap"><canvas id="val-chart"></canvas></div></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>📦 Units per Category</h3></div>
+          <div class="card-body"><div class="chart-wrap"><canvas id="units-chart"></canvas></div></div>
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="card">
+          <div class="card-head"><h3>🩺 Stock Health Distribution</h3></div>
+          <div class="card-body"><div class="chart-wrap"><canvas id="health-chart"></canvas></div></div>
+        </div>
+        <div class="card">
+          <div class="card-head"><h3>🏷️ Items per Category</h3></div>
+          <div class="card-body"><div class="chart-wrap"><canvas id="count-chart"></canvas></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3>📋 Full Stock Report</h3>
+          <button class="btn btn-outline btn-sm" onclick="printRep()">🖨️ Print Report</button>
+        </div>
+        <div class="card-body" id="rep-body">Loading...</div>
+      </div>
+
+    </div>
+  </div>`;
+
+const PAL = ['#4f46e5','#10b981','#f59e0b','#ef4444','#06b6d4','#a855f7','#f97316','#14b8a6'];
+
+async function load() {
+  const [sum, cats, health, rep] = await Promise.all([
+    get('/analytics/summary'),
+    get('/analytics/by-category'),
+    get('/analytics/stock-status'),
+    get('/analytics/report')
+  ]);
+
+  if (sum) {
+    document.getElementById('a-items').textContent = sum.totalItems;
+    document.getElementById('a-val').textContent   = fmt(sum.totalValue);
+    document.getElementById('a-low').textContent   = sum.lowStock;
+    document.getElementById('a-cats').textContent  = sum.categories;
+  }
+
+  if (cats && cats.length) {
+    const labels = cats.map(c => c.category);
+
+    new Chart(document.getElementById('val-chart'), {
+      type: 'bar',
+      data: { labels, datasets: [{ label: 'Value ($)', data: cats.map(c => +parseFloat(c.total_value).toFixed(2)), backgroundColor: PAL, borderRadius: 7, borderSkipped: false }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 11 }, callback: v => '$' + v.toLocaleString() } }, x: { grid: { display: false }, ticks: { font: { size: 11 } } } } }
+    });
+
+    new Chart(document.getElementById('units-chart'), {
+      type: 'bar',
+      data: { labels, datasets: [{ label: 'Units', data: cats.map(c => c.total_qty), backgroundColor: PAL.map(c => c + 'bb'), borderRadius: 7, borderSkipped: false }] },
+      options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, grid: { color: '#f1f5f9' }, ticks: { font: { size: 11 } } }, y: { grid: { display: false }, ticks: { font: { size: 11 } } } } }
+    });
+
+    new Chart(document.getElementById('count-chart'), {
+      type: 'pie',
+      data: { labels, datasets: [{ data: cats.map(c => c.item_count), backgroundColor: PAL, borderWidth: 3, borderColor: '#fff' }] },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { padding: 14, font: { size: 12 }, usePointStyle: true } } } }
+    });
+  }
+
+  if (health) {
+    new Chart(document.getElementById('health-chart'), {
+      type: 'doughnut',
+      data: { labels: ['Good Stock','Medium','Low Stock','Out of Stock'], datasets: [{ data: [health.good, health.medium, health.low, health.out_of_stock], backgroundColor: ['#10b981','#06b6d4','#f59e0b','#ef4444'], borderWidth: 3, borderColor: '#fff' }] },
+      options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { position: 'bottom', labels: { padding: 14, font: { size: 12 }, usePointStyle: true } } } }
+    });
+  }
+
+  const rb = document.getElementById('rep-body');
+  if (rep && rep.length) {
+    rb.innerHTML = `<div class="tbl-wrap"><table>
+      <thead><tr><th>#</th><th>Item</th><th>Category</th><th>Qty</th><th>Min</th><th>Stock Level</th><th>Unit Price</th><th>Total Value</th><th>Supplier</th><th>Status</th></tr></thead>
+      <tbody>${rep.map((r, i) => {
+        const pct = Math.min(100, Math.round((r.quantity / Math.max(r.min_stock * 3, 1)) * 100));
+        const col = r.quantity === 0 ? '#ef4444' : r.quantity <= r.min_stock ? '#f59e0b' : '#10b981';
+        return `<tr class="${r.stock_status==='Out of Stock'?'row-out':r.stock_status==='Low'?'row-low':''}">
+          <td style="color:#94a3b8">${i+1}</td>
+          <td style="font-weight:600">${r.name}</td>
+          <td>${catBadge(r.category)}</td>
+          <td><strong style="color:${col}">${r.quantity}</strong></td>
+          <td style="color:#94a3b8">${r.min_stock}</td>
+          <td><div class="stock-bar"><div class="stock-track" style="min-width:70px"><div class="stock-fill" style="width:${pct}%;background:${col}"></div></div></div></td>
+          <td>${fmt(r.price)}</td>
+          <td style="font-weight:600">${fmt(r.total_value)}</td>
+          <td style="color:#64748b">${r.supplier||'—'}</td>
+          <td>${stockBadge(r.quantity, r.min_stock)}</td>
+        </tr>`;
+      }).join('')}</tbody>
+    </table></div>`;
+  }
+  loadNbadge();
+}
+
+function printRep() {
+  const html = document.getElementById('rep-body').innerHTML;
+  const w = window.open('', '', 'width=1000,height=700');
+  w.document.write(`<html><head><title>SIMS Stock Report</title><link rel="stylesheet" href="/css/style.css"><style>body{padding:32px}.topbar,.sidebar,.btn{display:none}</style></head><body><h2 style="font-size:20px;margin-bottom:6px">SIMS — Stock Report</h2><p style="color:#64748b;font-size:12px;margin-bottom:24px">Generated ${new Date().toLocaleString()}</p>${html}</body></html>`);
+  w.document.close(); w.print();
+}
+
+load();
+</script>
+</body>
+</html>

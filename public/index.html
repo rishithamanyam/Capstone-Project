@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIMS — Sign In</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<div class="login-page">
+
+  <div class="login-left">
+    <div class="mesh-bg"></div>
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+
+    <div class="login-logo-wrap">📦</div>
+    <div class="login-h1">Smart Inventory<br/>Management</div>
+    <p class="login-sub">Track stock in real time, get instant alerts, and make smarter restocking decisions.</p>
+
+    <div class="login-features">
+      <div class="feat-row"><div class="feat-check">✓</div>Real-time stock tracking & alerts</div>
+      <div class="feat-row"><div class="feat-check">✓</div>Analytics charts & printable reports</div>
+      <div class="feat-row"><div class="feat-check">✓</div>Role-based access for your team</div>
+      <div class="feat-row"><div class="feat-check">✓</div>Add, edit, delete inventory instantly</div>
+    </div>
+
+    <p class="login-copy">Wipro Capstone Project &bull; 2024</p>
+  </div>
+
+  <div class="login-right">
+    <h2>Welcome back 👋</h2>
+    <p class="tagline">Sign in to your SIMS account to continue</p>
+
+    <div class="demo-pill">
+      <strong>Demo Credentials</strong>
+      Admin: admin@sims.com &nbsp;/&nbsp; admin123<br/>
+      Staff:&nbsp; staff@sims.com &nbsp;/&nbsp; staff123
+    </div>
+
+    <div class="tab-row">
+      <button class="tab-btn on" onclick="switchTab('login', this)">Login</button>
+      <button class="tab-btn" onclick="switchTab('register', this)">Register</button>
+    </div>
+
+    <div id="tab-login" class="tab-pane on login-form">
+      <form onsubmit="doLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <div class="inp-wrap">
+            <span class="inp-ico">✉</span>
+            <input type="email" id="li-email" class="inp" placeholder="you@example.com" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="inp-wrap">
+            <span class="inp-ico">🔒</span>
+            <input type="password" id="li-pass" class="inp" placeholder="Enter your password" required />
+          </div>
+        </div>
+        <div id="li-err" class="err-msg"></div>
+        <button type="submit" class="btn btn-primary" id="li-btn">Sign In →</button>
+      </form>
+    </div>
+
+    <div id="tab-register" class="tab-pane login-form">
+      <form onsubmit="doRegister(event)">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="re-name" class="inp" placeholder="Your full name" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="re-email" class="inp" placeholder="you@example.com" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" id="re-pass" class="inp" placeholder="Minimum 6 characters" required minlength="6" />
+        </div>
+        <div id="re-err" class="err-msg"></div>
+        <div id="re-ok"  class="ok-msg"></div>
+        <button type="submit" class="btn btn-success" id="re-btn" style="width:100%;justify-content:center;border-radius:10px;padding:10px;font-size:14.5px">Create Account</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+if (localStorage.getItem('sims_token')) location.href = '/dashboard';
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('on'));
+  document.getElementById('tab-' + id).classList.add('on');
+  btn.classList.add('on');
+}
+
+async function doLogin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('li-btn');
+  const err = document.getElementById('li-err');
+  btn.textContent = 'Signing in...'; btn.disabled = true; err.style.display = 'none';
+  try {
+    const r = await fetch('/api/auth/login', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: document.getElementById('li-email').value, password: document.getElementById('li-pass').value })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error);
+    localStorage.setItem('sims_token', d.token);
+    localStorage.setItem('sims_user', JSON.stringify(d.user));
+    location.href = '/dashboard';
+  } catch(ex) {
+    err.textContent = ex.message; err.style.display = 'block';
+    btn.textContent = 'Sign In →'; btn.disabled = false;
+  }
+}
+
+async function doRegister(e) {
+  e.preventDefault();
+  const btn = document.getElementById('re-btn');
+  const err = document.getElementById('re-err');
+  const ok  = document.getElementById('re-ok');
+  btn.textContent = 'Creating...'; btn.disabled = true;
+  err.style.display = 'none'; ok.style.display = 'none';
+  try {
+    const r = await fetch('/api/auth/register', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: document.getElementById('re-name').value, email: document.getElementById('re-email').value, password: document.getElementById('re-pass').value })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error);
+    ok.textContent = '✓ Account created! You can now sign in.'; ok.style.display = 'block';
+    document.getElementById('tab-register').querySelector('form').reset();
+  } catch(ex) {
+    err.textContent = ex.message; err.style.display = 'block';
+  } finally { btn.textContent = 'Create Account'; btn.disabled = false; }
+}
+</script>
+</body>
+</html>
