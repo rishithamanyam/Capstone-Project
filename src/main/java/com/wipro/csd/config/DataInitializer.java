@@ -134,7 +134,7 @@ public class DataInitializer {
         LocalDateTime t7Created = base.minusDays(6);
         LocalDateTime t7Response = t7Created.plusHours(1);
         LocalDateTime t7Resolved = t7Created.plusHours(5);
-        ticketRepo.save(Ticket.builder()
+        Ticket t7 = ticketRepo.save(Ticket.builder()
                 .customerId(cust3.getId()).customerName(cust3.getName()).customerPhone(cust3.getPhone())
                 .customerLocation(cust3.getLocation()).domain("Internet Services")
                 .subject("Billing discrepancy").description("Charged for services I did not subscribe to.")
