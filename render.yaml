@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: customer-service-dashboard
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:h2:mem:csddb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      - key: JWT_SECRET
+        value: WiproCapstoneProjectSecretKey2024CustomerServiceDashboard
+      - key: JWT_EXPIRATION
+        value: "86400000"
