@@ -1,6 +1,12 @@
-node_modules/
-data.json
-sims.db
+target/
+*.class
+*.jar
+*.war
+.mvn/
+data/
 .env
 *.log
 .DS_Store
+.idea/
+*.iml
+.vscode/

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manager Dashboard — CSD</title>
+<link rel="stylesheet" href="/css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="app">
+  <div class="sidebar" id="sidebar"></div>
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <h1>Manager Dashboard</h1>
+        <div class="breadcrumb">Home / Dashboard</div>
+      </div>
+      <div class="topbar-right">
+        <div style="position:relative">
+          <button class="notif-btn" id="notif-btn" onclick="toggleNotifPanel()">🔔<span class="notif-badge" style="display:none">0</span></button>
+          <div class="notif-panel" id="notif-panel">
+            <div class="notif-panel-header"><h4>Notifications</h4><button class="btn btn-sm btn-outline" onclick="clearNotifs()">Clear read</button></div>
+            <div class="notif-list" id="notif-list"></div>
+          </div>
+        </div>
+        <div class="topbar-avatar" id="topbar-avatar"></div>
+      </div>
+    </div>
+
+    <div class="page">
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="scard gi"><div class="sc-label">Team Size</div><div class="sc-value" id="s-team">—</div><div class="sc-sub">Active representatives</div><div class="sc-icon">👥</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+        <div class="scard gc"><div class="sc-label">Total Tickets</div><div class="sc-value" id="s-total">—</div><div class="sc-sub">Team's all tickets</div><div class="sc-icon">📋</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+        <div class="scard ga"><div class="sc-label">Open</div><div class="sc-value" id="s-open">—</div><div class="sc-sub">Pending action</div><div class="sc-icon">🔴</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+        <div class="scard ge"><div class="sc-label">Closed</div><div class="sc-value" id="s-closed">—</div><div class="sc-sub">Resolved tickets</div><div class="sc-icon">✅</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:20px">
+        <!-- Rep Performance Chart -->
+        <div class="card">
+          <div class="card-header"><div class="card-title">Team Ticket Distribution</div></div>
+          <div class="chart-container"><canvas id="rep-chart"></canvas></div>
+        </div>
+
+        <!-- Outage Map -->
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">⚡ Active Outages</div><div class="card-subtitle">Current service disruptions</div></div>
+            <button class="btn btn-sm btn-outline" onclick="loadOutages()">Refresh</button>
+          </div>
+          <div id="outage-area">
+            <div class="empty-state"><div class="es-icon">✅</div><p>No active outages</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rep Performance Table -->
+      <div class="card" style="margin-bottom:20px">
+        <div class="card-header">
+          <div><div class="card-title">Representative Performance</div><div class="card-subtitle">Average response and resolution times for your team</div></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Representative</th><th>Open</th><th>In Progress</th><th>Closed</th><th>Avg Response</th><th>Avg Resolution</th><th>Performance</th></tr></thead>
+            <tbody id="rep-tbody"><tr><td colspan="7" style="text-align:center;color:#94a3b8">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Team Tickets -->
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Team Tickets</div><div class="card-subtitle">All tickets assigned to your team</div></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Customer</th><th>Domain</th><th>Subject</th><th>Status</th><th>Representative</th><th>Created</th></tr></thead>
+            <tbody id="ticket-tbody"><tr><td colspan="7" style="text-align:center;color:#94a3b8">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/app.js"></script>
+<script>
+  if (!requireAuth(['MANAGER'])) { }
+
+  buildSidebar('MANAGER', 'manager');
+  initTopbar();
+
+  async function loadDashboard() {
+    const [stats, tickets, outages] = await Promise.all([
+      api('/api/analytics/manager'),
+      api('/api/tickets'),
+      api('/api/outages/active')
+    ]);
+
+    if (stats) {
+      document.getElementById('s-team').textContent  = stats.teamSize;
+      document.getElementById('s-total').textContent = stats.totalTickets;
+      document.getElementById('s-open').textContent  = stats.openTickets;
+      document.getElementById('s-closed').textContent = stats.closedTickets;
+
+      if (stats.repMetrics && stats.repMetrics.length > 0) {
+        const reps = stats.repMetrics;
+        new Chart(document.getElementById('rep-chart').getContext('2d'), {
+          type: 'bar',
+          data: {
+            labels: reps.map(r => r.name.split(' ')[0]),
+            datasets: [
+              { label: 'Open',       data: reps.map(r => r.openTickets),       backgroundColor: '#fbbf24' },
+              { label: 'In Progress',data: reps.map(r => r.inProgressTickets), backgroundColor: '#4f46e5' },
+              { label: 'Closed',     data: reps.map(r => r.closedTickets),     backgroundColor: '#059669' },
+            ]
+          },
+          options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } }, scales: { x: { stacked: true }, y: { stacked: true, ticks: { stepSize: 1 } } } }
+        });
+
+        document.getElementById('rep-tbody').innerHTML = reps.map(r => {
+          const total = r.openTickets + r.inProgressTickets + r.closedTickets;
+          const perf  = total > 0 ? Math.round((r.closedTickets / total) * 100) : 0;
+          return `<tr>
+            <td><strong>${r.name}</strong><br><small style="color:#64748b">${r.email}</small></td>
+            <td><span class="badge b-amber">${r.openTickets}</span></td>
+            <td><span class="badge b-blue">${r.inProgressTickets}</span></td>
+            <td><span class="badge b-green">${r.closedTickets}</span></td>
+            <td>${fmtHrs(r.avgResponseTime)}</td>
+            <td>${fmtHrs(r.avgResolutionTime)}</td>
+            <td style="min-width:140px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <div class="perf-bar-track" style="flex:1"><div class="perf-bar-fill" style="width:${perf}%"></div></div>
+                <span style="font-size:12px;font-weight:700;color:#4f46e5">${perf}%</span>
+              </div>
+            </td>
+          </tr>`;
+        }).join('');
+      }
+    }
+
+    if (tickets) {
+      document.getElementById('ticket-tbody').innerHTML = tickets.length === 0
+        ? '<tr><td colspan="7"><div class="empty-state"><p>No tickets found</p></div></td></tr>'
+        : tickets.map(t => `<tr>
+            <td><strong>#${t.id}</strong></td>
+            <td>${t.customerName}<br><small style="color:#64748b">${t.customerLocation||''}</small></td>
+            <td>${t.domain}</td>
+            <td>${t.subject}</td>
+            <td>${statusBadge(t.status)}</td>
+            <td>${t.repName || '<span class="badge b-gray">Unassigned</span>'}</td>
+            <td>${fmtDate(t.createdAt)}</td>
+          </tr>`).join('');
+    }
+
+    loadOutages(outages);
+  }
+
+  function loadOutages(outages) {
+    if (!outages) { api('/api/outages/active').then(d => renderOutages(d)); return; }
+    renderOutages(outages);
+  }
+
+  function renderOutages(outages) {
+    const el = document.getElementById('outage-area');
+    if (!outages || outages.length === 0) {
+      el.innerHTML = '<div class="empty-state"><div class="es-icon">✅</div><p>No active outages reported</p></div>';
+      return;
+    }
+    el.innerHTML = `<div class="outage-grid">${outages.map(o => `
+      <div class="outage-card active">
+        <div><span class="outage-dot dot-active"></span><strong style="font-size:13px">${o.location}</strong></div>
+        <p style="margin:6px 0 4px;font-size:12px;font-weight:600">${o.domain}</p>
+        <p style="font-size:11.5px;color:#64748b">${o.affectedAreas}</p>
+        <p style="font-size:11.5px;margin-top:4px;color:#64748b">${o.description}</p>
+        <div style="margin-top:8px"><span class="severity-${o.severity}">${o.severity}</span> <span class="badge b-red" style="font-size:10px">Active</span></div>
+      </div>`).join('')}</div>`;
+  }
+
+  loadDashboard();
+</script>
+</body>
+</html>
