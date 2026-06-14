@@ -1,0 +1,90 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "🚀 Run NexCare (Full Stack)",
+      "dependsOn": ["☕ Backend: Spring Boot", "🅰️ Frontend: Angular"],
+      "dependsOrder": "parallel",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "☕ Backend: Spring Boot",
+      "type": "shell",
+      "command": "mvn spring-boot:run",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [
+        {
+          "pattern": {
+            "regexp": "^(.*):(\\d+):\\s+(error|warning):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "severity": 3,
+            "message": 4
+          },
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "Starting",
+            "endsPattern": "Started CsdApplication"
+          }
+        }
+      ],
+      "isBackground": true,
+      "presentation": {
+        "label": "Spring Boot :8080",
+        "group": "nexcare",
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "🅰️ Frontend: Angular",
+      "type": "shell",
+      "command": "npm install && npx ng serve --port 4200 --open",
+      "options": {
+        "cwd": "${workspaceFolder}/frontend"
+      },
+      "problemMatcher": [
+        {
+          "pattern": {
+            "regexp": "^(.*):(\\d+):(\\d+):\\s+(error|warning):\\s+(.*)$",
+            "file": 1,
+            "line": 2,
+            "column": 3,
+            "severity": 4,
+            "message": 5
+          },
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "Building",
+            "endsPattern": "Compiled successfully"
+          }
+        }
+      ],
+      "isBackground": true,
+      "presentation": {
+        "label": "Angular :4200",
+        "group": "nexcare",
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "🛑 Stop All Servers",
+      "type": "shell",
+      "command": "pkill -f 'spring-boot:run' 2>/dev/null; pkill -f 'ng serve' 2>/dev/null; echo 'Servers stopped'",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      }
+    }
+  ]
+}

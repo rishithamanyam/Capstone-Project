@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "🐞 Debug Spring Boot",
+      "request": "launch",
+      "mainClass": "com.wipro.csd.CsdApplication",
+      "projectName": "csd",
+      "args": [],
+      "envFile": "${workspaceFolder}/.env",
+      "presentation": {
+        "hidden": false,
+        "group": "debug",
+        "order": 1
+      }
+    }
+  ]
+}
