@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexCare — Setup & Run Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #fff;
+    color: #1e1b4b;
+    font-size: 13.5px;
+    line-height: 1.7;
+  }
+
+  /* ---- COVER PAGE ---- */
+  .cover {
+    min-height: 100vh;
+    background: linear-gradient(145deg, #1a0533 0%, #2e1065 40%, #4c1d95 75%, #5b21b6 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: rgba(196,181,253,.12);
+    top: -200px; left: -150px;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: rgba(139,92,246,.15);
+    bottom: -100px; right: -100px;
+  }
+  .cover-inner { position: relative; z-index: 1; }
+  .cover-badge {
+    display: inline-block;
+    background: rgba(196,181,253,.2);
+    border: 1px solid rgba(196,181,253,.35);
+    color: #c4b5fd;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 6px 18px;
+    border-radius: 100px;
+    margin-bottom: 32px;
+  }
+  .cover-icon {
+    font-size: 72px;
+    margin-bottom: 24px;
+    display: block;
+  }
+  .cover h1 {
+    font-size: 64px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -.04em;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .cover h1 span { color: #c4b5fd; }
+  .cover .subtitle {
+    font-size: 18px;
+    color: rgba(255,255,255,.65);
+    margin-bottom: 40px;
+    font-weight: 400;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    margin-bottom: 48px;
+  }
+  .cover-meta div {
+    text-align: center;
+  }
+  .cover-meta .label {
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(196,181,253,.6);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .cover-meta .value {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .cover-divider {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #7c3aed, #c4b5fd);
+    border-radius: 2px;
+    margin: 0 auto 48px;
+  }
+  .cover-doc-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+  .cover-doc-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,.5);
+  }
+  .cover-footer {
+    position: absolute;
+    bottom: 32px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 11px;
+    color: rgba(255,255,255,.3);
+  }
+
+  /* ---- CONTENT ---- */
+  .content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 60px 48px;
+  }
+
+  .section { margin-bottom: 52px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #ede9fe;
+  }
+  .section-num {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #6d28d9, #8b5cf6);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-size: 20px;
+    font-weight: 800;
+    color: #1e1b4b;
+    letter-spacing: -.02em;
+  }
+
+  p { color: #475569; margin-bottom: 12px; }
+
+  /* prereq cards */
+  .prereq-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .prereq-card {
+    border: 1.5px solid #ede9fe;
+    border-radius: 12px;
+    padding: 16px 18px;
+    background: #faf8ff;
+  }
+  .prereq-card .name {
+    font-weight: 700;
+    font-size: 14px;
+    color: #4c1d95;
+    margin-bottom: 2px;
+  }
+  .prereq-card .version {
+    font-size: 12px;
+    color: #7c3aed;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+    background: #f0ebff;
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+  }
+  .prereq-card .note { font-size: 12px; color: #64748b; }
+
+  /* step boxes */
+  .step-box {
+    border: 1.5px solid #ede9fe;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, #f5f0ff, #faf7ff);
+    border-bottom: 1px solid #ede9fe;
+  }
+  .step-num {
+    width: 26px; height: 26px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #7c3aed, #a78bfa);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: #1e1b4b;
+  }
+  .step-body { padding: 16px 18px; }
+  .step-body p { margin-bottom: 8px; font-size: 13px; }
+  .step-body p:last-child { margin-bottom: 0; }
+
+  code, .cmd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: #1e1b4b;
+    color: #c4b5fd;
+    padding: 2px 7px;
+    border-radius: 5px;
+  }
+  .code-block {
+    background: #1e1b4b;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 10px 0;
+    overflow-x: auto;
+  }
+  .code-block pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    color: #c4b5fd;
+    line-height: 1.9;
+    white-space: pre;
+  }
+  .code-block .comment { color: #6272a4; }
+  .code-block .green   { color: #50fa7b; }
+  .code-block .yellow  { color: #f1fa8c; }
+  .code-block .cyan    { color: #8be9fd; }
+
+  /* alert boxes */
+  .alert {
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 14px 0;
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+  }
+  .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .alert-info  { background: #eff6ff; border: 1.5px solid #bfdbfe; color: #1e40af; }
+  .alert-warn  { background: #fffbeb; border: 1.5px solid #fde68a; color: #92400e; }
+  .alert-ok    { background: #f0fdf4; border: 1.5px solid #bbf7d0; color: #166534; }
+
+  /* URL pill */
+  .url-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #f5f0ff;
+    border: 1.5px solid #ddd6fe;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: #5b21b6;
+    margin: 4px 4px 4px 0;
+  }
+
+  /* credentials table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 13px;
+  }
+  thead tr { background: linear-gradient(135deg, #4c1d95, #6d28d9); }
+  thead th {
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  thead th:first-child { border-radius: 8px 0 0 0; }
+  thead th:last-child  { border-radius: 0 8px 0 0; }
+  tbody tr { border-bottom: 1px solid #f3f0ff; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:nth-child(even) { background: #faf8ff; }
+  tbody td { padding: 10px 14px; color: #374151; vertical-align: middle; }
+  tbody td code { font-size: 11.5px; }
+  .role-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .r-admin  { background: #fce7f3; color: #9d0b6b; }
+  .r-mgr    { background: #ede9fe; color: #5b21b6; }
+  .r-rep    { background: #e0e7ff; color: #3730a3; }
+  .r-cust   { background: #ecfdf5; color: #065f46; }
+
+  /* feature list */
+  .feature-list { list-style: none; margin: 10px 0; }
+  .feature-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid #f5f0ff;
+    font-size: 13px;
+    color: #374151;
+  }
+  .feature-list li:last-child { border-bottom: none; }
+  .feature-list li::before {
+    content: '✦';
+    color: #8b5cf6;
+    font-size: 10px;
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+
+  /* port diagram */
+  .port-diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 20px;
+    background: #f8f5ff;
+    border-radius: 12px;
+    border: 1.5px solid #ede9fe;
+    margin: 16px 0;
+  }
+  .port-box {
+    text-align: center;
+    padding: 14px 20px;
+    border-radius: 10px;
+    border: 2px solid;
+  }
+  .port-box.angular { border-color: #8b5cf6; background: #fff; }
+  .port-box.spring  { border-color: #059669; background: #fff; }
+  .port-box .port-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+  .port-box.angular .port-label { color: #7c3aed; }
+  .port-box.spring  .port-label { color: #065f46; }
+  .port-box .port-num { font-size: 22px; font-weight: 900; letter-spacing: -.02em; }
+  .port-box.angular .port-num { color: #4c1d95; }
+  .port-box.spring  .port-num  { color: #065f46; }
+  .port-box .port-sub { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+  .port-arrow { font-size: 20px; color: #a78bfa; font-weight: 700; }
+
+  /* page break */
+  .page-break { page-break-before: always; padding-top: 60px; }
+
+  /* footer strip */
+  .doc-footer {
+    margin-top: 60px;
+    padding: 24px 32px;
+    background: linear-gradient(135deg, #1e1b4b, #2e1065);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .doc-footer .left .title { font-size: 16px; font-weight: 800; color: #fff; }
+  .doc-footer .left .sub   { font-size: 11px; color: rgba(255,255,255,.45); margin-top: 2px; }
+  .doc-footer .right       { font-size: 11px; color: rgba(196,181,253,.7); text-align: right; }
+
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .cover { min-height: 100vh; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== COVER PAGE ==================== -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-badge">Wipro Capstone Project</div>
+    <span class="cover-icon">🎯</span>
+    <h1>Nex<span>Care</span></h1>
+    <p class="subtitle">Customer Service Operations Dashboard</p>
+
+    <div class="cover-meta">
+      <div>
+        <div class="label">Developer</div>
+        <div class="value">Rishitha Manyam</div>
+      </div>
+      <div>
+        <div class="label">Stack</div>
+        <div class="value">Java Full Stack</div>
+      </div>
+      <div>
+        <div class="label">Frontend</div>
+        <div class="value">Angular 17</div>
+      </div>
+      <div>
+        <div class="label">Backend</div>
+        <div class="value">Spring Boot 3.2</div>
+      </div>
+    </div>
+
+    <div class="cover-divider"></div>
+
+    <div class="cover-doc-title">Installation &amp; Run Guide</div>
+    <div class="cover-doc-sub">Step-by-step setup to run the full stack application locally</div>
+  </div>
+  <div class="cover-footer">github.com/rishithamanyam/Capstone-Project</div>
+</div>
+
+<!-- ==================== CONTENT ==================== -->
+<div class="content">
+
+  <!-- SECTION 1: Prerequisites -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <h2>Prerequisites</h2>
+    </div>
+
+    <p>Before running the project, ensure the following tools are installed on your machine:</p>
+
+    <div class="prereq-grid">
+      <div class="prereq-card">
+        <div class="name">☕ Java Development Kit</div>
+        <div class="version">JDK 17 or higher</div>
+        <div class="note">Required for Spring Boot backend. Download from adoptium.net or oracle.com</div>
+      </div>
+      <div class="prereq-card">
+        <div class="name">🪶 Apache Maven</div>
+        <div class="version">3.6.0 or higher</div>
+        <div class="note">Used to build and run the Spring Boot application</div>
+      </div>
+      <div class="prereq-card">
+        <div class="name">🟢 Node.js</div>
+        <div class="version">18.x or higher (LTS)</div>
+        <div class="note">Required for Angular development server and npm packages</div>
+      </div>
+      <div class="prereq-card">
+        <div class="name">🅰️ Angular CLI</div>
+        <div class="version">17.x (auto-used via npx)</div>
+        <div class="note">No global install needed — project uses npx ng commands</div>
+      </div>
+    </div>
+
+    <p>Verify your installations by running these commands in a terminal:</p>
+    <div class="code-block"><pre><span class="comment"># Check Java version (must be 17+)</span>
+<span class="cyan">java</span> <span class="yellow">--version</span>
+
+<span class="comment"># Check Maven version</span>
+<span class="cyan">mvn</span> <span class="yellow">--version</span>
+
+<span class="comment"># Check Node.js version</span>
+<span class="cyan">node</span> <span class="yellow">--version</span>
+
+<span class="comment"># Check npm version</span>
+<span class="cyan">npm</span> <span class="yellow">--version</span></pre></div>
+  </div>
+
+  <!-- SECTION 2: Get the Code -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <h2>Get the Code</h2>
+    </div>
+
+    <p>Clone the repository from GitHub:</p>
+    <div class="code-block"><pre><span class="comment"># Clone the repository</span>
+<span class="cyan">git</span> clone https://github.com/rishithamanyam/Capstone-Project.git
+
+<span class="comment"># Navigate into the project folder</span>
+<span class="cyan">cd</span> Capstone-Project/SIMS</pre></div>
+
+    <div class="alert alert-info">
+      <span class="alert-icon">📁</span>
+      <div>The project root is inside the <code>SIMS/</code> folder. This is where the Spring Boot application lives. The Angular frontend is in <code>SIMS/frontend/</code>.</div>
+    </div>
+
+    <p>Project structure overview:</p>
+    <div class="code-block"><pre>SIMS/
+├── src/                         <span class="comment"># Spring Boot source code</span>
+│   └── main/java/com/wipro/csd/
+│       ├── config/              <span class="comment"># SecurityConfig, DataInitializer</span>
+│       ├── controller/          <span class="comment"># REST API controllers</span>
+│       ├── model/               <span class="comment"># JPA entities (User, Ticket, Outage…)</span>
+│       ├── repository/          <span class="comment"># Spring Data JPA repositories</span>
+│       └── service/             <span class="comment"># Business logic</span>
+├── src/main/resources/
+│   └── application.properties  <span class="comment"># DB, JWT, port config</span>
+├── frontend/                    <span class="comment"># Angular 17 app</span>
+│   ├── src/app/
+│   │   ├── pages/               <span class="comment"># login, admin, manager, rep, customer, profile</span>
+│   │   ├── shared/              <span class="comment"># sidebar, topbar, chatbot, toast</span>
+│   │   ├── services/            <span class="comment"># auth, ticket, analytics, outage…</span>
+│   │   └── guards/              <span class="comment"># auth guard (JWT + role check)</span>
+│   ├── proxy.conf.json          <span class="comment"># Proxies /api → port 8080</span>
+│   └── angular.json
+└── pom.xml                      <span class="comment"># Maven dependencies</span></pre></div>
+  </div>
+
+  <!-- SECTION 3: Run the Backend -->
+  <div class="section page-break">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <h2>Run the Backend (Spring Boot)</h2>
+    </div>
+
+    <p>Open a terminal, navigate to the <code>SIMS/</code> folder, and run:</p>
+
+    <div class="step-box">
+      <div class="step-header"><div class="step-num">A</div><div class="step-title">Start the Spring Boot server</div></div>
+      <div class="step-body">
+        <div class="code-block"><pre><span class="comment"># From the SIMS/ directory</span>
+<span class="cyan">mvn</span> <span class="green">spring-boot:run</span></pre></div>
+        <p>Maven will download dependencies on the first run (takes 1–2 minutes). After that, you will see output like:</p>
+        <div class="code-block"><pre><span class="green">Started CsdApplication in 3.4 seconds (JVM running for 4.1)</span></pre></div>
+      </div>
+    </div>
+
+    <div class="alert alert-ok">
+      <span class="alert-icon">✅</span>
+      <div>The backend is now running on <strong>http://localhost:8080</strong>. The H2 database is auto-created and seeded with demo data (users, tickets, outages) on first startup.</div>
+    </div>
+
+    <div class="alert alert-warn">
+      <span class="alert-icon">⚠️</span>
+      <div>Keep this terminal open. Do not close it — the backend must stay running while you use the app.</div>
+    </div>
+
+    <p style="margin-top:16px"><strong>What happens on startup:</strong></p>
+    <ul class="feature-list">
+      <li>H2 in-memory/file database initialised automatically</li>
+      <li>Demo users, tickets and outages seeded via <code>DataInitializer.java</code></li>
+      <li>JWT secret key loaded from <code>application.properties</code></li>
+      <li>All REST endpoints registered under <code>/api/**</code></li>
+    </ul>
+  </div>
+
+  <!-- SECTION 4: Install Frontend Dependencies -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <h2>Install Frontend Dependencies</h2>
+    </div>
+
+    <p>Open a <strong>second terminal</strong> (keep the first one running the backend) and run:</p>
+
+    <div class="code-block"><pre><span class="comment"># Navigate to the Angular frontend folder</span>
+<span class="cyan">cd</span> SIMS/frontend
+
+<span class="comment"># Install all npm packages</span>
+<span class="cyan">npm</span> <span class="green">install</span></pre></div>
+
+    <div class="alert alert-info">
+      <span class="alert-icon">ℹ️</span>
+      <div>This only needs to be done <strong>once</strong>. After the first install, you can skip this step on future runs.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: Run the Frontend -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <h2>Run the Frontend (Angular)</h2>
+    </div>
+
+    <p>In the same second terminal (inside <code>SIMS/frontend/</code>), run:</p>
+
+    <div class="code-block"><pre><span class="comment"># Start Angular dev server on port 4200</span>
+<span class="cyan">npx ng serve</span> <span class="yellow">--port 4200</span></pre></div>
+
+    <p>Wait until you see:</p>
+    <div class="code-block"><pre><span class="green">✔ Compiled successfully.</span>
+<span class="cyan">Watch mode enabled. Watching for file changes...</span></pre></div>
+
+    <div class="alert alert-ok">
+      <span class="alert-icon">✅</span>
+      <div>The Angular app is now live. Open your browser and go to <strong>http://localhost:4200</strong></div>
+    </div>
+
+    <p style="margin-top:16px">How the two servers talk to each other:</p>
+
+    <div class="port-diagram">
+      <div class="port-box angular">
+        <div class="port-label">🅰️ Angular</div>
+        <div class="port-num">:4200</div>
+        <div class="port-sub">Dev Server (UI)</div>
+      </div>
+      <div class="port-arrow">⟶ /api/* ⟶</div>
+      <div class="port-box spring">
+        <div class="port-label">☕ Spring Boot</div>
+        <div class="port-num">:8080</div>
+        <div class="port-sub">REST API</div>
+      </div>
+    </div>
+
+    <p><code>proxy.conf.json</code> automatically forwards all <code>/api</code> requests from port 4200 to port 8080 — no CORS issues, no extra configuration needed.</p>
+  </div>
+
+  <!-- SECTION 6: Login & Demo Credentials -->
+  <div class="section page-break">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <h2>Login &amp; Demo Credentials</h2>
+    </div>
+
+    <p>Open <span class="url-pill">http://localhost:4200</span> in your browser. You will see the NexCare landing page with Sign In and Sign Up options.</p>
+    <p>Click <strong>Sign In</strong> and use any of the following demo accounts:</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th>Email</th>
+          <th>Password</th>
+          <th>Redirects To</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="role-badge r-admin">ADMIN</span></td>
+          <td><code>admin@csd.com</code></td>
+          <td><code>admin123</code></td>
+          <td>Admin Dashboard</td>
+        </tr>
+        <tr>
+          <td><span class="role-badge r-mgr">MANAGER</span></td>
+          <td><code>john.smith@csd.com</code></td>
+          <td><code>Welcome@123</code></td>
+          <td>Manager Dashboard</td>
+        </tr>
+        <tr>
+          <td><span class="role-badge r-rep">REPRESENTATIVE</span></td>
+          <td><code>mike.rep@csd.com</code></td>
+          <td><code>Welcome@123</code></td>
+          <td>Rep Dashboard</td>
+        </tr>
+        <tr>
+          <td><span class="role-badge r-cust">CUSTOMER</span></td>
+          <td><code>alice@gmail.com</code></td>
+          <td><code>Customer@123</code></td>
+          <td>Customer Dashboard</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-info">
+      <span class="alert-icon">💡</span>
+      <div>Each role sees a different dashboard. You can log out using the avatar at the bottom of the sidebar and switch between accounts to explore all views.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 7: Key Features by Role -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">7</div>
+      <h2>What Each Role Can Do</h2>
+    </div>
+
+    <div class="step-box">
+      <div class="step-header"><div class="step-num" style="background:linear-gradient(135deg,#9d0b6b,#db2777)">A</div><div class="step-title">Admin — Full System Access</div></div>
+      <div class="step-body">
+        <ul class="feature-list">
+          <li>View analytics: total customers, managers, reps, tickets, avg satisfaction</li>
+          <li>Bar chart: tickets per city &nbsp;|&nbsp; Doughnut chart: tickets per domain</li>
+          <li>Add / edit / delete Managers and Representatives</li>
+          <li>View all tickets across the system</li>
+          <li>Report service outages and mark them as resolved</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-header"><div class="step-num" style="background:linear-gradient(135deg,#5b21b6,#7c3aed)">B</div><div class="step-title">Manager — Team Oversight</div></div>
+      <div class="step-body">
+        <ul class="feature-list">
+          <li>View team performance stats (open, in-progress, closed tickets)</li>
+          <li>See all tickets assigned to their team's representatives</li>
+          <li>Monitor active outages in their area</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-header"><div class="step-num" style="background:linear-gradient(135deg,#1d4ed8,#3b82f6)">C</div><div class="step-title">Representative — Ticket Handling</div></div>
+      <div class="step-body">
+        <ul class="feature-list">
+          <li>View personal performance stats (response time, resolution time)</li>
+          <li>Update assigned ticket statuses (Open → In Progress → Closed)</li>
+          <li>Search customers by name, phone number, or customer ID</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="step-box">
+      <div class="step-header"><div class="step-num" style="background:linear-gradient(135deg,#065f46,#059669)">D</div><div class="step-title">Customer — Self-Service Portal</div></div>
+      <div class="step-body">
+        <ul class="feature-list">
+          <li>View own ticket stats and history</li>
+          <li>Raise new support tickets (domain → subject → description)</li>
+          <li>See available service plans (₹499 / ₹799 / ₹1199 per month)</li>
+          <li>Receive outage alerts if there is a disruption in their city</li>
+          <li>Rate resolved tickets with a 1–5 star rating</li>
+          <li>Chat with NexCare virtual assistant (chatbot) for instant support</li>
+          <li>Register a new account via Sign Up on the login page</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 8: Troubleshooting -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">8</div>
+      <h2>Common Issues &amp; Fixes</h2>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Problem</th><th>Likely Cause</th><th>Fix</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Backend won't start</td>
+          <td>Java version below 17</td>
+          <td>Install JDK 17 or higher from adoptium.net</td>
+        </tr>
+        <tr>
+          <td>Port 8080 already in use</td>
+          <td>Another app on 8080</td>
+          <td>Kill the process or change port in <code>application.properties</code></td>
+        </tr>
+        <tr>
+          <td>npm install fails</td>
+          <td>Node version too old</td>
+          <td>Upgrade Node.js to v18 LTS or higher</td>
+        </tr>
+        <tr>
+          <td>API calls return 404</td>
+          <td>Backend not running</td>
+          <td>Check Terminal 1 — Spring Boot must be running on :8080</td>
+        </tr>
+        <tr>
+          <td>Login fails with valid credentials</td>
+          <td>DB not seeded (already has data)</td>
+          <td>Delete the H2 <code>.db</code> file in project root and restart backend</td>
+        </tr>
+        <tr>
+          <td>White screen on load</td>
+          <td>Angular compile error</td>
+          <td>Check Terminal 2 for ng serve errors. Run <code>npx ng build</code> for details</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 9: Quick Reference -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">9</div>
+      <h2>Quick Reference</h2>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Item</th><th>Value</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>App URL</td><td><span class="url-pill">http://localhost:4200</span></td></tr>
+        <tr><td>API Base URL</td><td><span class="url-pill">http://localhost:8080/api</span></td></tr>
+        <tr><td>GitHub Repo</td><td><code>github.com/rishithamanyam/Capstone-Project</code></td></tr>
+        <tr><td>Backend command</td><td><code>mvn spring-boot:run</code></td></tr>
+        <tr><td>Frontend command</td><td><code>npx ng serve --port 4200</code></td></tr>
+        <tr><td>Backend port</td><td><code>8080</code></td></tr>
+        <tr><td>Frontend port</td><td><code>4200</code></td></tr>
+        <tr><td>Database</td><td>H2 (auto-created on startup)</td></tr>
+        <tr><td>Auth type</td><td>JWT (stored in sessionStorage)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <div class="doc-footer">
+    <div class="left">
+      <div class="title">🎯 NexCare — Customer Service Operations Dashboard</div>
+      <div class="sub">Wipro Capstone Project · Java Full Stack · Rishitha Manyam</div>
+    </div>
+    <div class="right">
+      Angular 17 + Spring Boot 3.2<br>
+      github.com/rishithamanyam/Capstone-Project
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
