@@ -62,22 +62,24 @@ export class SidebarComponent {
       return;
     }
 
-    const adminTabRoutes: Record<string, string> = {
-      'admin':         'dashboard',
-      'admin-emp':     'employees',
-      'admin-tickets': 'tickets',
-      'admin-outages': 'outages',
+    const queryParamRoutes: Record<string, { path: string; tab: string }> = {
+      'admin':         { path: '/admin',           tab: 'dashboard' },
+      'admin-emp':     { path: '/admin',           tab: 'employees' },
+      'admin-tickets': { path: '/admin',           tab: 'tickets'   },
+      'admin-outages': { path: '/admin',           tab: 'outages'   },
+      'rep':           { path: '/representative',  tab: 'dashboard' },
+      'rep-tickets':   { path: '/representative',  tab: 'tickets'   },
+      'rep-search':    { path: '/representative',  tab: 'search'    },
     };
-    if (adminTabRoutes[route] !== undefined) {
-      this.router.navigate(['/admin'], { queryParams: { tab: adminTabRoutes[route] } });
+    const qr = queryParamRoutes[route];
+    if (qr) {
+      this.router.navigate([qr.path], { queryParams: { tab: qr.tab } });
       return;
     }
 
     const scrollTargets: Record<string, string> = {
       'manager-tickets': 'tickets',
       'manager-outage':  'outage',
-      'rep-tickets':     'tickets',
-      'rep-search':      'search',
       'customer-tickets':'tickets-section',
     };
     const sectionId = scrollTargets[route];

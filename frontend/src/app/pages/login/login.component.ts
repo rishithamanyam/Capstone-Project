@@ -12,10 +12,20 @@ import { ToastService } from '../../services/toast.service';
   templateUrl: './login.component.html'
 })
 export class LoginComponent {
-  tab: 'employee' | 'customer' = 'employee';
-  email    = '';
-  password = '';
-  loading  = false;
+  hovered: 'login' | 'signup' | null = null;
+
+  loginEmail    = '';
+  loginPassword = '';
+  loginLoading  = false;
+
+  signupName     = '';
+  signupEmail    = '';
+  signupPhone    = '';
+  signupLocation = 'New York';
+  signupPassword = '';
+  signupLoading  = false;
+
+  readonly LOCATIONS = ['New York','Los Angeles','Chicago','Houston','Phoenix','Philadelphia'];
 
   constructor(
     private auth: AuthService,
@@ -23,16 +33,16 @@ export class LoginComponent {
     private toast: ToastService
   ) {}
 
-  submit() {
-    if (!this.email || !this.password) {
+  login() {
+    if (!this.loginEmail || !this.loginPassword) {
       this.toast.error('Please enter email and password');
       return;
     }
-    this.loading = true;
-    this.auth.login(this.email, this.password).subscribe({
+    this.loginLoading = true;
+    this.auth.login(this.loginEmail, this.loginPassword).subscribe({
       next: (user) => {
         this.auth.setSession(user);
-        this.loading = false;
+        this.loginLoading = false;
         const routes: Record<string, string> = {
           ADMIN: '/admin', MANAGER: '/manager',
           REPRESENTATIVE: '/representative', CUSTOMER: '/customer'
@@ -40,8 +50,33 @@ export class LoginComponent {
         this.router.navigate([routes[user.role] || '/login']);
       },
       error: () => {
-        this.loading = false;
+        this.loginLoading = false;
         this.toast.error('Invalid email or password');
+      }
+    });
+  }
+
+  signup() {
+    if (!this.signupName || !this.signupEmail || !this.signupPassword) {
+      this.toast.error('Please fill name, email and password');
+      return;
+    }
+    this.signupLoading = true;
+    this.auth.register({
+      name: this.signupName,
+      email: this.signupEmail,
+      phone: this.signupPhone,
+      location: this.signupLocation,
+      password: this.signupPassword
+    }).subscribe({
+      next: (user) => {
+        this.auth.setSession(user);
+        this.signupLoading = false;
+        this.router.navigate(['/customer']);
+      },
+      error: (e) => {
+        this.signupLoading = false;
+        this.toast.error(e.error?.message || 'Registration failed');
       }
     });
   }

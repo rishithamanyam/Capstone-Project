@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { TopbarComponent } from '../../shared/topbar/topbar.component';
@@ -20,6 +21,8 @@ Chart.register(...registerables);
   templateUrl: './representative.component.html'
 })
 export class RepresentativeComponent implements OnInit {
+  activeTab = 'dashboard';
+
   stats: any = {};
   tickets: Ticket[] = [];
   filteredTickets: Ticket[] = [];
@@ -32,6 +35,8 @@ export class RepresentativeComponent implements OnInit {
   updateTicketId  = 0;
   newStatus       = 'IN_PROGRESS';
 
+  private cachedStats: any = null;
+
   @ViewChild('statusChart') statusCanvas!: ElementRef<HTMLCanvasElement>;
   private chart?: Chart;
 
@@ -39,28 +44,54 @@ export class RepresentativeComponent implements OnInit {
     private analyticsSvc: AnalyticsService,
     private ticketSvc: TicketService,
     private userSvc: UserService,
-    private toast: ToastService
+    private toast: ToastService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      const tab = params['tab'] || 'dashboard';
+      this.activeTab = tab;
+      if (tab === 'dashboard') {
+        if (this.cachedStats) {
+          setTimeout(() => this.buildChart(this.cachedStats), 100);
+        } else {
+          this.loadDashboard();
+        }
+      }
+      if (tab === 'tickets') this.loadTickets();
+    });
+  }
+
+  setTab(tab: string) {
+    this.router.navigate(['/representative'], { queryParams: { tab } });
+  }
+
+  loadDashboard() {
     this.analyticsSvc.rep().subscribe(d => {
       this.stats = d;
+      this.cachedStats = d;
       setTimeout(() => this.buildChart(d), 100);
     });
+  }
+
+  loadTickets() {
     this.ticketSvc.getAll().subscribe(d => {
-      this.tickets         = d;
+      this.tickets = d;
       this.filteredTickets = d;
+      this.ticketFilter = '';
     });
   }
 
   buildChart(s: any) {
-    if (this.chart) this.chart.destroy();
+    if (this.chart) { this.chart.destroy(); this.chart = undefined; }
     if (!this.statusCanvas?.nativeElement) return;
     this.chart = new Chart(this.statusCanvas.nativeElement, {
       type: 'doughnut',
       data: {
         labels: ['Open', 'In Progress', 'Closed'],
-        datasets: [{ data: [s.openTickets, s.inProgressTickets, s.closedTickets], backgroundColor: ['#d97706','#4f46e5','#059669'], borderWidth: 0 }]
+        datasets: [{ data: [s.openTickets, s.inProgressTickets, s.closedTickets], backgroundColor: ['#d97706','#8b5cf6','#059669'], borderWidth: 0 }]
       },
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
     });
@@ -94,7 +125,7 @@ export class RepresentativeComponent implements OnInit {
       next: () => {
         this.toast.success('Ticket status updated!');
         this.showStatusModal = false;
-        this.ticketSvc.getAll().subscribe(d => { this.tickets = d; this.filteredTickets = d; this.ticketFilter = ''; });
+        this.loadTickets();
       },
       error: () => this.toast.error('Update failed')
     });

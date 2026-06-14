@@ -11,6 +11,10 @@ export class AuthService {
     return this.http.post<User>('/api/auth/login', { email, password });
   }
 
+  register(body: { name: string; email: string; phone?: string; location?: string; password: string }) {
+    return this.http.post<User>('/api/auth/register', body);
+  }
+
   setSession(user: User) {
     sessionStorage.setItem('token', user.token!);
     sessionStorage.setItem('user', JSON.stringify(user));

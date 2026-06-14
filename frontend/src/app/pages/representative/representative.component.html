@@ -1,25 +1,70 @@
 <div class="app">
-  <app-sidebar activePage="rep"></app-sidebar>
+  <app-sidebar [activePage]="activeTab === 'dashboard' ? 'rep' : 'rep-' + activeTab"></app-sidebar>
 
   <div class="main">
     <app-topbar title="Representative Dashboard" breadcrumb="Home / Dashboard"></app-topbar>
 
     <div class="page">
-      <div class="stats-grid">
-        <div class="scard gi"><div class="sc-label">Open Tickets</div><div class="sc-value">{{ stats.openTickets ?? '—' }}</div><div class="sc-sub">Awaiting action</div><div class="sc-icon">🎫</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
-        <div class="scard ga"><div class="sc-label">In Progress</div><div class="sc-value">{{ stats.inProgressTickets ?? '—' }}</div><div class="sc-sub">Currently handling</div><div class="sc-icon">⚙️</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
-        <div class="scard ge"><div class="sc-label">Closed</div><div class="sc-value">{{ stats.closedTickets ?? '—' }}</div><div class="sc-sub">Resolved tickets</div><div class="sc-icon">✅</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
-        <div class="scard gc"><div class="sc-label">Avg Response</div><div class="sc-value">{{ fmtHrs(stats.avgResponseTime) }}</div><div class="sc-sub">Average response time</div><div class="sc-icon">⏱️</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
-        <div class="scard gp"><div class="sc-label">Avg Resolution</div><div class="sc-value">{{ fmtHrs(stats.avgResolutionTime) }}</div><div class="sc-sub">Average resolution time</div><div class="sc-icon">🏁</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
-      </div>
 
-      <div class="grid-2" style="margin-bottom:20px">
-        <div class="card">
-          <div class="card-header"><div class="card-title">Ticket Status Overview</div></div>
-          <div class="chart-container"><canvas #statusChart></canvas></div>
+      @if (activeTab === 'dashboard') {
+        <div>
+          <div class="stats-grid">
+            <div class="scard gi"><div class="sc-label">Open Tickets</div><div class="sc-value">{{ stats.openTickets ?? '—' }}</div><div class="sc-sub">Awaiting action</div><div class="sc-icon">🎫</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+            <div class="scard ga"><div class="sc-label">In Progress</div><div class="sc-value">{{ stats.inProgressTickets ?? '—' }}</div><div class="sc-sub">Currently handling</div><div class="sc-icon">⚙️</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+            <div class="scard ge"><div class="sc-label">Closed</div><div class="sc-value">{{ stats.closedTickets ?? '—' }}</div><div class="sc-sub">Resolved tickets</div><div class="sc-icon">✅</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+            <div class="scard gc"><div class="sc-label">Avg Response</div><div class="sc-value">{{ fmtHrs(stats.avgResponseTime) }}</div><div class="sc-sub">Average response time</div><div class="sc-icon">⏱️</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+            <div class="scard gp"><div class="sc-label">Avg Resolution</div><div class="sc-value">{{ fmtHrs(stats.avgResolutionTime) }}</div><div class="sc-sub">Average resolution time</div><div class="sc-icon">🏁</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><div class="card-title">Ticket Status Overview</div></div>
+            <div class="chart-container"><canvas #statusChart></canvas></div>
+          </div>
         </div>
+      }
 
-        <div class="card" id="search">
+      @if (activeTab === 'tickets') {
+        <div class="card">
+          <div class="card-header">
+            <div><div class="card-title">My Assigned Tickets</div><div class="card-subtitle">Manage and update ticket statuses</div></div>
+            <div class="search-wrap" style="width:280px">
+              <span class="search-icon">🔍</span>
+              <input type="text" [(ngModel)]="ticketFilter" placeholder="Filter tickets…" (input)="filterTickets(ticketFilter)">
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>#</th><th>Customer</th><th>Domain</th><th>Subject</th><th>Status</th><th>Response</th><th>Resolution</th><th>Update</th></tr></thead>
+              <tbody>
+                @if (filteredTickets.length === 0) {
+                  <tr><td colspan="8"><div class="empty-state"><div class="es-icon">🎫</div><p>No tickets assigned yet</p></div></td></tr>
+                }
+                @for (t of filteredTickets; track t.id) {
+                  <tr>
+                    <td><strong>#{{ t.id }}</strong></td>
+                    <td><div style="font-weight:600">{{ t.customerName }}</div><div style="font-size:11px;color:#64748b">{{ t.customerPhone }}</div></td>
+                    <td>{{ t.domain }}</td>
+                    <td style="max-width:180px" [title]="t.description">{{ t.subject }}</td>
+                    <td><span [class]="statusClass(t.status)">{{ statusLabel(t.status) }}</span></td>
+                    <td>{{ fmtHrs(t.responseTimeHrs) }}</td>
+                    <td>{{ fmtHrs(t.resolutionTimeHrs) }}</td>
+                    <td>
+                      @if (t.status !== 'CLOSED') {
+                        <button class="btn btn-sm btn-primary" (click)="openUpdate(t)">Update</button>
+                      } @else {
+                        <span class="badge b-green">Closed</span>
+                      }
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
+
+      @if (activeTab === 'search') {
+        <div class="card">
           <div class="card-header"><div class="card-title">Search Customers</div><div class="card-subtitle">Search by name, phone, or ID</div></div>
           <div class="form-group">
             <div class="search-wrap">
@@ -49,45 +94,8 @@
             </div>
           }
         </div>
-      </div>
+      }
 
-      <div class="card" id="tickets">
-        <div class="card-header">
-          <div><div class="card-title">My Assigned Tickets</div><div class="card-subtitle">Manage and update ticket statuses</div></div>
-          <div class="search-wrap" style="width:280px">
-            <span class="search-icon">🔍</span>
-            <input type="text" [(ngModel)]="ticketFilter" placeholder="Filter tickets…" (input)="filterTickets(ticketFilter)">
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>#</th><th>Customer</th><th>Domain</th><th>Subject</th><th>Status</th><th>Response</th><th>Resolution</th><th>Update</th></tr></thead>
-            <tbody>
-              @if (filteredTickets.length === 0) {
-                <tr><td colspan="8"><div class="empty-state"><div class="es-icon">🎫</div><p>No tickets assigned yet</p></div></td></tr>
-              }
-              @for (t of filteredTickets; track t.id) {
-                <tr>
-                  <td><strong>#{{ t.id }}</strong></td>
-                  <td><div style="font-weight:600">{{ t.customerName }}</div><div style="font-size:11px;color:#64748b">{{ t.customerPhone }}</div></td>
-                  <td>{{ t.domain }}</td>
-                  <td style="max-width:180px" [title]="t.description">{{ t.subject }}</td>
-                  <td><span [class]="statusClass(t.status)">{{ statusLabel(t.status) }}</span></td>
-                  <td>{{ fmtHrs(t.responseTimeHrs) }}</td>
-                  <td>{{ fmtHrs(t.resolutionTimeHrs) }}</td>
-                  <td>
-                    @if (t.status !== 'CLOSED') {
-                      <button class="btn btn-sm btn-primary" (click)="openUpdate(t)">Update</button>
-                    } @else {
-                      <span class="badge b-green">Closed</span>
-                    }
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-      </div>
     </div>
   </div>
 </div>
