@@ -40,7 +40,7 @@ export class AdminComponent implements OnInit {
   deletingEmpName  = '';
 
   empForm = { name: '', email: '', phone: '', role: 'MANAGER', managerId: null as number | null };
-  outageForm = { location: 'New York', domain: 'Internet Services', affectedAreas: '', severity: 'HIGH', description: '' };
+  outageForm = { location: 'Mumbai', domain: 'Internet Services', affectedAreas: '', severity: 'HIGH', description: '' };
 
   private locationChart?: Chart;
   private domainChart?: Chart;
@@ -50,7 +50,7 @@ export class AdminComponent implements OnInit {
   @ViewChild('domainCanvas')   domainCanvas!: ElementRef<HTMLCanvasElement>;
 
   readonly COLORS = ['#8b5cf6','#c4b5fd','#059669','#d97706','#dc2626','#0891b2'];
-  readonly LOCATIONS = ['New York','Los Angeles','Chicago','Houston','Phoenix','Philadelphia'];
+  readonly LOCATIONS = ['Mumbai','Delhi','Bangalore','Hyderabad','Chennai','Kolkata','Pune','Jaipur'];
   readonly DOMAINS   = ['Internet Services','TV & Cable','Phone Services','Mobile Data','Technical Support'];
 
   constructor(
@@ -186,7 +186,7 @@ export class AdminComponent implements OnInit {
   }
 
   openOutageModal() {
-    this.outageForm = { location: 'New York', domain: 'Internet Services', affectedAreas: '', severity: 'HIGH', description: '' };
+    this.outageForm = { location: 'Mumbai', domain: 'Internet Services', affectedAreas: '', severity: 'HIGH', description: '' };
     this.showOutageModal = true;
   }
 

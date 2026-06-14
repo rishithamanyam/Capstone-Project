@@ -63,22 +63,22 @@ public class DataInitializer {
 
         User cust1 = userRepo.save(User.builder()
                 .name("Alice Johnson").email("alice@gmail.com").password(custPass)
-                .role(User.Role.CUSTOMER).phone("9111000001").location("New York").firstLogin(false)
+                .role(User.Role.CUSTOMER).phone("9876543201").location("Mumbai").firstLogin(false)
                 .createdAt(LocalDateTime.now().minusDays(10)).build());
 
         User cust2 = userRepo.save(User.builder()
                 .name("Bob Williams").email("bob@gmail.com").password(custPass)
-                .role(User.Role.CUSTOMER).phone("9111000002").location("Los Angeles").firstLogin(false)
+                .role(User.Role.CUSTOMER).phone("9876543202").location("Delhi").firstLogin(false)
                 .createdAt(LocalDateTime.now().minusDays(8)).build());
 
         User cust3 = userRepo.save(User.builder()
                 .name("Carol Davis").email("carol@gmail.com").password(custPass)
-                .role(User.Role.CUSTOMER).phone("9111000003").location("Chicago").firstLogin(false)
+                .role(User.Role.CUSTOMER).phone("9876543203").location("Bangalore").firstLogin(false)
                 .createdAt(LocalDateTime.now().minusDays(5)).build());
 
         User cust4 = userRepo.save(User.builder()
                 .name("David Clark").email("david@gmail.com").password(custPass)
-                .role(User.Role.CUSTOMER).phone("9111000004").location("Houston").firstLogin(false)
+                .role(User.Role.CUSTOMER).phone("9876543204").location("Hyderabad").firstLogin(false)
                 .createdAt(LocalDateTime.now().minusDays(3)).build());
 
         LocalDateTime base = LocalDateTime.now().minusDays(7);
@@ -176,18 +176,18 @@ public class DataInitializer {
                 .resolvedAt(t10Resolved).responseTimeHrs(4.0).resolutionTimeHrs(12.0).rating(3).build());
 
         outageRepo.save(Outage.builder()
-                .location("New York").affectedAreas("Manhattan, Brooklyn, Queens")
+                .location("Mumbai").affectedAreas("Andheri, Bandra, Colaba")
                 .domain("Internet Services").description("Fiber cable damage due to road construction affecting connectivity.")
                 .severity("HIGH").status("ACTIVE").createdAt(LocalDateTime.now().minusHours(6)).build());
 
         outageRepo.save(Outage.builder()
-                .location("Chicago").affectedAreas("Downtown, North Side")
+                .location("Delhi").affectedAreas("Connaught Place, Saket, Dwarka")
                 .domain("TV & Cable").description("Signal disruption caused by equipment maintenance at central hub.")
                 .severity("MEDIUM").status("RESOLVED").createdAt(LocalDateTime.now().minusDays(2))
                 .resolvedAt(LocalDateTime.now().minusDays(1)).build());
 
         notifRepo.save(Notification.builder().userId(mgr1.getId())
-                .message("New outage reported in New York — Internet Services. Check the outage map for details.")
+                .message("New outage reported in Mumbai — Internet Services. Check the outage map for details.")
                 .type("OUTAGE").read(false).createdAt(LocalDateTime.now().minusHours(6)).build());
 
         notifRepo.save(Notification.builder().userId(rep1.getId())

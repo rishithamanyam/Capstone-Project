@@ -1,4 +1,4 @@
-<div class="lp" [class.lp-login]="active==='login'" [class.lp-signup]="active==='signup'" (mouseleave)="active=null">
+<div class="lp" [class.lp-login]="active==='login'" [class.lp-signup]="active==='signup'">
 
   <div class="lp-bg">
     <div class="lp-blob lb1"></div>
@@ -16,25 +16,25 @@
     </div>
 
     <div class="lp-cards">
-      <div class="lp-card" (mouseenter)="active='login'">
+      <div class="lp-card" (click)="active='login'">
         <div class="lp-card-glow lp-glow-l"></div>
         <div class="lp-card-icon">🔑</div>
         <h3>Sign In</h3>
         <p>Already have an account? Access your personalised dashboard.</p>
-        <div class="lp-card-cta">Hover to sign in →</div>
+        <div class="lp-card-cta">Click to sign in →</div>
       </div>
-      <div class="lp-card" (mouseenter)="active='signup'">
+      <div class="lp-card" (click)="active='signup'">
         <div class="lp-card-glow lp-glow-r"></div>
         <div class="lp-card-icon">✨</div>
         <h3>Sign Up</h3>
         <p>New to NexCare? Create a customer account in seconds.</p>
-        <div class="lp-card-cta">Hover to sign up ←</div>
+        <div class="lp-card-cta">Click to sign up ←</div>
       </div>
     </div>
   </div>
 
   <!-- Login form overlay -->
-  <div class="lp-form-overlay" [class.lp-form-show]="active==='login'" (mouseenter)="active='login'">
+  <div class="lp-form-overlay" [class.lp-form-show]="active==='login'">
     <div class="lp-form-inner">
       <div class="lp-form-brand">🎯 NexCare</div>
       <h2>Welcome Back</h2>
@@ -65,7 +65,7 @@
   </div>
 
   <!-- Sign Up form overlay -->
-  <div class="lp-form-overlay" [class.lp-form-show]="active==='signup'" (mouseenter)="active='signup'">
+  <div class="lp-form-overlay" [class.lp-form-show]="active==='signup'">
     <div class="lp-form-inner">
       <div class="lp-form-brand">🎯 NexCare</div>
       <h2>Create Account</h2>
@@ -81,10 +81,10 @@
       </div>
       <div class="lp-field">
         <label>Phone</label>
-        <input type="tel" [(ngModel)]="signupPhone" placeholder="+1 555 0000">
+        <input type="tel" [(ngModel)]="signupPhone" placeholder="+91 99999 00000">
       </div>
       <div class="lp-field">
-        <label>Location</label>
+        <label>City</label>
         <select [(ngModel)]="signupLocation">
           @for (l of LOCATIONS; track l) { <option>{{ l }}</option> }
         </select>

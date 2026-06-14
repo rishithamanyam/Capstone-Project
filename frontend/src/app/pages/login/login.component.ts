@@ -21,11 +21,11 @@ export class LoginComponent {
   signupName     = '';
   signupEmail    = '';
   signupPhone    = '';
-  signupLocation = 'New York';
+  signupLocation = 'Mumbai';
   signupPassword = '';
   signupLoading  = false;
 
-  readonly LOCATIONS = ['New York','Los Angeles','Chicago','Houston','Phoenix','Philadelphia'];
+  readonly LOCATIONS = ['Mumbai','Delhi','Bangalore','Hyderabad','Chennai','Kolkata','Pune','Jaipur'];
 
   constructor(
     private auth: AuthService,
