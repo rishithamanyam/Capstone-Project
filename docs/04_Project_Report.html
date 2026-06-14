@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NexCare — Complete Project Report</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;color:#1e293b;font-size:13.5px;line-height:1.8;background:#fff}
+
+/* ── COVER ── */
+.cover{background:linear-gradient(145deg,#1e1b4b,#312e81,#4338ca);min-height:260px;padding:64px 56px 52px;page-break-after:always}
+.cover-tag{font-size:11px;font-weight:700;letter-spacing:.12em;color:#a5b4fc;text-transform:uppercase;margin-bottom:14px}
+.cover h1{font-size:48px;font-weight:900;color:#fff;line-height:1.1;letter-spacing:-.03em}
+.cover h1 span{color:#818cf8}
+.cover-sub{font-size:16px;color:#c7d2fe;margin-top:12px;font-weight:400}
+.cover-meta{margin-top:32px;font-size:12px;color:#818cf8;border-top:1px solid rgba(129,140,248,.3);padding-top:16px}
+
+/* ── LAYOUT ── */
+.page{max-width:860px;margin:0 auto;padding:52px 48px}
+
+/* ── HEADINGS ── */
+.ch{font-size:22px;font-weight:800;color:#1e1b4b;margin:48px 0 18px;padding-bottom:10px;border-bottom:2.5px solid #e0e7ff;display:flex;align-items:center;gap:10px}
+.ch-num{background:#4338ca;color:#fff;font-size:12px;font-weight:800;padding:3px 9px;border-radius:6px;flex-shrink:0}
+.sh{font-size:16px;font-weight:700;color:#312e81;margin:28px 0 10px}
+.ssh{font-size:14px;font-weight:700;color:#4338ca;margin:18px 0 8px}
+
+/* ── PROSE ── */
+p{color:#374151;margin-bottom:10px}
+
+/* ── FILE CARD ── */
+.fc{border:1.5px solid #e0e7ff;border-radius:12px;margin:14px 0;overflow:hidden}
+.fc-head{background:#f5f3ff;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.fc-path{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:#312e81}
+.badge{font-size:10px;font-weight:800;padding:2px 8px;border-radius:5px;letter-spacing:.05em;flex-shrink:0}
+.b-entry{background:#fce7f3;color:#9d0b6b}
+.b-config{background:#ede9fe;color:#5b21b6}
+.b-model{background:#dcfce7;color:#14532d}
+.b-repo{background:#dbeafe;color:#1e40af}
+.b-svc{background:#fef3c7;color:#92400e}
+.b-ctrl{background:#fee2e2;color:#991b1b}
+.b-dto{background:#f0fdf4;color:#166534}
+.b-filter{background:#fdf4ff;color:#701a75}
+.b-guard{background:#fff7ed;color:#7c2d12}
+.b-intc{background:#ecfdf5;color:#065f46}
+.b-page{background:#eff6ff;color:#1e40af}
+.b-shared{background:#f0fdf4;color:#14532d}
+.b-svc2{background:#fefce8;color:#713f12}
+.b-style{background:#fdf2f8;color:#831843}
+.b-conf{background:#f8fafc;color:#475569}
+.fc-body{padding:14px 16px}
+.fc-body p{font-size:13px;margin-bottom:7px}
+.fc-body p:last-child{margin-bottom:0}
+.label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.lbl-what{color:#059669}
+.lbl-how{color:#7c3aed}
+.lbl-why{color:#dc2626}
+
+/* ── CODE ── */
+code{font-family:'JetBrains Mono',monospace;font-size:11.5px;background:#1e1b4b;color:#c4b5fd;padding:2px 6px;border-radius:4px}
+pre{font-family:'JetBrains Mono',monospace;font-size:11.5px;background:#0f172a;color:#e2e8f0;padding:18px 20px;border-radius:10px;margin:12px 0;overflow-x:auto;line-height:1.6}
+pre .kw{color:#93c5fd}
+pre .str{color:#86efac}
+pre .cmt{color:#64748b}
+pre .cls{color:#fde68a}
+pre .ann{color:#f9a8d4}
+
+/* ── TABLE ── */
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:12.5px}
+th{background:#4338ca;color:#fff;padding:8px 12px;text-align:left;font-weight:600}
+td{padding:8px 12px;border-bottom:1px solid #e0e7ff;color:#374151}
+tr:nth-child(even) td{background:#f5f3ff}
+tr:hover td{background:#ede9fe}
+
+/* ── FLOW ── */
+.flow{display:flex;flex-direction:column;gap:0}
+.flow-step{display:flex;gap:14px;position:relative;padding-bottom:10px}
+.flow-step:not(:last-child)::before{content:'';position:absolute;left:17px;top:36px;bottom:0;width:2px;background:#e0e7ff}
+.flow-num{width:36px;height:36px;border-radius:50%;background:#4338ca;color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.flow-body{flex:1;padding-bottom:6px}
+.flow-title{font-weight:700;color:#1e1b4b;font-size:13.5px}
+.flow-desc{font-size:12.5px;color:#4b5563;margin-top:2px}
+
+/* ── INFO BOX ── */
+.info{background:#eff6ff;border-left:4px solid #3b82f6;padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0}
+.info p{color:#1e40af;font-size:13px;margin:0}
+.warn{background:#fff7ed;border-left:4px solid #f59e0b;padding:12px 16px;border-radius:0 8px 8px 0;margin:14px 0}
+.warn p{color:#92400e;font-size:13px;margin:0}
+
+.page-break{page-break-before:always;padding-top:52px}
+.toc-entry{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dotted #e0e7ff;font-size:13px;color:#374151}
+.toc-entry span{color:#4338ca;font-weight:600;font-size:12px}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-tag">Wipro RGA Program 2025 — Capstone Project</div>
+  <h1>NexCare<br><span>Project Report</span></h1>
+  <div class="cover-sub">Interactive Dashboard System for Customer Service Operations<br>Complete Technical Documentation — Every File, Every Function</div>
+  <div class="cover-meta">Presented by: Rishitha Manyam &nbsp;|&nbsp; Java Full Stack &nbsp;|&nbsp; Spring Boot 3 + Angular 17 &nbsp;|&nbsp; June 2026</div>
+</div>
+
+<div class="page">
+
+<!-- ══════════════════════════════ TOC ══════════════════════════════ -->
+<div class="ch"><span class="ch-num">00</span> Table of Contents</div>
+<div class="toc-entry">1. What is NexCare — Project Overview <span>Section 01</span></div>
+<div class="toc-entry">2. How It All Works — The Big Picture <span>Section 02</span></div>
+<div class="toc-entry">3. Project Folder Structure <span>Section 03</span></div>
+<div class="toc-entry">4. Backend — Spring Boot (Every File Explained) <span>Section 04</span></div>
+<div class="toc-entry">5. Frontend — Angular 17 (Every File Explained) <span>Section 05</span></div>
+<div class="toc-entry">6. Database Tables &amp; Columns <span>Section 06</span></div>
+<div class="toc-entry">7. API Endpoints Reference <span>Section 07</span></div>
+<div class="toc-entry">8. Key Flows — Step by Step <span>Section 08</span></div>
+<div class="toc-entry">9. Security Architecture <span>Section 09</span></div>
+<div class="toc-entry">10. Configuration Files <span>Section 10</span></div>
+
+<!-- ══════════════════════════════ 01 ══════════════════════════════ -->
+<div class="ch page-break"><span class="ch-num">01</span> What is NexCare — Project Overview</div>
+
+<p>NexCare is a <strong>full-stack web application</strong> built for telecom companies in India to manage their customer service operations. The application provides a <strong>single unified platform</strong> for four different types of users — Admin, Manager, Service Representative, and Customer — each with their own dedicated dashboard and strictly controlled access.</p>
+
+<p>Before NexCare, customer service teams would use separate tools: spreadsheets for tickets, email for customer communication, and manual reports for performance. NexCare replaces all of this with one real-time, secure, role-based system.</p>
+
+<div class="sh">What Each Role Can Do</div>
+<table>
+  <tr><th>Role</th><th>What they can do</th></tr>
+  <tr><td><strong>Admin</strong></td><td>Add/edit/delete employees, see all tickets, report service outages, view company-wide analytics with charts</td></tr>
+  <tr><td><strong>Manager</strong></td><td>Monitor team ticket performance, view rep metrics, manage outages, see team-level analytics</td></tr>
+  <tr><td><strong>Representative</strong></td><td>Pick up customer tickets, update ticket status, search customers, track their own performance stats</td></tr>
+  <tr><td><strong>Customer</strong></td><td>Raise support tickets, track ticket status, rate resolved tickets, check for outages in their city, use the chatbot</td></tr>
+</table>
+
+<div class="sh">Technology Used</div>
+<table>
+  <tr><th>Part</th><th>Technology</th><th>Purpose</th></tr>
+  <tr><td>Frontend</td><td>Angular 17</td><td>The website the user sees and interacts with</td></tr>
+  <tr><td>Backend</td><td>Spring Boot 3.2.5 (Java)</td><td>The server that processes requests and talks to the database</td></tr>
+  <tr><td>Database</td><td>H2 File Database</td><td>Stores all data — users, tickets, outages, notifications</td></tr>
+  <tr><td>Security</td><td>JWT + Spring Security</td><td>Ensures only logged-in users with the right role can access data</td></tr>
+  <tr><td>Charts</td><td>Chart.js</td><td>Bar and doughnut charts on the dashboards</td></tr>
+  <tr><td>Build Tool</td><td>Maven</td><td>Downloads Java dependencies and builds the backend</td></tr>
+  <tr><td>Package Manager</td><td>npm</td><td>Downloads JavaScript/Angular dependencies for the frontend</td></tr>
+</table>
+
+<!-- ══════════════════════════════ 02 ══════════════════════════════ -->
+<div class="ch page-break"><span class="ch-num">02</span> How It All Works — The Big Picture</div>
+
+<p>Think of NexCare as two separate programs running at the same time and talking to each other:</p>
+
+<div class="info"><p><strong>Frontend (Angular)</strong> runs in the user's browser on port 4200. It shows the UI.<br>
+<strong>Backend (Spring Boot)</strong> runs as a Java server on port 8080. It handles data.<br>
+When Angular needs data, it sends an HTTP request to Spring Boot, which reads/writes the database and sends back a JSON response.</p></div>
+
+<div class="sh">The Complete Request Journey</div>
+<div class="flow">
+  <div class="flow-step">
+    <div class="flow-num">1</div>
+    <div class="flow-body">
+      <div class="flow-title">User opens browser → Angular loads</div>
+      <div class="flow-desc">The browser loads <code>index.html</code> from the Angular app. Angular's router reads the URL and decides which page component to show. If the URL is <code>/#/login</code>, it loads the Login page.</div>
+    </div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">2</div>
+    <div class="flow-body">
+      <div class="flow-title">User enters email + password → clicks Sign In</div>
+      <div class="flow-desc">The login form collects credentials and calls <code>AuthService.login()</code> which sends a <code>POST /api/auth/login</code> request to the Spring Boot server (via the proxy on port 8080).</div>
+    </div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">3</div>
+    <div class="flow-body">
+      <div class="flow-title">Spring Boot validates credentials</div>
+      <div class="flow-desc">AuthController receives the request, calls AuthService, which uses BCryptPasswordEncoder to verify the hashed password stored in the H2 database. If correct, JwtUtil generates a signed token containing the user's email, role, and userId.</div>
+    </div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">4</div>
+    <div class="flow-body">
+      <div class="flow-title">Token returned to Angular → stored in sessionStorage</div>
+      <div class="flow-desc">The JSON response contains <code>{ token: "eyJ...", user: { name, email, role } }</code>. Angular stores both in <code>sessionStorage</code> (wiped when the browser tab closes).</div>
+    </div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">5</div>
+    <div class="flow-body">
+      <div class="flow-title">Angular redirects to the correct dashboard by role</div>
+      <div class="flow-desc">The login component reads <code>user.role</code> and calls <code>router.navigate(['/admin'])</code> or <code>['/customer']</code> etc. The Auth Guard checks the token and role before allowing the page to load.</div>
+    </div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">6</div>
+    <div class="flow-body">
+      <div class="flow-title">Dashboard loads → fetches data from backend</div>
+      <div class="flow-desc">Every API call automatically gets the JWT token attached to its headers by the JWT Interceptor. Spring Boot's JwtAuthFilter validates this token on every request before allowing any data to be returned.</div>
+    </div>
+  </div>
+  <div class="flow-step">
+    <div class="flow-num">7</div>
+    <div class="flow-body">
+      <div class="flow-title">User interacts → Angular updates UI, Spring Boot updates database</div>
+      <div class="flow-desc">Whether raising a ticket, updating a status, or reporting an outage — Angular sends the right API call, Spring Boot processes it, saves to H2, and returns the updated data. Angular re-renders the UI automatically.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ 03 ══════════════════════════════ -->
+<div class="ch page-break"><span class="ch-num">03</span> Project Folder Structure</div>
+
+<pre>
+NexCare/
+├── src/                             <span class="cmt">← Spring Boot backend (Java)</span>
+│   └── main/
+│       ├── java/com/wipro/csd/
+│       │   ├── CsdApplication.java  <span class="cmt">← Main entry point</span>
+│       │   ├── config/              <span class="cmt">← Security, JWT, seed data</span>
+│       │   ├── controller/          <span class="cmt">← REST API endpoints</span>
+│       │   ├── dto/                 <span class="cmt">← Data Transfer Objects</span>
+│       │   ├── filter/              <span class="cmt">← JWT request filter</span>
+│       │   ├── model/               <span class="cmt">← Database entities</span>
+│       │   ├── repository/          <span class="cmt">← Database query interfaces</span>
+│       │   └── service/             <span class="cmt">← Business logic</span>
+│       └── resources/
+│           └── application.properties <span class="cmt">← All app settings</span>
+│
+├── frontend/                        <span class="cmt">← Angular frontend (TypeScript)</span>
+│   ├── src/
+│   │   ├── main.ts                  <span class="cmt">← Angular entry point</span>
+│   │   ├── index.html               <span class="cmt">← Single HTML page</span>
+│   │   ├── styles.css               <span class="cmt">← Global styles & theme</span>
+│   │   └── app/
+│   │       ├── app.config.ts        <span class="cmt">← App-wide setup</span>
+│   │       ├── app.routes.ts        <span class="cmt">← URL routing</span>
+│   │       ├── guards/              <span class="cmt">← Route protection</span>
+│   │       ├── interceptors/        <span class="cmt">← Adds token to HTTP calls</span>
+│   │       ├── models/              <span class="cmt">← TypeScript interfaces</span>
+│   │       ├── services/            <span class="cmt">← API call functions</span>
+│   │       ├── pages/               <span class="cmt">← Individual page components</span>
+│   │       └── shared/              <span class="cmt">← Reusable components</span>
+│   ├── proxy.conf.json              <span class="cmt">← Forwards /api to port 8080</span>
+│   ├── angular.json                 <span class="cmt">← Angular build config</span>
+│   └── package.json                 <span class="cmt">← npm dependencies</span>
+│
+├── docs/                            <span class="cmt">← All documentation</span>
+├── .vscode/                         <span class="cmt">← VS Code run tasks</span>
+├── pom.xml                          <span class="cmt">← Maven dependencies</span>
+└── .gitignore
+</pre>
+
+<!-- ══════════════════════════════ 04 ══════════════════════════════ -->
+<div class="ch page-break"><span class="ch-num">04</span> Backend — Spring Boot (Every File Explained)</div>
+
+<!-- ENTRY POINT -->
+<div class="sh">Entry Point</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-entry">ENTRY POINT</span><span class="fc-path">CsdApplication.java</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">What it does</div>
+    <p>This is the first Java file that runs when you start the application. It contains the <code>public static void main(String[] args)</code> method — Java always starts from here. The <code>@SpringBootApplication</code> annotation tells Spring to scan all classes in the project and wire everything together automatically.</p>
+    <div class="label lbl-how">The code</div>
+    <pre><span class="ann">@SpringBootApplication</span>
+<span class="kw">public class</span> <span class="cls">CsdApplication</span> {
+    <span class="kw">public static void</span> main(String[] args) {
+        SpringApplication.run(CsdApplication.<span class="kw">class</span>, args);
+    }
+}</pre>
+    <div class="label lbl-why">Why it matters</div>
+    <p>Without this file, nothing runs. It's the ignition key of the entire Spring Boot application.</p>
+  </div>
+</div>
+
+<!-- CONFIG FILES -->
+<div class="sh">Configuration Files</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-config">CONFIG</span><span class="fc-path">src/main/resources/application.properties</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">What it does</div>
+    <p>All application settings in one file. Spring Boot reads this automatically on startup. No code changes needed to switch the port, database, or token expiry — just change this file.</p>
+    <div class="label lbl-how">Key settings and what they mean</div>
+    <table>
+      <tr><th>Setting</th><th>Value</th><th>Meaning</th></tr>
+      <tr><td><code>server.port</code></td><td>8080</td><td>Backend runs on port 8080</td></tr>
+      <tr><td><code>spring.datasource.url</code></td><td>jdbc:h2:file:./data/csddb</td><td>H2 database stored as a file named csddb in the /data folder</td></tr>
+      <tr><td><code>spring.jpa.hibernate.ddl-auto</code></td><td>update</td><td>Automatically creates/updates database tables to match the Java model classes</td></tr>
+      <tr><td><code>spring.h2.console.enabled</code></td><td>true</td><td>Enables a browser-based database viewer at /h2-console</td></tr>
+      <tr><td><code>jwt.secret</code></td><td>WiproCapstone...</td><td>The secret key used to sign JWT tokens</td></tr>
+      <tr><td><code>jwt.expiration</code></td><td>86400000</td><td>Tokens expire after 86400000ms = 24 hours</td></tr>
+    </table>
+    <div class="label lbl-why">Resilience4j settings</div>
+    <p>The file also configures a Circuit Breaker for the ticket service. If the ticket service fails 50% of the time over 10 requests, the circuit "opens" and returns an empty list instead of crashing — preventing cascading failures.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-config">SECURITY</span><span class="fc-path">config/SecurityConfig.java</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">What it does</div>
+    <p>Configures the entire security layer of the application. It tells Spring Security which URLs are open to everyone (login, register) and which require authentication (everything else). It also registers the JWT filter so every request gets its token validated.</p>
+    <div class="label lbl-how">How it works</div>
+    <p><strong>Public endpoints:</strong> <code>POST /api/auth/login</code> and <code>POST /api/auth/register</code> — no token needed.<br>
+    <strong>All other endpoints:</strong> Must have a valid JWT token. If not, Spring returns 401 Unauthorized automatically.<br>
+    <strong>CORS:</strong> Configured to allow the Angular app on port 4200 to call the backend on port 8080.<br>
+    <strong>Password encoder:</strong> Registers BCryptPasswordEncoder as a Spring Bean so it can be injected anywhere in the app.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-config">JWT</span><span class="fc-path">config/JwtUtil.java</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">What it does</div>
+    <p>The only class that creates and reads JWT tokens. Think of a JWT token like a signed membership card — JwtUtil is the machine that prints and verifies these cards.</p>
+    <div class="label lbl-how">Methods</div>
+    <table>
+      <tr><th>Method</th><th>What it does</th></tr>
+      <tr><td><code>generateToken(user)</code></td><td>Creates a JWT token containing the user's email, userId, role, name, and managerId. Signs it with the secret key. Sets expiry to 24 hours.</td></tr>
+      <tr><td><code>extractEmail(token)</code></td><td>Reads the email stored inside a token</td></tr>
+      <tr><td><code>extractRole(token)</code></td><td>Reads the role (ADMIN/MANAGER/REPRESENTATIVE/CUSTOMER) from the token</td></tr>
+      <tr><td><code>extractUserId(token)</code></td><td>Reads the userId number from the token</td></tr>
+      <tr><td><code>isTokenValid(token, email)</code></td><td>Checks: (1) email in token matches the provided email, (2) token is not expired. Returns true only if both pass.</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-config">SEED DATA</span><span class="fc-path">config/DataInitializer.java</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">What it does</div>
+    <p>Automatically creates demo data when the application starts for the first time. Uses the <code>@PostConstruct</code> annotation which means Spring calls the <code>init()</code> method automatically right after startup.</p>
+    <div class="label lbl-how">What it creates</div>
+    <table>
+      <tr><th>Type</th><th>Count</th><th>Details</th></tr>
+      <tr><td>Admin</td><td>1</td><td>admin@nexcare.in / admin123</td></tr>
+      <tr><td>Managers</td><td>2</td><td>manager1 and manager2 @nexcare.in</td></tr>
+      <tr><td>Representatives</td><td>4</td><td>amit.kumar, ravi.singh, deepa.nair, preethi.iyer @nexcare.in</td></tr>
+      <tr><td>Customers</td><td>4</td><td>priya.sharma, rahul.verma, ananya.krishnan, vikram.patel</td></tr>
+      <tr><td>Tickets</td><td>10</td><td>Mix of OPEN, IN_PROGRESS, CLOSED across all domains</td></tr>
+      <tr><td>Outages</td><td>2</td><td>Mumbai (Andheri, Bandra) and Delhi (Connaught Place, Saket)</td></tr>
+      <tr><td>Notifications</td><td>4</td><td>Sample outage notification for each rep</td></tr>
+    </table>
+    <div class="label lbl-why">Smart check</div>
+    <p>Before creating anything, it checks if an admin user already exists: <code>if (userRepo.existsByEmail("admin@nexcare.in")) return;</code> — so data is only seeded once, never duplicated on restart.</p>
+  </div>
+</div>
+
+<!-- FILTER -->
+<div class="sh">Security Filter</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-filter">FILTER</span><span class="fc-path">filter/JwtAuthFilter.java</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">What it does</div>
+    <p>This class runs for <em>every single HTTP request</em> that comes into the backend. It extends <code>OncePerRequestFilter</code> which guarantees it runs exactly once per request. It reads the <code>Authorization: Bearer &lt;token&gt;</code> header, validates the token, and if valid, tells Spring Security who the user is.</p>
+    <div class="label lbl-how">Step by step</div>
+    <p>1. Read the <code>Authorization</code> header from the incoming request.<br>
+    2. If the header is missing or doesn't start with "Bearer ", skip validation and continue (Spring Security will block it later if the route is protected).<br>
+    3. Extract the email from the token using JwtUtil.<br>
+    4. Load the user from the database using that email.<br>
+    5. Check if the token is valid for that user.<br>
+    6. If valid, create a <code>UsernamePasswordAuthenticationToken</code> and put it in Spring's <code>SecurityContextHolder</code> — this is how Spring knows the request is authenticated.<br>
+    7. Continue to the actual controller.</p>
+  </div>
+</div>
+
+<!-- MODELS -->
+<div class="sh">Models (Database Entities)</div>
+<p>Models are Java classes that map directly to database tables. Each field becomes a column. The <code>@Entity</code> annotation tells Spring to create/update the corresponding table automatically.</p>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-model">MODEL</span><span class="fc-path">model/User.java</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Maps to the USERS table in the database</div>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+      <tr><td>id</td><td>Long</td><td>Auto-generated unique number for each user</td></tr>
+      <tr><td>name</td><td>String</td><td>Full name</td></tr>
+      <tr><td>email</td><td>String (unique)</td><td>Used as the login username</td></tr>
+      <tr><td>password</td><td>String</td><td>Stored as a BCrypt hash — never plain text</td></tr>
+      <tr><td>role</td><td>Enum</td><td>ADMIN, MANAGER, REPRESENTATIVE, or CUSTOMER</td></tr>
+      <tr><td>phone</td><td>String</td><td>Indian format (9876543XXX)</td></tr>
+      <tr><td>location</td><td>String</td><td>City (Mumbai, Delhi, Bangalore…)</td></tr>
+      <tr><td>managerId</td><td>Long</td><td>For reps: links them to their manager</td></tr>
+      <tr><td>firstLogin</td><td>boolean</td><td>True if rep hasn't changed their initial password</td></tr>
+      <tr><td>createdAt</td><td>LocalDateTime</td><td>When the account was created</td></tr>
+    </table>
+    <p>The <code>@Lombok @Data</code> annotation auto-generates getters, setters, equals, and toString. <code>@Builder</code> allows clean object creation like <code>User.builder().name("Rishitha").role(CUSTOMER).build()</code>.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-model">MODEL</span><span class="fc-path">model/Ticket.java</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Maps to the TICKETS table — the core business entity</div>
+    <table>
+      <tr><th>Field</th><th>Type</th><th>Description</th></tr>
+      <tr><td>id</td><td>Long</td><td>Ticket number (e.g., #1, #2, #3)</td></tr>
+      <tr><td>customerId / customerName</td><td>Long / String</td><td>Who raised the ticket</td></tr>
+      <tr><td>customerPhone / customerLocation</td><td>String</td><td>Customer contact details (stored on ticket for history)</td></tr>
+      <tr><td>domain</td><td>String</td><td>Internet Services, Mobile, DTH, etc.</td></tr>
+      <tr><td>subject / description</td><td>String</td><td>The ticket title and full details</td></tr>
+      <tr><td>status</td><td>Enum</td><td>OPEN, IN_PROGRESS, or CLOSED</td></tr>
+      <tr><td>repId / repName</td><td>Long / String</td><td>The rep who picked it up (null if unassigned)</td></tr>
+      <tr><td>managerId</td><td>Long</td><td>Set when a rep claims the ticket — links to their manager</td></tr>
+      <tr><td>createdAt</td><td>LocalDateTime</td><td>When the ticket was raised</td></tr>
+      <tr><td>firstResponseAt</td><td>LocalDateTime</td><td>When a rep first set it to IN_PROGRESS</td></tr>
+      <tr><td>resolvedAt</td><td>LocalDateTime</td><td>When the ticket was CLOSED</td></tr>
+      <tr><td>responseTimeHrs</td><td>Double</td><td>Hours from creation to first response</td></tr>
+      <tr><td>resolutionTimeHrs</td><td>Double</td><td>Hours from creation to close</td></tr>
+      <tr><td>rating</td><td>Integer</td><td>1–5 star rating from the customer (only on CLOSED tickets)</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-model">MODEL</span><span class="fc-path">model/Outage.java</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Maps to the OUTAGES table</div>
+    <p>Fields: <code>id</code>, <code>location</code> (city), <code>affectedAreas</code> (e.g., "Andheri, Bandra, Colaba"), <code>domain</code> (e.g., Internet Services), <code>severity</code> (HIGH/MEDIUM/LOW), <code>description</code>, <code>status</code> (ACTIVE/RESOLVED), <code>reportedAt</code>, <code>resolvedAt</code>. Customers see an alert banner only when an ACTIVE outage matches their city.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-model">MODEL</span><span class="fc-path">model/Notification.java</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Maps to the NOTIFICATIONS table</div>
+    <p>Fields: <code>id</code>, <code>userId</code>, <code>message</code>, <code>type</code> (TICKET/STATUS/OUTAGE), <code>isRead</code> (boolean), <code>createdAt</code>. Created automatically when a new ticket is raised (notifies reps) or when a ticket status changes (notifies the customer).</p>
+  </div>
+</div>
+
+<!-- REPOSITORIES -->
+<div class="sh">Repositories (Database Queries)</div>
+
+<p>Repositories are interfaces that extend <code>JpaRepository</code>. Spring Data JPA automatically generates all SQL queries — you just write a method name and Spring figures out the SQL.</p>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-repo">REPO</span><span class="fc-path">repository/TicketRepository.java</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Contains all ticket database queries</div>
+    <table>
+      <tr><th>Method name</th><th>SQL it generates</th></tr>
+      <tr><td><code>findByCustomerIdOrderByCreatedAtDesc</code></td><td>SELECT * FROM tickets WHERE customer_id=? ORDER BY created_at DESC</td></tr>
+      <tr><td><code>findByRepIdOrderByCreatedAtDesc</code></td><td>SELECT * FROM tickets WHERE rep_id=? ORDER BY created_at DESC</td></tr>
+      <tr><td><code>countByStatus</code></td><td>SELECT COUNT(*) FROM tickets WHERE status=?</td></tr>
+      <tr><td><code>averageRating</code></td><td>SELECT AVG(rating) FROM tickets WHERE rating IS NOT NULL</td></tr>
+      <tr><td><code>countByDomain</code></td><td>SELECT domain, COUNT(*) FROM tickets GROUP BY domain</td></tr>
+      <tr><td><code>searchByCustomer</code></td><td>Custom @Query: searches by customer name, phone, or location (LIKE %query%)</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-repo">REPO</span><span class="fc-path">repository/UserRepository.java</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Contains all user database queries</div>
+    <p>Key methods: <code>findByEmail(email)</code> — used by login, JWT filter, and auth guard. <code>findByRole(role)</code> — used to list all reps when notifying of new tickets. <code>findByManagerId(managerId)</code> — used by managers to see their team. <code>countByRole(role)</code> — used by analytics. <code>existsByEmail(email)</code> — used by DataInitializer to check if seed data already exists.</p>
+  </div>
+</div>
+
+<!-- DTOs -->
+<div class="sh">DTOs (Data Transfer Objects)</div>
+<p>DTOs are simple classes used to receive data from the frontend or send data back. They prevent exposing internal model fields directly over the API.</p>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-dto">DTO</span><span class="fc-path">dto/ (all DTO files)</span></div>
+  <div class="fc-body">
+    <table>
+      <tr><th>File</th><th>Used for</th><th>Fields</th></tr>
+      <tr><td>LoginRequest.java</td><td>Receives login form data</td><td>email, password</td></tr>
+      <tr><td>LoginResponse.java</td><td>Sends token + user back to Angular</td><td>token, user object</td></tr>
+      <tr><td>RegisterRequest.java</td><td>Receives Sign Up form data</td><td>name, email, phone, location, password</td></tr>
+      <tr><td>TicketRequest.java</td><td>Receives new ticket data from customer</td><td>domain, subject, description</td></tr>
+      <tr><td>StatusUpdateRequest.java</td><td>Receives ticket status change from rep</td><td>status (OPEN/IN_PROGRESS/CLOSED)</td></tr>
+      <tr><td>UserRequest.java</td><td>Receives profile update data</td><td>name, phone, location</td></tr>
+      <tr><td>ChangePasswordRequest.java</td><td>Receives password change form</td><td>currentPassword, newPassword</td></tr>
+      <tr><td>ApiResponse.java</td><td>Simple success/error message wrapper</td><td>success (boolean), message</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div class="sh">Services (Business Logic)</div>
+<p>Services contain the actual business logic. Controllers call services, services call repositories. This separation keeps the code clean and testable.</p>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-svc">SERVICE</span><span class="fc-path">service/AuthService.java</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Handles all authentication operations</div>
+    <p><strong>login():</strong> Finds user by email, uses BCryptPasswordEncoder to check if the submitted password matches the stored hash. If match, calls JwtUtil.generateToken() and returns LoginResponse with the token and user object.<br>
+    <strong>register():</strong> Checks if email already exists, hashes the password with BCrypt, creates a new CUSTOMER user, saves to database.<br>
+    <strong>changePassword():</strong> Verifies current password, hashes new password, saves.<br>
+    <strong>updateProfile():</strong> Updates name, phone, location for the logged-in user.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-svc">SERVICE</span><span class="fc-path">service/TicketService.java</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Handles all ticket operations</div>
+    <p><strong>getTicketsForUser():</strong> Uses a switch on the user's role to return the right tickets. Customers see only their own tickets. Reps see tickets assigned to them. Managers see their team's tickets. Admins see all. This method has a <code>@CircuitBreaker</code> annotation — if it fails repeatedly, the fallback returns an empty list instead of crashing.</p>
+    <p><strong>createTicket():</strong> Builds a new Ticket object from the customer's data and the request form, saves it, then sends a notification to all reps that a new ticket has been raised.</p>
+    <p><strong>updateStatus():</strong> When a rep sets a ticket to IN_PROGRESS, it records their name, the firstResponseAt time, and calculates responseTimeHrs. When set to CLOSED, it records resolvedAt and calculates resolutionTimeHrs. Notifies the customer of the status change.</p>
+    <p><strong>rateTicket():</strong> Verifies the customer owns the ticket, then saves the 1–5 star rating.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-svc">SERVICE</span><span class="fc-path">service/AnalyticsService.java</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Calculates all dashboard statistics</div>
+    <p><strong>getAdminStats():</strong> Returns total counts of customers, managers, reps, tickets by status, average satisfaction rating, and a map of tickets grouped by domain and location for the charts.</p>
+    <p><strong>getManagerStats():</strong> Returns their team size, team ticket counts, and for each rep: their open/in-progress/closed ticket count plus average response and resolution times.</p>
+    <p><strong>getRepStats():</strong> Returns this rep's own ticket counts and average response/resolution times.</p>
+    <p><strong>getCustomerStats():</strong> Returns this customer's own ticket counts by status.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-svc">SERVICE</span><span class="fc-path">service/UserDetailsServiceImpl.java</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Required by Spring Security</div>
+    <p>Implements Spring's <code>UserDetailsService</code> interface. Spring Security calls <code>loadUserByUsername(email)</code> during JWT validation to load the user from the database. Returns a <code>UserDetails</code> object that Spring uses internally to know what roles the user has.</p>
+  </div>
+</div>
+
+<!-- CONTROLLERS -->
+<div class="sh">Controllers (REST API Endpoints)</div>
+<p>Controllers receive HTTP requests from Angular, call the appropriate service, and return a JSON response. Each controller class handles a specific category of functionality.</p>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-ctrl">CONTROLLER</span><span class="fc-path">controller/AuthController.java</span></div>
+  <div class="fc-body">
+    <table>
+      <tr><th>Method</th><th>Endpoint</th><th>Auth Required</th><th>What happens</th></tr>
+      <tr><td>POST</td><td>/api/auth/login</td><td>No</td><td>Validates credentials, returns JWT token + user</td></tr>
+      <tr><td>POST</td><td>/api/auth/register</td><td>No</td><td>Creates new CUSTOMER account</td></tr>
+      <tr><td>GET</td><td>/api/auth/me</td><td>Yes</td><td>Returns current logged-in user's profile</td></tr>
+      <tr><td>PUT</td><td>/api/auth/change-password</td><td>Yes</td><td>Changes user's password</td></tr>
+      <tr><td>PUT</td><td>/api/auth/profile</td><td>Yes</td><td>Updates name, phone, location</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-ctrl">CONTROLLER</span><span class="fc-path">controller/TicketController.java</span></div>
+  <div class="fc-body">
+    <table>
+      <tr><th>Method</th><th>Endpoint</th><th>Roles</th><th>What happens</th></tr>
+      <tr><td>GET</td><td>/api/tickets</td><td>All roles</td><td>Returns tickets filtered by the caller's role</td></tr>
+      <tr><td>POST</td><td>/api/tickets</td><td>CUSTOMER only</td><td>Creates a new support ticket</td></tr>
+      <tr><td>PUT</td><td>/api/tickets/{id}/status</td><td>REP, MANAGER, ADMIN</td><td>Updates ticket status, records timing</td></tr>
+      <tr><td>PUT</td><td>/api/tickets/{id}/rate</td><td>CUSTOMER only</td><td>Submits a 1–5 star rating for a closed ticket</td></tr>
+      <tr><td>GET</td><td>/api/tickets/search?q=</td><td>REP, MANAGER, ADMIN</td><td>Searches tickets by customer name/phone/location</td></tr>
+    </table>
+    <p>The <code>@PreAuthorize</code> annotation on each method enforces role-based access at the method level — even if someone bypasses the frontend, the backend rejects unauthorised calls.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-ctrl">CONTROLLER</span><span class="fc-path">controller/AnalyticsController.java</span></div>
+  <div class="fc-body">
+    <p>Provides <code>GET /api/analytics/admin</code>, <code>/manager</code>, <code>/rep</code>, <code>/customer</code>. Calls the matching AnalyticsService method and returns a Map of statistics. The Angular dashboard cards and Chart.js charts all read from these endpoints.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-ctrl">CONTROLLER</span><span class="fc-path">controller/OutageController.java</span></div>
+  <div class="fc-body">
+    <p><code>GET /api/outages</code> — Returns all outages (for admin/manager). <code>POST /api/outages</code> — Admin reports a new outage. <code>PUT /api/outages/{id}/resolve</code> — Marks an outage as RESOLVED. <code>GET /api/outages/location?city=Mumbai</code> — Returns ACTIVE outages for a specific city (used by Customer dashboard to show the alert banner).</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-ctrl">CONTROLLER</span><span class="fc-path">controller/NotificationController.java</span></div>
+  <div class="fc-body">
+    <p><code>GET /api/notifications</code> — Returns unread notifications for the logged-in user. <code>PUT /api/notifications/{id}/read</code> — Marks a notification as read. Notifications are shown in the top bar bell icon across all dashboards.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ 05 ══════════════════════════════ -->
+<div class="ch page-break"><span class="ch-num">05</span> Frontend — Angular 17 (Every File Explained)</div>
+
+<!-- ENTRY -->
+<div class="sh">Entry Points</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-entry">ENTRY</span><span class="fc-path">frontend/src/main.ts</span></div>
+  <div class="fc-body">
+    <p>The first TypeScript file Angular runs. It calls <code>bootstrapApplication(AppComponent, appConfig)</code> — this starts Angular with the root component and the application configuration. One line is the entire file. Angular handles everything else.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-entry">ENTRY</span><span class="fc-path">frontend/src/index.html</span></div>
+  <div class="fc-body">
+    <p>The single HTML page for the entire application. Contains only one custom tag: <code>&lt;app-root&gt;&lt;/app-root&gt;</code>. Angular replaces this with all the page content dynamically. No page reloads happen — Angular is a Single Page Application (SPA).</p>
+  </div>
+</div>
+
+<!-- APP CONFIG -->
+<div class="sh">Application Configuration</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-config">CONFIG</span><span class="fc-path">app/app.config.ts</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Bootstraps the Angular application with all providers</div>
+    <pre><span class="kw">export const</span> appConfig: ApplicationConfig = {
+  providers: [
+    provideRouter(routes, withHashLocation()),
+    provideHttpClient(withInterceptors([jwtInterceptor])),
+  ]
+};</pre>
+    <p><strong>provideRouter with withHashLocation():</strong> Sets up routing and makes URLs use the <code>#</code> character (e.g., <code>/#/admin?tab=dashboard</code>). Hash URLs are required for GitHub Pages hosting — without the hash, refreshing the page would return a 404.<br>
+    <strong>provideHttpClient with withInterceptors([jwtInterceptor]):</strong> Sets up the HTTP client and registers the JWT interceptor globally. Every HTTP call in the entire app now automatically includes the auth token.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-config">ROUTING</span><span class="fc-path">app/app.routes.ts</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Defines all page URLs and who can access them</div>
+    <table>
+      <tr><th>URL Path</th><th>Component loaded</th><th>Required role</th></tr>
+      <tr><td>/login</td><td>LoginComponent</td><td>None (public)</td></tr>
+      <tr><td>/admin</td><td>AdminComponent</td><td>ADMIN</td></tr>
+      <tr><td>/manager</td><td>ManagerComponent</td><td>MANAGER</td></tr>
+      <tr><td>/representative</td><td>RepresentativeComponent</td><td>REPRESENTATIVE</td></tr>
+      <tr><td>/customer</td><td>CustomerComponent</td><td>CUSTOMER</td></tr>
+      <tr><td>/profile</td><td>ProfileComponent</td><td>Any authenticated user</td></tr>
+      <tr><td>/**  (anything else)</td><td>Redirects to /login</td><td>—</td></tr>
+    </table>
+    <p>Each protected route has <code>canActivate: [authGuard]</code> and <code>data: { role: 'ADMIN' }</code>. Every component is lazy-loaded using <code>loadComponent: () =&gt; import('./pages/...')</code> — the code for each page is only downloaded when that user actually navigates to it, making the initial load much faster.</p>
+  </div>
+</div>
+
+<!-- SECURITY -->
+<div class="sh">Security (Frontend)</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-guard">GUARD</span><span class="fc-path">app/guards/auth.guard.ts</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Protects routes — runs before any page loads</div>
+    <pre><span class="kw">export const</span> authGuard: CanActivateFn = (route) => {
+  <span class="kw">const</span> token = sessionStorage.getItem(<span class="str">'token'</span>);
+  <span class="kw">const</span> user  = JSON.parse(sessionStorage.getItem(<span class="str">'user'</span>) || <span class="str">'null'</span>);
+  <span class="kw">if</span> (!token || !user) { router.navigate([<span class="str">'/login'</span>]); <span class="kw">return false</span>; }
+  <span class="kw">const</span> requiredRole = route.data?.[<span class="str">'role'</span>];
+  <span class="kw">if</span> (requiredRole && user.role !== requiredRole) { router.navigate([<span class="str">'/login'</span>]); <span class="kw">return false</span>; }
+  <span class="kw">return true</span>;
+};</pre>
+    <p>Two checks: (1) Is there a token in sessionStorage? (2) Does the user's role match the required role for this route? Both must pass or the user is sent back to login. This runs on <em>every</em> navigation — not just the first load.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-intc">INTERCEPTOR</span><span class="fc-path">app/interceptors/jwt.interceptor.ts</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Automatically adds the JWT token to every HTTP request</div>
+    <pre><span class="kw">export const</span> jwtInterceptor: HttpInterceptorFn = (req, next) => {
+  <span class="kw">const</span> token = sessionStorage.getItem(<span class="str">'token'</span>);
+  <span class="kw">if</span> (token) {
+    req = req.clone({ setHeaders: { Authorization: <span class="str">`Bearer ${token}`</span> } });
+  }
+  <span class="kw">return</span> next(req);
+};</pre>
+    <p>This is a functional interceptor (Angular 17 style — no class needed). Every time Angular makes an HTTP call, this runs first. If a token exists, it clones the request and adds the Authorization header. The original request is immutable — that's why it uses <code>req.clone()</code>.</p>
+  </div>
+</div>
+
+<!-- MODELS -->
+<div class="sh">TypeScript Models</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-model">MODELS</span><span class="fc-path">app/models/ (all 4 model files)</span></div>
+  <div class="fc-body">
+    <p>TypeScript interfaces that mirror the Java model classes. They give type safety — TypeScript will warn you at compile time if you try to access a field that doesn't exist.</p>
+    <table>
+      <tr><th>File</th><th>Fields</th></tr>
+      <tr><td>user.model.ts</td><td>id, name, email, role, phone, location, managerId, firstLogin, createdAt</td></tr>
+      <tr><td>ticket.model.ts</td><td>id, customerId, customerName, domain, subject, status, repId, repName, createdAt, responseTimeHrs, resolutionTimeHrs, rating</td></tr>
+      <tr><td>outage.model.ts</td><td>id, location, affectedAreas, domain, severity, status, description, reportedAt, resolvedAt</td></tr>
+      <tr><td>notification.model.ts</td><td>id, userId, message, type, isRead, createdAt</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div class="sh">Angular Services</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-svc2">SERVICE</span><span class="fc-path">app/services/auth.service.ts</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Frontend authentication — all login/logout/profile logic</div>
+    <p>Key methods: <code>login()</code> — calls POST /api/auth/login, saves token + user to sessionStorage, returns user. <code>register()</code> — calls POST /api/auth/register. <code>logout()</code> — clears sessionStorage, navigates to /login. <code>getUser()</code> — returns parsed user object from sessionStorage. <code>getToken()</code> — returns the JWT string. <code>updateProfile()</code> and <code>changePassword()</code> — call the matching backend endpoints.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-svc2">SERVICE</span><span class="fc-path">app/services/ticket.service.ts</span></div>
+  <div class="fc-body">
+    <p>Wraps all ticket API calls: <code>getTickets()</code>, <code>createTicket(req)</code>, <code>updateStatus(id, status)</code>, <code>rateTicket(id, rating)</code>, <code>searchTickets(query)</code>. All methods return Observables that the component subscribes to.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-svc2">SERVICE</span><span class="fc-path">app/services/chat.service.ts</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Cross-component communication for the chatbot</div>
+    <pre><span class="ann">@Injectable</span>({ providedIn: <span class="str">'root'</span> })
+<span class="kw">export class</span> <span class="cls">ChatService</span> {
+  <span class="kw">private</span> signal = <span class="kw">new</span> Subject&lt;<span class="kw">void</span>&gt;();
+  open$ = <span class="kw">this</span>.signal.asObservable();
+  open() { <span class="kw">this</span>.signal.next(); }
+}</pre>
+    <p>When "Live Support" is clicked in the sidebar, <code>chatService.open()</code> is called. The chatbot component has subscribed to <code>open$</code> in its <code>ngOnInit</code> — when the signal fires, the chatbot opens. This is the correct Angular pattern for sibling component communication without a parent-child relationship.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-svc2">SERVICE</span><span class="fc-path">app/services/analytics.service.ts / outage.service.ts / notification.service.ts / user.service.ts / toast.service.ts</span></div>
+  <div class="fc-body">
+    <p><strong>analytics.service.ts</strong> — Calls GET /api/analytics/{role} and returns the stats map.<br>
+    <strong>outage.service.ts</strong> — Gets outages, creates outages, resolves outages, gets outages by city.<br>
+    <strong>notification.service.ts</strong> — Gets unread notifications, marks them as read.<br>
+    <strong>user.service.ts</strong> — CRUD for users (admin use): list all users, create employee, update, delete.<br>
+    <strong>toast.service.ts</strong> — Shows temporary success/error messages at the bottom of the screen. Uses an RxJS BehaviorSubject so any component can trigger a toast.</p>
+  </div>
+</div>
+
+<!-- PAGE COMPONENTS -->
+<div class="sh">Page Components</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-page">PAGE</span><span class="fc-path">pages/login/login.component.ts + .html</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">The animated login / sign up landing page</div>
+    <p><strong>active</strong> property (<code>'login' | 'signup' | null</code>) controls which panel is visible. When null, the landing page shows two clickable cards. When 'login', a CSS overlay animates in covering the full page with the login form. When 'signup', same but with the registration form.</p>
+    <p>The animation is pure CSS — no JavaScript animation library needed. The <code>.lp-form-overlay</code> class transitions from <code>opacity: 0; transform: translateX(60px)</code> to <code>opacity: 1; transform: translateX(0)</code> in 0.6s using <code>cubic-bezier</code>.</p>
+    <p>On successful login, reads <code>user.role</code> and navigates: ADMIN → /admin, MANAGER → /manager, REPRESENTATIVE → /representative, CUSTOMER → /customer.</p>
+    <p>The Indian city list is defined as <code>readonly LOCATIONS = ['Mumbai','Delhi','Bangalore','Hyderabad','Chennai','Kolkata','Pune','Jaipur']</code> for the signup location dropdown.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-page">PAGE</span><span class="fc-path">pages/admin/admin.component.ts + .html</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Admin dashboard — the most feature-rich page</div>
+    <p><strong>Tab system:</strong> Uses Angular Router query params (<code>?tab=dashboard</code>). <code>ngOnInit</code> subscribes to <code>route.queryParams</code> and calls the appropriate load function whenever the tab changes.</p>
+    <p><strong>Dashboard tab:</strong> Calls analytics API, then uses <code>setTimeout(..., 100)</code> before drawing Chart.js charts to ensure the canvas elements have rendered in the DOM after the <code>@if</code> block shows them.</p>
+    <p><strong>Employees tab:</strong> Full CRUD — list all employees, add new (with role/manager assignment), edit, delete. Uses a modal dialog (controlled by <code>showModal</code> boolean) for add/edit forms.</p>
+    <p><strong>Tickets tab:</strong> Shows all tickets across all customers and reps. Admin can update any ticket's status.</p>
+    <p><strong>Outages tab:</strong> Shows all outages. Admin can report a new outage (selecting city, domain, severity) and resolve existing ones.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-page">PAGE</span><span class="fc-path">pages/representative/representative.component.ts + .html</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Rep dashboard — 3 tabs: Dashboard, My Tickets, Search</div>
+    <p><strong>Dashboard tab:</strong> Shows stats cards (Open, In Progress, Closed tickets, Avg response time). Caches stats in <code>cachedStats</code> to avoid re-fetching when returning to the tab.</p>
+    <p><strong>My Tickets tab:</strong> Lists all tickets assigned to this rep. A modal lets them change the status. The status badge changes colour automatically based on status (green=CLOSED, orange=IN_PROGRESS, red=OPEN).</p>
+    <p><strong>Search tab:</strong> An input field with a <code>subject.pipe(debounceTime(400))</code> so the API is called only after the user stops typing for 400ms. Searches across customer name, phone, and city using the <code>/api/tickets/search?q=</code> endpoint.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-page">PAGE</span><span class="fc-path">pages/customer/customer.component.ts + .html</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">Customer dashboard — 2 tabs: Dashboard, My Tickets</div>
+    <p><strong>Dashboard tab:</strong> Shows stats (Open, In Progress, Closed). Checks for active outages in the customer's city — if any, shows an orange alert banner at the top with the affected areas. Shows current plans (Fiber, Mobile, DTH). Shows an "About NexCare" section mentioning all Indian cities.</p>
+    <p><strong>My Tickets tab:</strong> Shows the customer's own tickets. They can raise a new ticket via a form modal (selecting domain, entering subject and description). Closed tickets show a star rating widget (1–5 stars) if not yet rated. All dates are formatted in Indian style using <code>en-IN</code> locale.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-page">PAGE</span><span class="fc-path">pages/profile/profile.component.ts + .html</span></div>
+  <div class="fc-body">
+    <p>Accessible by all roles from the sidebar "Profile" link. Shows two forms side by side: (1) Update Profile — name, phone, location. (2) Change Password — current password, new password, confirm new password. Both call the respective AuthController endpoints and show a toast on success or failure.</p>
+  </div>
+</div>
+
+<!-- SHARED -->
+<div class="sh">Shared Components</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-shared">SHARED</span><span class="fc-path">shared/sidebar/sidebar.component.ts + .html</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">The left navigation bar — shared across all dashboards</div>
+    <p>Reads the logged-in user from <code>authService.getUser()</code> and uses the role to show different navigation items for each user type. Navigation is handled by a unified <code>queryParamRoutes</code> map — each route string maps to a path and tab:</p>
+    <pre>rep-tickets → { path: <span class="str">'/representative'</span>, tab: <span class="str">'tickets'</span> }
+customer-tickets → { path: <span class="str">'/customer'</span>, tab: <span class="str">'tickets'</span> }
+admin-emp → { path: <span class="str">'/admin'</span>, tab: <span class="str">'employees'</span> }</pre>
+    <p>Special case: <code>customer-support</code> calls <code>this.chat.open()</code> to trigger the chatbot instead of navigating. The <code>activePage</code> input determines which item appears highlighted.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-shared">SHARED</span><span class="fc-path">shared/chatbot/chatbot.component.ts + .html</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">The floating chat support widget</div>
+    <p>A floating 💬 button appears in the bottom-right corner of all dashboards. Clicking it opens a chat panel. The chatbot has 12 keyword-response pairs (e.g., "bill" → "You can view your bill under the Plans section…"). Messages not matching any keyword get a default response suggesting the user raise a support ticket.</p>
+    <p>In <code>ngOnInit</code>, it subscribes to <code>chatService.open$</code> — so when the sidebar's "Live Support" link is clicked, the chatbot opens automatically. Auto-scrolls to the latest message using <code>@ViewChild</code> and <code>chatBody.nativeElement.scrollTop</code>.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-shared">SHARED</span><span class="fc-path">shared/topbar/topbar.component.ts + .html</span></div>
+  <div class="fc-body">
+    <p>The top navigation bar on all dashboards. Shows the page title, a notification bell (with unread count badge), and the user's name. Clicking the bell fetches and shows notifications from <code>/api/notifications</code>. Clicking a notification marks it as read. The user name links to the profile page.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-shared">SHARED</span><span class="fc-path">shared/toast/toast.component.ts</span></div>
+  <div class="fc-body">
+    <p>A temporary pop-up notification that slides in from the bottom. Other components call <code>toastService.show("message", "success")</code> or <code>toastService.show("error", "error")</code>. The toast automatically disappears after 3 seconds using <code>setTimeout</code>.</p>
+  </div>
+</div>
+
+<!-- STYLES -->
+<div class="sh">Global Styles</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-style">CSS</span><span class="fc-path">frontend/src/styles.css</span></div>
+  <div class="fc-body">
+    <div class="label lbl-what">The single stylesheet for the entire application (~480 lines)</div>
+    <p><strong>CSS Variables (Lilac Theme):</strong></p>
+    <pre><span class="kw">:root</span> {
+  --primary: <span class="str">#8b5cf6</span>;         <span class="cmt">/* main lilac purple */</span>
+  --primary-dark: <span class="str">#6d28d9</span>;   <span class="cmt">/* darker shade for hover */</span>
+  --accent: <span class="str">#c4b5fd</span>;          <span class="cmt">/* lighter accent */</span>
+  --bg: <span class="str">#f5f3ff</span>;              <span class="cmt">/* page background */</span>
+  --surface: <span class="str">#ffffff</span>;         <span class="cmt">/* card backgrounds */</span>
+}</pre>
+    <p><strong>Login Page Animation:</strong> The <code>.lp-form-overlay</code> starts with <code>opacity: 0; transform: translateX(60px)</code> and transitions to <code>opacity: 1; transform: translateX(0)</code> when the <code>.lp-form-show</code> class is added. The easing function <code>cubic-bezier(.77,0,.18,1)</code> creates a smooth, natural-feeling animation.</p>
+    <p><strong>Card hover effect:</strong> Dashboard cards use <code>transform: translateY(-4px)</code> on hover with <code>cubic-bezier(.34,1.56,.64,1)</code> — the "overshoot" easing gives a spring-like feel.</p>
+    <p><strong>Responsive breakpoints:</strong> On screens narrower than 768px, the sidebar collapses, cards stack vertically, and the login page shows a single-column layout.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ 06 ══════════════════════════════ -->
+<div class="ch page-break"><span class="ch-num">06</span> Database Tables and Columns</div>
+
+<p>NexCare uses an H2 file database. The database file is stored at <code>./data/csddb.mv.db</code> relative to where the backend runs. Spring creates and updates all tables automatically based on the Java model classes — no manual SQL needed.</p>
+
+<div class="sh">USERS table</div>
+<table>
+  <tr><th>Column</th><th>Type</th><th>Constraint</th><th>Purpose</th></tr>
+  <tr><td>ID</td><td>BIGINT</td><td>PRIMARY KEY, AUTO_INCREMENT</td><td>Unique user identifier</td></tr>
+  <tr><td>NAME</td><td>VARCHAR(255)</td><td>NOT NULL</td><td>Full name</td></tr>
+  <tr><td>EMAIL</td><td>VARCHAR(255)</td><td>UNIQUE, NOT NULL</td><td>Login username</td></tr>
+  <tr><td>PASSWORD</td><td>VARCHAR(255)</td><td>NOT NULL</td><td>BCrypt hash</td></tr>
+  <tr><td>ROLE</td><td>VARCHAR(50)</td><td>NOT NULL</td><td>ADMIN/MANAGER/REPRESENTATIVE/CUSTOMER</td></tr>
+  <tr><td>PHONE</td><td>VARCHAR(255)</td><td>—</td><td>Contact number</td></tr>
+  <tr><td>LOCATION</td><td>VARCHAR(255)</td><td>—</td><td>City</td></tr>
+  <tr><td>MANAGER_ID</td><td>BIGINT</td><td>—</td><td>For reps: references their manager's ID</td></tr>
+  <tr><td>FIRST_LOGIN</td><td>BOOLEAN</td><td>—</td><td>True if initial password not changed</td></tr>
+  <tr><td>CREATED_AT</td><td>TIMESTAMP</td><td>—</td><td>Account creation time</td></tr>
+</table>
+
+<div class="sh">TICKETS table</div>
+<table>
+  <tr><th>Column</th><th>Type</th><th>Purpose</th></tr>
+  <tr><td>ID</td><td>BIGINT PK</td><td>Ticket number</td></tr>
+  <tr><td>CUSTOMER_ID, CUSTOMER_NAME, CUSTOMER_PHONE, CUSTOMER_LOCATION</td><td>BIGINT/VARCHAR</td><td>Who raised it (denormalized for history)</td></tr>
+  <tr><td>DOMAIN</td><td>VARCHAR</td><td>Internet Services, Mobile, DTH, etc.</td></tr>
+  <tr><td>SUBJECT</td><td>VARCHAR</td><td>Ticket title</td></tr>
+  <tr><td>DESCRIPTION</td><td>VARCHAR(2000)</td><td>Full details</td></tr>
+  <tr><td>STATUS</td><td>VARCHAR</td><td>OPEN / IN_PROGRESS / CLOSED</td></tr>
+  <tr><td>REP_ID, REP_NAME, MANAGER_ID</td><td>BIGINT/VARCHAR</td><td>Who is handling it</td></tr>
+  <tr><td>CREATED_AT, FIRST_RESPONSE_AT, RESOLVED_AT</td><td>TIMESTAMP</td><td>Timeline tracking</td></tr>
+  <tr><td>RESPONSE_TIME_HRS, RESOLUTION_TIME_HRS</td><td>DOUBLE</td><td>Calculated performance metrics</td></tr>
+  <tr><td>RATING</td><td>INTEGER</td><td>1–5 star customer rating</td></tr>
+</table>
+
+<div class="sh">OUTAGES and NOTIFICATIONS tables</div>
+<table>
+  <tr><th>Table</th><th>Key columns</th></tr>
+  <tr><td>OUTAGES</td><td>id, location (city), affected_areas, domain, severity (HIGH/MEDIUM/LOW), status (ACTIVE/RESOLVED), description, reported_at, resolved_at</td></tr>
+  <tr><td>NOTIFICATIONS</td><td>id, user_id, message, type (TICKET/STATUS/OUTAGE), is_read (boolean), created_at</td></tr>
+</table>
+
+<!-- ══════════════════════════════ 07 ══════════════════════════════ -->
+<div class="ch page-break"><span class="ch-num">07</span> API Endpoints Reference</div>
+
+<div class="info"><p>All endpoints are prefixed with <code>/api</code>. All except /auth/login and /auth/register require a valid JWT token in the Authorization header. The Angular JWT Interceptor adds this automatically.</p></div>
+
+<table>
+  <tr><th>Method</th><th>Endpoint</th><th>Who can call</th><th>What it does</th></tr>
+  <tr><td>POST</td><td>/api/auth/login</td><td>Anyone</td><td>Login — returns token + user</td></tr>
+  <tr><td>POST</td><td>/api/auth/register</td><td>Anyone</td><td>Sign up — creates CUSTOMER account</td></tr>
+  <tr><td>GET</td><td>/api/auth/me</td><td>All roles</td><td>Returns current user's profile</td></tr>
+  <tr><td>PUT</td><td>/api/auth/profile</td><td>All roles</td><td>Update name, phone, location</td></tr>
+  <tr><td>PUT</td><td>/api/auth/change-password</td><td>All roles</td><td>Change password</td></tr>
+  <tr><td>GET</td><td>/api/tickets</td><td>All roles</td><td>Get tickets (filtered by role)</td></tr>
+  <tr><td>POST</td><td>/api/tickets</td><td>CUSTOMER</td><td>Raise a new support ticket</td></tr>
+  <tr><td>PUT</td><td>/api/tickets/{id}/status</td><td>REP, MGR, ADMIN</td><td>Update ticket status</td></tr>
+  <tr><td>PUT</td><td>/api/tickets/{id}/rate</td><td>CUSTOMER</td><td>Rate a closed ticket</td></tr>
+  <tr><td>GET</td><td>/api/tickets/search?q=</td><td>REP, MGR, ADMIN</td><td>Search by customer name/phone/city</td></tr>
+  <tr><td>GET</td><td>/api/analytics/admin</td><td>ADMIN</td><td>Admin dashboard stats</td></tr>
+  <tr><td>GET</td><td>/api/analytics/manager</td><td>MANAGER</td><td>Manager/team stats</td></tr>
+  <tr><td>GET</td><td>/api/analytics/rep</td><td>REPRESENTATIVE</td><td>Rep's own performance stats</td></tr>
+  <tr><td>GET</td><td>/api/analytics/customer</td><td>CUSTOMER</td><td>Customer's ticket stats</td></tr>
+  <tr><td>GET</td><td>/api/users</td><td>ADMIN</td><td>List all employees</td></tr>
+  <tr><td>POST</td><td>/api/users</td><td>ADMIN</td><td>Create new employee</td></tr>
+  <tr><td>PUT</td><td>/api/users/{id}</td><td>ADMIN</td><td>Update employee details</td></tr>
+  <tr><td>DELETE</td><td>/api/users/{id}</td><td>ADMIN</td><td>Delete employee</td></tr>
+  <tr><td>GET</td><td>/api/outages</td><td>ADMIN, MANAGER</td><td>List all outages</td></tr>
+  <tr><td>POST</td><td>/api/outages</td><td>ADMIN</td><td>Report a new outage</td></tr>
+  <tr><td>PUT</td><td>/api/outages/{id}/resolve</td><td>ADMIN, MANAGER</td><td>Mark outage as resolved</td></tr>
+  <tr><td>GET</td><td>/api/outages/location?city=</td><td>CUSTOMER</td><td>Active outages in a city</td></tr>
+  <tr><td>GET</td><td>/api/notifications</td><td>All roles</td><td>Unread notifications for logged-in user</td></tr>
+  <tr><td>PUT</td><td>/api/notifications/{id}/read</td><td>All roles</td><td>Mark notification as read</td></tr>
+</table>
+
+<!-- ══════════════════════════════ 08 ══════════════════════════════ -->
+<div class="ch page-break"><span class="ch-num">08</span> Key Flows — Step by Step</div>
+
+<div class="sh">Flow 1: Customer Raises a Support Ticket</div>
+<div class="flow">
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-body"><div class="flow-title">Customer clicks "My Tickets" tab → clicks "Raise Ticket" button</div><div class="flow-desc">Angular router navigates to <code>?tab=tickets</code>. Customer fills in domain (e.g., Internet Services), subject, and description.</div></div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-body"><div class="flow-title">Angular calls POST /api/tickets</div><div class="flow-desc">JWT Interceptor adds the token. Spring Boot receives the request. JwtAuthFilter validates the token and confirms the caller is a CUSTOMER.</div></div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-body"><div class="flow-title">TicketController → TicketService.createTicket()</div><div class="flow-desc">Builds a Ticket object with status=OPEN, customerId from the token, and all form fields. Saves to database.</div></div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-body"><div class="flow-title">Notifications sent to all reps</div><div class="flow-desc">Service fetches all REPRESENTATIVE users and creates a notification for each: "New ticket #7 raised by Priya Sharma — Internet Services".</div></div></div>
+  <div class="flow-step"><div class="flow-num">5</div><div class="flow-body"><div class="flow-title">Response returned to Angular</div><div class="flow-desc">The saved ticket is returned as JSON. Angular adds it to the tickets list. A toast notification shows "Ticket raised successfully".</div></div></div>
+</div>
+
+<div class="sh">Flow 2: Rep Updates Ticket Status to IN_PROGRESS</div>
+<div class="flow">
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-body"><div class="flow-title">Rep clicks on an OPEN ticket → selects "In Progress" → submits</div><div class="flow-desc">Angular calls PUT /api/tickets/{id}/status with body <code>{ "status": "IN_PROGRESS" }</code></div></div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-body"><div class="flow-title">TicketService.updateStatus() runs</div><div class="flow-desc">Checks that this is the first response (firstResponseAt == null). Records: rep's name and ID, current timestamp as firstResponseAt. Calculates responseTimeHrs = (now - createdAt) in hours.</div></div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-body"><div class="flow-title">Notification sent to customer</div><div class="flow-desc">"Your ticket #3 status updated to IN PROGRESS" — saved to NOTIFICATIONS table.</div></div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-body"><div class="flow-title">Customer sees update</div><div class="flow-desc">Next time the customer loads their tickets (or refreshes), the ticket shows "In Progress". The bell icon in their topbar shows a new notification count.</div></div></div>
+</div>
+
+<div class="sh">Flow 3: Admin Reports a Service Outage</div>
+<div class="flow">
+  <div class="flow-step"><div class="flow-num">1</div><div class="flow-body"><div class="flow-title">Admin fills the outage form: city=Mumbai, domain=Internet Services, severity=HIGH</div><div class="flow-desc">Angular calls POST /api/outages with the form data.</div></div></div>
+  <div class="flow-step"><div class="flow-num">2</div><div class="flow-body"><div class="flow-title">OutageController → OutageService saves the outage</div><div class="flow-desc">Status is set to ACTIVE. reportedAt is recorded.</div></div></div>
+  <div class="flow-step"><div class="flow-num">3</div><div class="flow-body"><div class="flow-title">Mumbai customers see an alert banner on next dashboard load</div><div class="flow-desc">Customer dashboard calls GET /api/outages/location?city=Mumbai. Returns the active outage. Angular displays: "Service Disruption — Internet Services disruption in Andheri, Bandra, Colaba. Our team is working to restore service."</div></div></div>
+  <div class="flow-step"><div class="flow-num">4</div><div class="flow-body"><div class="flow-title">Admin resolves the outage</div><div class="flow-desc">PUT /api/outages/{id}/resolve. Status becomes RESOLVED, resolvedAt recorded. Customers in Mumbai no longer see the banner.</div></div></div>
+</div>
+
+<!-- ══════════════════════════════ 09 ══════════════════════════════ -->
+<div class="ch page-break"><span class="ch-num">09</span> Security Architecture</div>
+
+<div class="sh">Why JWT (JSON Web Tokens)?</div>
+<p>Traditional session-based auth stores login state on the server. With JWT, the server is completely stateless — all user information is encoded inside the token itself. The server just needs to verify the signature. This scales better and fits REST API design perfectly.</p>
+
+<div class="sh">What's inside a JWT token?</div>
+<p>A JWT has three parts separated by dots: <code>header.payload.signature</code></p>
+<pre>
+<span class="cmt">// Decoded payload of a NexCare JWT token:</span>
+{
+  "sub": "amit.kumar@nexcare.in",   <span class="cmt">← user's email (subject)</span>
+  "userId": 5,                       <span class="cmt">← user's database ID</span>
+  "role": "REPRESENTATIVE",          <span class="cmt">← their role</span>
+  "name": "Amit Kumar",              <span class="cmt">← display name</span>
+  "managerId": 3,                    <span class="cmt">← which manager they report to</span>
+  "iat": 1718000000,                 <span class="cmt">← issued at (Unix timestamp)</span>
+  "exp": 1718086400                  <span class="cmt">← expires after 24 hours</span>
+}
+</pre>
+<p>The token is signed with a secret key using HMAC-SHA256. Any tampering with the payload would invalidate the signature — the server detects this immediately and returns 401.</p>
+
+<div class="sh">Dual Security — Frontend and Backend</div>
+<table>
+  <tr><th>Layer</th><th>Where</th><th>What it does</th><th>Can be bypassed?</th></tr>
+  <tr><td>Auth Guard</td><td>Angular (frontend)</td><td>Prevents loading protected pages without a valid session</td><td>Yes — by a technical user. That's why the backend layer exists.</td></tr>
+  <tr><td>JWT Filter</td><td>Spring Boot (backend)</td><td>Validates token signature on every API call. No valid token = 401 Unauthorized.</td><td>No — the backend is the final authority.</td></tr>
+  <tr><td>@PreAuthorize</td><td>Spring Boot (per-method)</td><td>Checks role even after JWT validation. Blocks cross-role API calls.</td><td>No.</td></tr>
+</table>
+
+<div class="warn"><p><strong>Why two layers?</strong> The auth guard is for user experience — it prevents the UI from even trying to show an admin page to a customer. The JWT filter is for real security — even if someone uses Postman or a custom script to call the API, they cannot get any data without a valid token for the correct role.</p></div>
+
+<!-- ══════════════════════════════ 10 ══════════════════════════════ -->
+<div class="ch page-break"><span class="ch-num">10</span> Configuration Files</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-conf">CONFIG</span><span class="fc-path">frontend/proxy.conf.json</span></div>
+  <div class="fc-body">
+    <pre>{
+  <span class="str">"/api"</span>: {
+    <span class="str">"target"</span>: <span class="str">"http://localhost:8080"</span>,
+    <span class="str">"secure"</span>: <span class="kw">false</span>,
+    <span class="str">"changeOrigin"</span>: <span class="kw">true</span>
+  }
+}</pre>
+    <p>Angular's development server runs on port 4200. Spring Boot runs on port 8080. Browsers block requests from one port to another (CORS policy). This proxy configuration solves that — any request from Angular that starts with <code>/api</code> is silently forwarded to <code>http://localhost:8080</code>. To the browser, everything looks like it's on port 4200.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-conf">CONFIG</span><span class="fc-path">frontend/angular.json</span></div>
+  <div class="fc-body">
+    <p>The main Angular build configuration. Key settings: <code>proxyConfig: "proxy.conf.json"</code> registers the proxy, <code>outputPath: "dist/frontend"</code> sets where the built files go, <code>budgets</code> warns if the bundle gets too large. The <code>styles</code> array points to <code>src/styles.css</code> as the global stylesheet.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-conf">CONFIG</span><span class="fc-path">frontend/package.json</span></div>
+  <div class="fc-body">
+    <p>Lists all JavaScript/TypeScript packages the frontend needs. Key dependencies: <code>@angular/core</code>, <code>@angular/router</code>, <code>@angular/forms</code>, <code>@angular/common/http</code> (all @17.x), <code>chart.js</code> for the charts, <code>rxjs</code> for reactive programming. Running <code>npm install</code> reads this file and downloads everything listed.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-conf">CONFIG</span><span class="fc-path">pom.xml (backend)</span></div>
+  <div class="fc-body">
+    <p>Maven's equivalent of package.json. Lists all Java dependencies: <code>spring-boot-starter-web</code> (REST API), <code>spring-boot-starter-security</code> (security), <code>spring-boot-starter-data-jpa</code> (database), <code>h2</code> (H2 database driver), <code>jjwt-api/impl/jackson</code> 0.12.3 (JWT library), <code>lombok</code> (code generation), <code>resilience4j-spring-boot3</code> (circuit breaker). Maven downloads all of these from Maven Central on first run.</p>
+  </div>
+</div>
+
+<div class="fc">
+  <div class="fc-head"><span class="badge b-conf">CONFIG</span><span class="fc-path">.vscode/tasks.json</span></div>
+  <div class="fc-body">
+    <p>Defines run tasks for VS Code. The main task "Run NexCare (Full Stack)" is a compound task that starts both "Backend: Spring Boot" (<code>mvn spring-boot:run</code>) and "Frontend: Angular" (<code>npm install && npx ng serve --port 4200 --open</code>) simultaneously. These can be triggered from the VS Code menu: Terminal → Run Task.</p>
+  </div>
+</div>
+
+<div style="margin-top:48px;padding:20px;background:#f5f3ff;border-radius:12px;text-align:center">
+  <div style="font-size:14px;font-weight:700;color:#312e81">NexCare — Interactive Dashboard System for Customer Service Operations</div>
+  <div style="font-size:12px;color:#6d28d9;margin-top:6px">Rishitha Manyam &nbsp;|&nbsp; Wipro RGA Program 2025 &nbsp;|&nbsp; Java Full Stack Capstone Project</div>
+</div>
+
+</div>
+</body>
+</html>
