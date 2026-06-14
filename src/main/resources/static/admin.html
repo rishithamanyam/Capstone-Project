@@ -31,10 +31,10 @@
     <div class="page">
       <!-- Tab Nav -->
       <div style="display:flex;gap:10px;margin-bottom:24px">
-        <button class="btn btn-primary" id="tab-dash" onclick="showSection('dashboard')">📊 Dashboard</button>
-        <button class="btn btn-outline" id="tab-emp"  onclick="showSection('employees')">👥 Employees</button>
-        <button class="btn btn-outline" id="tab-tick" onclick="showSection('tickets')">🎫 Tickets</button>
-        <button class="btn btn-outline" id="tab-out"  onclick="showSection('outages')">⚡ Outages</button>
+        <button class="btn btn-primary" id="tab-dash" onclick="location.hash='#'">📊 Dashboard</button>
+        <button class="btn btn-outline" id="tab-emp"  onclick="location.hash='#employees'">👥 Employees</button>
+        <button class="btn btn-outline" id="tab-tick" onclick="location.hash='#tickets'">🎫 Tickets</button>
+        <button class="btn btn-outline" id="tab-out"  onclick="location.hash='#outages'">⚡ Outages</button>
       </div>
 
       <!-- Dashboard Section -->
@@ -450,9 +450,15 @@
 
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-  if (window.location.hash === '#employees') showSection('employees');
-  else if (window.location.hash === '#tickets') showSection('tickets');
-  else loadDashboard();
+  function handleHash() {
+    const h = window.location.hash;
+    if (h === '#employees') showSection('employees');
+    else if (h === '#tickets') showSection('tickets');
+    else if (h === '#outages') showSection('outages');
+    else { showSection('dashboard'); loadDashboard(); }
+  }
+  window.addEventListener('hashchange', handleHash);
+  handleHash();
 </script>
 </body>
 </html>

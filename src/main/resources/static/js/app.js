@@ -171,7 +171,7 @@ function buildSidebar(role, activePage) {
     CUSTOMER: [
       { icon: '📊', label: 'Dashboard', page: 'customer' },
       { icon: '🎫', label: 'My Tickets', page: 'customer-tickets' },
-      { icon: '📞', label: 'Support', page: 'customer-support' },
+      { icon: '💬', label: 'Live Support', page: 'customer-support' },
       { icon: '📋', label: 'Profile', page: 'profile' },
     ],
   };
@@ -215,9 +215,34 @@ function navTo(page) {
     'rep-search': '/representative.html#search',
     customer: '/customer.html',
     'customer-tickets': '/customer.html#tickets',
-    'customer-support': '/customer.html#support',
     profile: '/profile.html',
   };
+  if (page === 'customer-support') {
+    const win = document.getElementById('chat-window');
+    if (win) { win.classList.add('open'); document.getElementById('chat-fab')?.scrollIntoView(); }
+    return;
+  }
+  if (page === 'customer-tickets') {
+    document.getElementById('tickets-section')?.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+  if (page === 'rep-tickets') {
+    document.getElementById('tickets')?.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+  if (page === 'rep-search') {
+    document.getElementById('search')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('search-input')?.focus();
+    return;
+  }
+  if (page === 'manager-tickets') {
+    document.getElementById('tickets')?.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+  if (page === 'manager-outage') {
+    document.getElementById('outage')?.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
   const url = pages[page];
   if (url) window.location.href = url;
 }
