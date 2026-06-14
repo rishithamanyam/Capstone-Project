@@ -1,0 +1,265 @@
+<div class="app">
+  <app-sidebar activePage="admin"></app-sidebar>
+
+  <div class="main">
+    <app-topbar title="Admin Dashboard" breadcrumb="Home / Dashboard"></app-topbar>
+
+    <div class="page">
+      <div style="display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap">
+        <button class="btn" [class.btn-primary]="activeTab==='dashboard'" [class.btn-outline]="activeTab!=='dashboard'" (click)="setTab('dashboard')">📊 Dashboard</button>
+        <button class="btn" [class.btn-primary]="activeTab==='employees'" [class.btn-outline]="activeTab!=='employees'" (click)="setTab('employees')">👥 Employees</button>
+        <button class="btn" [class.btn-primary]="activeTab==='tickets'"   [class.btn-outline]="activeTab!=='tickets'"   (click)="setTab('tickets')">🎫 Tickets</button>
+        <button class="btn" [class.btn-primary]="activeTab==='outages'"   [class.btn-outline]="activeTab!=='outages'"   (click)="setTab('outages')">⚡ Outages</button>
+      </div>
+
+      @if (activeTab === 'dashboard') {
+        <div>
+          <div class="stats-grid">
+            <div class="scard gi"><div class="sc-label">Total Customers</div><div class="sc-value">{{ stats.totalCustomers ?? '—' }}</div><div class="sc-icon">👤</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+            <div class="scard gp"><div class="sc-label">Managers</div><div class="sc-value">{{ stats.totalManagers ?? '—' }}</div><div class="sc-icon">🧑‍💼</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+            <div class="scard gc"><div class="sc-label">Representatives</div><div class="sc-value">{{ stats.totalReps ?? '—' }}</div><div class="sc-icon">🎧</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+            <div class="scard ga"><div class="sc-label">Total Tickets</div><div class="sc-value">{{ stats.totalTickets ?? '—' }}</div><div class="sc-icon">🎫</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+            <div class="scard ge"><div class="sc-label">Closed Tickets</div><div class="sc-value">{{ stats.closedTickets ?? '—' }}</div><div class="sc-icon">✅</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+            <div class="scard gr"><div class="sc-label">Avg Satisfaction</div><div class="sc-value">{{ stats.avgSatisfaction ?? '—' }} ⭐</div><div class="sc-sub">Out of 5.0</div><div class="sc-icon">⭐</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-header"><div class="card-title">Location vs Tickets</div></div>
+              <div class="chart-container"><canvas #locationCanvas></canvas></div>
+            </div>
+            <div class="card">
+              <div class="card-header"><div class="card-title">Domain vs Tickets</div></div>
+              <div class="chart-container"><canvas #domainCanvas></canvas></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:20px">
+            <div class="card-header"><div><div class="card-title">⚡ Outage Map</div><div class="card-subtitle">Current service disruptions</div></div></div>
+            @if (outages.length === 0) {
+              <div class="empty-state"><div class="es-icon">✅</div><p>No outages reported</p></div>
+            } @else {
+              <div class="outage-grid">
+                @for (o of outages; track o.id) {
+                  <div class="outage-card" [class.active]="o.status==='ACTIVE'" [class.resolved]="o.status==='RESOLVED'">
+                    <div><span class="outage-dot" [class.dot-active]="o.status==='ACTIVE'" [class.dot-resolved]="o.status==='RESOLVED'"></span><strong>{{ o.location }}</strong></div>
+                    <p style="font-size:12px;font-weight:600;margin:4px 0">{{ o.domain }}</p>
+                    <p style="font-size:11px">{{ o.affectedAreas }}</p>
+                    <div style="margin-top:6px">
+                      <span [class]="'severity-' + o.severity">{{ o.severity }}</span>
+                      <span class="badge" [class]="o.status==='ACTIVE'?'b-red':'b-green'" style="font-size:10px;margin-left:4px">{{ o.status }}</span>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @if (activeTab === 'employees') {
+        <div id="section-employees">
+          <div class="card">
+            <div class="card-header">
+              <div><div class="card-title">Employee Management</div><div class="card-subtitle">Add, update, and remove managers &amp; representatives</div></div>
+              <button class="btn btn-primary" (click)="openAddEmp()">+ Add Employee</button>
+            </div>
+            <div style="display:flex;gap:8px;margin-bottom:16px">
+              <button class="btn btn-sm" [class.btn-primary]="empFilter==='ALL'" [class.btn-outline]="empFilter!=='ALL'" (click)="empFilter='ALL'">All</button>
+              <button class="btn btn-sm" [class.btn-primary]="empFilter==='MANAGER'" [class.btn-outline]="empFilter!=='MANAGER'" (click)="empFilter='MANAGER'">Managers</button>
+              <button class="btn btn-sm" [class.btn-primary]="empFilter==='REPRESENTATIVE'" [class.btn-outline]="empFilter!=='REPRESENTATIVE'" (click)="empFilter='REPRESENTATIVE'">Representatives</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Phone</th><th>Manager</th><th>Joined</th><th>Actions</th></tr></thead>
+                <tbody>
+                  @if (filteredEmployees.length === 0) {
+                    <tr><td colspan="7"><div class="empty-state"><p>No employees found</p></div></td></tr>
+                  }
+                  @for (emp of filteredEmployees; track emp.id) {
+                    <tr>
+                      <td><strong>{{ emp.name }}</strong></td>
+                      <td>{{ emp.email }}</td>
+                      <td><span [class]="roleBadgeClass(emp.role)">{{ emp.role }}</span></td>
+                      <td>{{ emp.phone || '—' }}</td>
+                      <td>{{ managerName(emp.managerId) }}</td>
+                      <td>{{ fmtDate(emp.createdAt) }}</td>
+                      <td style="display:flex;gap:6px">
+                        <button class="btn btn-sm btn-outline" (click)="openEditEmp(emp)">Edit</button>
+                        <button class="btn btn-sm btn-danger"  (click)="openDelete(emp)">Delete</button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (activeTab === 'tickets') {
+        <div id="section-tickets">
+          <div class="card">
+            <div class="card-header"><div class="card-title">All Tickets</div></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>#</th><th>Customer</th><th>Domain</th><th>Subject</th><th>Status</th><th>Representative</th><th>Created</th><th>Response</th><th>Resolved</th></tr></thead>
+                <tbody>
+                  @if (allTickets.length === 0) {
+                    <tr><td colspan="9"><div class="empty-state"><p>No tickets</p></div></td></tr>
+                  }
+                  @for (t of allTickets; track t.id) {
+                    <tr>
+                      <td><strong>#{{ t.id }}</strong></td>
+                      <td>{{ t.customerName }}<br><small style="color:#64748b">{{ t.customerLocation }}</small></td>
+                      <td>{{ t.domain }}</td>
+                      <td>{{ t.subject }}</td>
+                      <td><span [class]="statusBadgeClass(t.status)">{{ statusLabel(t.status) }}</span></td>
+                      <td>{{ t.repName || 'Unassigned' }}</td>
+                      <td>{{ fmtDate(t.createdAt) }}</td>
+                      <td>{{ fmtHrs(t.responseTimeHrs) }}</td>
+                      <td>{{ fmtDate(t.resolvedAt) }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      }
+
+      @if (activeTab === 'outages') {
+        <div id="section-outages">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Outage Management</div>
+              <button class="btn btn-primary" (click)="openOutageModal()">+ Report Outage</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Location</th><th>Domain</th><th>Severity</th><th>Status</th><th>Affected Areas</th><th>Reported</th><th>Action</th></tr></thead>
+                <tbody>
+                  @if (outages.length === 0) {
+                    <tr><td colspan="7"><div class="empty-state"><p>No outages</p></div></td></tr>
+                  }
+                  @for (o of outages; track o.id) {
+                    <tr>
+                      <td><strong>{{ o.location }}</strong></td>
+                      <td>{{ o.domain }}</td>
+                      <td><span [class]="'severity-' + o.severity">{{ o.severity }}</span></td>
+                      <td><span class="badge" [class]="o.status==='ACTIVE'?'b-red':'b-green'">{{ o.status }}</span></td>
+                      <td>{{ o.affectedAreas }}</td>
+                      <td>{{ fmtDate(o.createdAt) }}</td>
+                      <td>
+                        @if (o.status === 'ACTIVE') {
+                          <button class="btn btn-sm btn-outline" (click)="resolveOutage(o.id)">Mark Resolved</button>
+                        } @else { — }
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Employee Modal -->
+<div class="modal-overlay" [class.open]="showEmpModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>{{ editingEmpId ? 'Edit Employee' : 'Add Employee' }}</h3>
+      <button class="modal-close" (click)="showEmpModal=false">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="grid-2">
+        <div class="form-group"><label>Full Name</label><input [(ngModel)]="empForm.name" placeholder="Employee name"></div>
+        <div class="form-group"><label>Email</label><input type="email" [(ngModel)]="empForm.email" placeholder="Work email"></div>
+      </div>
+      <div class="grid-2">
+        <div class="form-group"><label>Phone</label><input [(ngModel)]="empForm.phone" placeholder="Phone number"></div>
+        <div class="form-group">
+          <label>Role</label>
+          <select [(ngModel)]="empForm.role">
+            <option value="MANAGER">Manager</option>
+            <option value="REPRESENTATIVE">Representative</option>
+          </select>
+        </div>
+      </div>
+      @if (empForm.role === 'REPRESENTATIVE') {
+        <div class="form-group">
+          <label>Assign to Manager</label>
+          <select [(ngModel)]="empForm.managerId">
+            @for (m of managers; track m.id) {
+              <option [value]="m.id">{{ m.name }}</option>
+            }
+          </select>
+        </div>
+      }
+      <div style="background:#fdf0f8;border-radius:8px;padding:12px;font-size:12.5px;color:#9d0b6b;margin-top:8px">
+        Default password: <strong>Welcome&#64;123</strong>. Employee must change it on first login.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" (click)="showEmpModal=false">Cancel</button>
+      <button class="btn btn-primary" (click)="saveEmp()">Save Employee</button>
+    </div>
+  </div>
+</div>
+
+<!-- Report Outage Modal -->
+<div class="modal-overlay" [class.open]="showOutageModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Report Service Outage</h3>
+      <button class="modal-close" (click)="showOutageModal=false">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="grid-2">
+        <div class="form-group">
+          <label>Location</label>
+          <select [(ngModel)]="outageForm.location">
+            @for (l of LOCATIONS; track l) { <option>{{ l }}</option> }
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Domain</label>
+          <select [(ngModel)]="outageForm.domain">
+            @for (d of DOMAINS; track d) { <option>{{ d }}</option> }
+          </select>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="form-group"><label>Affected Areas</label><input [(ngModel)]="outageForm.affectedAreas" placeholder="e.g. Downtown, North Side"></div>
+        <div class="form-group">
+          <label>Severity</label>
+          <select [(ngModel)]="outageForm.severity">
+            <option>HIGH</option><option>MEDIUM</option><option>LOW</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label>Description</label><textarea [(ngModel)]="outageForm.description" placeholder="Describe the outage…"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" (click)="showOutageModal=false">Cancel</button>
+      <button class="btn btn-primary" (click)="reportOutage()">Report Outage</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirm -->
+<div class="modal-overlay" [class.open]="showDelModal">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-header"><h3>Confirm Delete</h3></div>
+    <div class="modal-body">
+      <p style="font-size:13.5px;color:#64748b">Are you sure you want to remove <strong>{{ deletingEmpName }}</strong>? This action cannot be undone.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" (click)="showDelModal=false">Cancel</button>
+      <button class="btn btn-danger" (click)="confirmDelete()">Delete</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="topbar">
+  <div class="topbar-left">
+    <h1>{{ title }}</h1>
+    <div class="breadcrumb">{{ breadcrumb }}</div>
+  </div>
+  <div class="topbar-right">
+    <div class="notif-wrap" style="position:relative">
+      <button class="notif-btn" (click)="togglePanel(); $event.stopPropagation()">
+        🔔
+        @if (notifCount > 0) {
+          <span class="notif-badge">{{ notifCount }}</span>
+        }
+      </button>
+      <div class="notif-panel" [class.open]="notifOpen" (click)="$event.stopPropagation()">
+        <div class="notif-panel-header">
+          <h4>Notifications</h4>
+          <button class="btn btn-sm btn-outline" (click)="clearRead()">Clear read</button>
+        </div>
+        <div class="notif-list">
+          @if (notifs.length === 0) {
+            <div class="empty-state" style="padding:24px">
+              <p>No notifications</p>
+            </div>
+          }
+          @for (n of notifs; track n.id) {
+            <div class="notif-item" [class.unread]="!n.read" (click)="markRead(n)">
+              <span class="notif-type" [class]="'type-' + n.type"></span>
+              <div class="ni-msg">{{ n.message }}</div>
+              <div class="ni-time">{{ fmtDateTime(n.createdAt) }}</div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="topbar-avatar">{{ initials }}</div>
+  </div>
+</div>

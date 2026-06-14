@@ -1,0 +1,98 @@
+<div class="app">
+  <app-sidebar activePage="manager"></app-sidebar>
+
+  <div class="main">
+    <app-topbar title="Manager Dashboard" breadcrumb="Home / Dashboard"></app-topbar>
+
+    <div class="page">
+      <div class="stats-grid">
+        <div class="scard gi"><div class="sc-label">Team Size</div><div class="sc-value">{{ stats.teamSize ?? '—' }}</div><div class="sc-sub">Active representatives</div><div class="sc-icon">👥</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+        <div class="scard gc"><div class="sc-label">Total Tickets</div><div class="sc-value">{{ stats.totalTickets ?? '—' }}</div><div class="sc-sub">Team's all tickets</div><div class="sc-icon">📋</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+        <div class="scard ga"><div class="sc-label">Open</div><div class="sc-value">{{ stats.openTickets ?? '—' }}</div><div class="sc-sub">Pending action</div><div class="sc-icon">🔴</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+        <div class="scard ge"><div class="sc-label">Closed</div><div class="sc-value">{{ stats.closedTickets ?? '—' }}</div><div class="sc-sub">Resolved tickets</div><div class="sc-icon">✅</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+      </div>
+
+      <div class="grid-2" style="margin-bottom:20px">
+        <div class="card">
+          <div class="card-header"><div class="card-title">Team Ticket Distribution</div></div>
+          <div class="chart-container"><canvas #repChart></canvas></div>
+        </div>
+
+        <div class="card" id="outage">
+          <div class="card-header">
+            <div><div class="card-title">⚡ Active Outages</div><div class="card-subtitle">Current service disruptions</div></div>
+          </div>
+          @if (outages.length === 0) {
+            <div class="empty-state"><div class="es-icon">✅</div><p>No active outages reported</p></div>
+          } @else {
+            <div class="outage-grid">
+              @for (o of outages; track o.id) {
+                <div class="outage-card active">
+                  <div><span class="outage-dot dot-active"></span><strong style="font-size:13px">{{ o.location }}</strong></div>
+                  <p style="margin:6px 0 4px;font-size:12px;font-weight:600">{{ o.domain }}</p>
+                  <p style="font-size:11.5px">{{ o.affectedAreas }}</p>
+                  <div style="margin-top:8px"><span [class]="'severity-'+o.severity">{{ o.severity }}</span> <span class="badge b-red" style="font-size:10px">Active</span></div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="card" id="tickets" style="margin-bottom:20px">
+        <div class="card-header"><div><div class="card-title">Representative Performance</div><div class="card-subtitle">Average response and resolution times for your team</div></div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Representative</th><th>Open</th><th>In Progress</th><th>Closed</th><th>Avg Response</th><th>Avg Resolution</th><th>Performance</th></tr></thead>
+            <tbody>
+              @if (repMetrics.length === 0) {
+                <tr><td colspan="7" style="text-align:center;color:#94a3b8">No data yet</td></tr>
+              }
+              @for (r of repMetrics; track r.repId) {
+                <tr>
+                  <td><strong>{{ r.name }}</strong><br><small style="color:#64748b">{{ r.email }}</small></td>
+                  <td><span class="badge b-amber">{{ r.openTickets }}</span></td>
+                  <td><span class="badge b-blue">{{ r.inProgressTickets }}</span></td>
+                  <td><span class="badge b-green">{{ r.closedTickets }}</span></td>
+                  <td>{{ fmtHrs(r.avgResponseTime) }}</td>
+                  <td>{{ fmtHrs(r.avgResolutionTime) }}</td>
+                  <td style="min-width:140px">
+                    <div style="display:flex;align-items:center;gap:8px">
+                      <div class="perf-bar-track" style="flex:1"><div class="perf-bar-fill" [style.width.%]="perfPct(r)"></div></div>
+                      <span style="font-size:12px;font-weight:700;color:#d61f8b">{{ perfPct(r) }}%</span>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div><div class="card-title">Team Tickets</div><div class="card-subtitle">All tickets assigned to your team</div></div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Customer</th><th>Domain</th><th>Subject</th><th>Status</th><th>Representative</th><th>Created</th></tr></thead>
+            <tbody>
+              @if (tickets.length === 0) {
+                <tr><td colspan="7"><div class="empty-state"><p>No tickets found</p></div></td></tr>
+              }
+              @for (t of tickets; track t.id) {
+                <tr>
+                  <td><strong>#{{ t.id }}</strong></td>
+                  <td>{{ t.customerName }}<br><small style="color:#64748b">{{ t.customerLocation }}</small></td>
+                  <td>{{ t.domain }}</td>
+                  <td>{{ t.subject }}</td>
+                  <td><span [class]="statusClass(t.status)">{{ statusLabel(t.status) }}</span></td>
+                  <td>{{ t.repName || 'Unassigned' }}</td>
+                  <td>{{ fmtDate(t.createdAt) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="app">
+  <app-sidebar activePage="profile"></app-sidebar>
+
+  <div class="main">
+    <app-topbar title="My Profile" breadcrumb="Home / Profile"></app-topbar>
+
+    <div class="page">
+      <div class="grid-2">
+        <div>
+          <div class="card" style="margin-bottom:20px">
+            <div style="display:flex;flex-direction:column;align-items:center;padding:20px 0 10px">
+              <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#d61f8b,#f06292);display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px;font-weight:800;margin-bottom:16px;box-shadow:0 8px 24px rgba(214,31,139,.35)">
+                {{ initials }}
+              </div>
+              <h3 style="font-size:18px;font-weight:700">{{ user?.name }}</h3>
+              <span [class]="roleBadgeClass()" style="margin-top:6px">{{ user?.role }}</span>
+              <p style="font-size:12px;color:#64748b;margin-top:6px">{{ user?.email }}</p>
+            </div>
+
+            <div style="border-top:1px solid #f1f5f9;padding-top:16px;margin-top:8px">
+              <div class="metric-item">
+                <span class="metric-label">📍 Location</span>
+                <span class="metric-value">{{ user?.location || '—' }}</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">📱 Phone</span>
+                <span class="metric-value">{{ user?.phone || '—' }}</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">📅 Member Since</span>
+                <span class="metric-value">{{ fmtDate(user?.createdAt) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card" style="margin-bottom:20px">
+            <div class="card-header">
+              <div class="card-title">Edit Profile</div>
+              @if (!editMode) {
+                <button class="btn btn-outline btn-sm" (click)="editMode=true">Edit</button>
+              }
+            </div>
+            @if (!editMode) {
+              <div>
+                <div class="metric-item"><span class="metric-label">Full Name</span><span class="metric-value">{{ user?.name }}</span></div>
+                <div class="metric-item"><span class="metric-label">Email</span><span class="metric-value">{{ user?.email }}</span></div>
+                <div class="metric-item"><span class="metric-label">Phone</span><span class="metric-value">{{ user?.phone || '—' }}</span></div>
+              </div>
+            } @else {
+              <div>
+                <div class="form-group"><label>Full Name</label><input [(ngModel)]="editForm.name" placeholder="Your full name"></div>
+                <div class="form-group"><label>Phone</label><input [(ngModel)]="editForm.phone" placeholder="Phone number"></div>
+                <div style="display:flex;gap:10px">
+                  <button class="btn btn-outline" (click)="editMode=false">Cancel</button>
+                  <button class="btn btn-primary" (click)="saveProfile()">Save Changes</button>
+                </div>
+              </div>
+            }
+          </div>
+
+          <div class="card">
+            <div class="card-header"><div class="card-title">Change Password</div></div>
+            <div class="form-group"><label>Current Password</label><input type="password" [(ngModel)]="pwForm.current" placeholder="Current password"></div>
+            <div class="form-group"><label>New Password</label><input type="password" [(ngModel)]="pwForm.newPass" placeholder="New password (min 6 chars)"></div>
+            <div class="form-group"><label>Confirm Password</label><input type="password" [(ngModel)]="pwForm.confirm" placeholder="Confirm new password"></div>
+            <button class="btn btn-primary" (click)="changePassword()">Update Password</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

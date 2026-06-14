@@ -1,0 +1,32 @@
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🎯</div>
+    <div>
+      <span>NexCare</span>
+      <small>Service Dashboard</small>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">Navigation</div>
+    @for (item of items; track item.route) {
+      <div
+        class="nav-item"
+        [class.active]="activePage === item.route"
+        (click)="navigate(item.route)">
+        <span class="ni">{{ item.icon }}</span>
+        <span>{{ item.label }}</span>
+      </div>
+    }
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-user" (click)="logout()" title="Click to logout">
+      <div class="avatar">{{ initials }}</div>
+      <div class="sidebar-user-info">
+        <div class="name">{{ user?.name }}</div>
+        <div class="role-badge">{{ role }}</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,169 @@
+<div class="app">
+  <app-sidebar activePage="customer"></app-sidebar>
+
+  <div class="main">
+    <app-topbar title="Customer Dashboard" breadcrumb="Home / Dashboard"></app-topbar>
+
+    <div class="page">
+      <div class="stats-grid">
+        <div class="scard gi"><div class="sc-label">Open Tickets</div><div class="sc-value">{{ stats.openTickets ?? '—' }}</div><div class="sc-sub">Awaiting response</div><div class="sc-icon">🎫</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+        <div class="scard ga"><div class="sc-label">In Progress</div><div class="sc-value">{{ stats.inProgressTickets ?? '—' }}</div><div class="sc-sub">Being handled</div><div class="sc-icon">⚙️</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+        <div class="scard ge"><div class="sc-label">Resolved</div><div class="sc-value">{{ stats.closedTickets ?? '—' }}</div><div class="sc-sub">Successfully closed</div><div class="sc-icon">✅</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+        <div class="scard gc"><div class="sc-label">Total Tickets</div><div class="sc-value">{{ stats.totalTickets ?? '—' }}</div><div class="sc-sub">All time</div><div class="sc-icon">📊</div><svg class="wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0 30 Q100 0 200 30 Q300 60 400 30 L400 60 L0 60 Z" fill="white" opacity=".15"/></svg></div>
+      </div>
+
+      @if (outageAlert) {
+        <div style="background:#fff5f5;border:1.5px solid #fca5a5;border-radius:12px;padding:14px 18px;margin-bottom:24px;display:flex;align-items:center;gap:10px;animation:fadeInUp .4s ease">
+          <span style="font-size:20px">⚠️</span>
+          <div>
+            <strong style="color:#dc2626">Service Outage in Your Area</strong>
+            <p style="font-size:13px;color:#64748b;margin-top:2px">{{ outageAlert.domain }} outage in {{ outageAlert.location }} ({{ outageAlert.affectedAreas }}). Severity: {{ outageAlert.severity }}.</p>
+          </div>
+        </div>
+      }
+
+      <div class="grid-2" style="margin-bottom:20px">
+        <div class="card">
+          <div class="card-header"><div><div class="card-title">Available Plans</div><div class="card-subtitle">Choose the right plan for you</div></div></div>
+          <div class="plans-grid">
+            <div class="plan-card">
+              <div class="plan-name">Basic</div>
+              <div class="plan-price">₹499<span>/mo</span></div>
+              <ul class="plan-features">
+                <li>25 Mbps Internet</li>
+                <li>Unlimited Data</li>
+                <li>Email Support</li>
+              </ul>
+            </div>
+            <div class="plan-card featured">
+              <div class="plan-featured-badge">Popular</div>
+              <div class="plan-name">Standard</div>
+              <div class="plan-price">₹799<span>/mo</span></div>
+              <ul class="plan-features">
+                <li>100 Mbps Internet</li>
+                <li>TV (200 channels)</li>
+                <li>24/7 Support</li>
+              </ul>
+            </div>
+            <div class="plan-card">
+              <div class="plan-name">Premium</div>
+              <div class="plan-price">₹1199<span>/mo</span></div>
+              <ul class="plan-features">
+                <li>300 Mbps Internet</li>
+                <li>Full TV + OTT</li>
+                <li>Dedicated Support</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><div class="card-title">About NexCare</div></div>
+          <div class="about-section">
+            <div class="about-card"><h4>🌐 Our Vision</h4><p>Delivering seamless connectivity with reliable internet, TV, and mobile services since 2010.</p></div>
+            <div class="about-card"><h4>📍 Service Locations</h4><p>Operating in 6 major cities: New York, Los Angeles, Chicago, Houston, Phoenix, Philadelphia.</p></div>
+            <div class="about-card"><h4>🎯 Our Services</h4><p>Internet, TV & Cable, Phone, Mobile Data, and Technical Support.</p></div>
+            <div class="about-card"><h4>⭐ Customer First</h4><p>4.3/5 average satisfaction score with 2-hour average response time.</p></div>
+          </div>
+          <div style="margin-top:14px">
+            <div style="font-size:12px;font-weight:700;color:#64748b;margin-bottom:8px;text-transform:uppercase">Service Domains</div>
+            <div class="domains-grid">
+              <span class="domain-tag" style="background:#fce7f3;color:#9d0b6b">🌐 Internet Services</span>
+              <span class="domain-tag" style="background:#f0fdf4;color:#166534">📺 TV &amp; Cable</span>
+              <span class="domain-tag" style="background:#fef3c7;color:#92400e">📞 Phone Services</span>
+              <span class="domain-tag" style="background:#cffafe;color:#164e63">📱 Mobile Data</span>
+              <span class="domain-tag" style="background:#fdf4ff;color:#7e22ce">🔧 Technical Support</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="tickets-section">
+        <div class="card-header">
+          <div><div class="card-title">My Ticket History</div><div class="card-subtitle">All your support requests</div></div>
+          <button class="btn btn-primary" (click)="showTicketModal=true">+ Raise New Ticket</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Domain</th><th>Subject</th><th>Status</th><th>Created</th><th>Response</th><th>Resolved</th><th>Action</th></tr></thead>
+            <tbody>
+              @if (tickets.length === 0) {
+                <tr><td colspan="8"><div class="empty-state"><div class="es-icon">🎫</div><p>No tickets yet. Raise your first ticket!</p></div></td></tr>
+              }
+              @for (t of tickets; track t.id) {
+                <tr>
+                  <td><strong>#{{ t.id }}</strong></td>
+                  <td>{{ t.domain }}</td>
+                  <td style="max-width:200px">{{ t.subject }}</td>
+                  <td><span [class]="statusClass(t.status)">{{ statusLabel(t.status) }}</span></td>
+                  <td>{{ fmtDate(t.createdAt) }}</td>
+                  <td>{{ fmtHrs(t.responseTimeHrs) }}</td>
+                  <td>{{ fmtDate(t.resolvedAt) }}</td>
+                  <td>
+                    @if (t.status === 'CLOSED' && !t.rating) {
+                      <button class="btn btn-sm btn-outline" (click)="openRating(t.id)">Rate ⭐</button>
+                    } @else if (t.rating) {
+                      <span>{{ stars(t.rating) }}</span>
+                    } @else { — }
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-chatbot></app-chatbot>
+
+<!-- Raise Ticket Modal -->
+<div class="modal-overlay" [class.open]="showTicketModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>🎫 Raise New Ticket</h3>
+      <button class="modal-close" (click)="showTicketModal=false">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Service Domain</label>
+        <select [(ngModel)]="ticketForm.domain">
+          <option value="">Select domain</option>
+          @for (d of DOMAINS; track d) { <option>{{ d }}</option> }
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Subject</label>
+        <input type="text" [(ngModel)]="ticketForm.subject" placeholder="Brief description of the issue">
+      </div>
+      <div class="form-group">
+        <label>Detailed Description</label>
+        <textarea [(ngModel)]="ticketForm.description" placeholder="Describe the issue in detail…" rows="4"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" (click)="showTicketModal=false">Cancel</button>
+      <button class="btn btn-primary" (click)="submitTicket()">Submit Ticket</button>
+    </div>
+  </div>
+</div>
+
+<!-- Rate Modal -->
+<div class="modal-overlay" [class.open]="showRateModal">
+  <div class="modal" style="max-width:360px">
+    <div class="modal-header"><h3>⭐ Rate Your Experience</h3></div>
+    <div class="modal-body" style="text-align:center">
+      <p style="font-size:13px;color:#64748b;margin-bottom:16px">How satisfied are you with the resolution?</p>
+      <div class="stars" style="justify-content:center;font-size:32px">
+        @for (n of [1,2,3,4,5]; track n) {
+          <span class="star" [class.filled]="n <= selectedRating" [class.empty]="n > selectedRating" (click)="selectedRating=n">★</span>
+        }
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:center">
+      <button class="btn btn-outline" (click)="showRateModal=false">Skip</button>
+      <button class="btn btn-primary" (click)="submitRating()">Submit Rating</button>
+    </div>
+  </div>
+</div>

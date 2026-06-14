@@ -1,0 +1,29 @@
+<button class="chat-fab" id="chat-fab" (click)="toggle()" title="Chat with Support">💬</button>
+
+<div class="chat-window" id="chat-window" [class.open]="isOpen">
+  <div class="chat-header">
+    <div class="ch-avatar">🤖</div>
+    <div class="ch-info">
+      <div class="ch-name">NexCare Assistant</div>
+      <div class="ch-status">● Online</div>
+    </div>
+    <button class="chat-close" (click)="isOpen = false">✕</button>
+  </div>
+
+  <div class="chat-messages" #msgContainer>
+    @for (msg of messages; track $index) {
+      <div [class]="msg.from === 'bot' ? 'msg-bot' : 'msg-user'">
+        {{ msg.text }}
+      </div>
+    }
+  </div>
+
+  <div class="chat-input">
+    <input
+      type="text"
+      [(ngModel)]="inputText"
+      placeholder="Type a message…"
+      (keyup.enter)="send()">
+    <button class="send-btn" (click)="send()">➤</button>
+  </div>
+</div>
