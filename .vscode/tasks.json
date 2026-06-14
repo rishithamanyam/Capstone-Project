@@ -14,9 +14,14 @@
     {
       "label": "☕ Backend: Spring Boot",
       "type": "shell",
-      "command": "mvn spring-boot:run",
+      "command": "mvnw.cmd",
+      "args": ["spring-boot:run"],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "shell": {
+          "executable": "cmd.exe",
+          "args": ["/d", "/c"]
+        }
       },
       "problemMatcher": [
         {
@@ -48,7 +53,11 @@
       "type": "shell",
       "command": "npm install && npx ng serve --port 4200 --open",
       "options": {
-        "cwd": "${workspaceFolder}/frontend"
+        "cwd": "${workspaceFolder}/frontend",
+        "shell": {
+          "executable": "cmd.exe",
+          "args": ["/d", "/c"]
+        }
       },
       "problemMatcher": [
         {
@@ -79,7 +88,13 @@
     {
       "label": "🛑 Stop All Servers",
       "type": "shell",
-      "command": "pkill -f 'spring-boot:run' 2>/dev/null; pkill -f 'ng serve' 2>/dev/null; echo 'Servers stopped'",
+      "command": "taskkill /F /IM java.exe /T & taskkill /F /IM node.exe /T & echo Servers stopped",
+      "options": {
+        "shell": {
+          "executable": "cmd.exe",
+          "args": ["/d", "/c"]
+        }
+      },
       "problemMatcher": [],
       "presentation": {
         "reveal": "silent",
