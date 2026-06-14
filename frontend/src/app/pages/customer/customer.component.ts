@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { TopbarComponent } from '../../shared/topbar/topbar.component';
 import { ChatbotComponent } from '../../shared/chatbot/chatbot.component';
@@ -19,6 +20,8 @@ import { Outage } from '../../models/outage.model';
   templateUrl: './customer.component.html'
 })
 export class CustomerComponent implements OnInit {
+  activeTab = 'dashboard';
+
   stats: any = {};
   tickets: Ticket[] = [];
   outageAlert?: Outage;
@@ -36,16 +39,35 @@ export class CustomerComponent implements OnInit {
     private ticketSvc: TicketService,
     private outageSvc: OutageService,
     private toast: ToastService,
-    private auth: AuthService
+    private auth: AuthService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      const tab = params['tab'] || 'dashboard';
+      this.activeTab = tab;
+      if (tab === 'dashboard') this.loadDashboard();
+      if (tab === 'tickets') this.loadTickets();
+    });
+  }
+
+  setTab(tab: string) {
+    this.router.navigate(['/customer'], { queryParams: { tab } });
+  }
+
+  loadDashboard() {
     this.analyticsSvc.customer().subscribe(d => { this.stats = d; });
-    this.ticketSvc.getAll().subscribe(d => { this.tickets = d; });
     this.outageSvc.getActive().subscribe(outages => {
       const user = this.auth.getUser();
       this.outageAlert = outages.find(o => o.location === user?.location);
     });
+    this.loadTickets();
+  }
+
+  loadTickets() {
+    this.ticketSvc.getAll().subscribe(d => { this.tickets = d; });
   }
 
   submitTicket() {
@@ -58,7 +80,7 @@ export class CustomerComponent implements OnInit {
         this.toast.success('Ticket raised successfully!');
         this.showTicketModal = false;
         this.ticketForm = { domain: '', subject: '', description: '' };
-        this.ticketSvc.getAll().subscribe(d => { this.tickets = d; });
+        this.loadTickets();
         this.analyticsSvc.customer().subscribe(d => { this.stats = d; });
       },
       error: () => this.toast.error('Failed to raise ticket')
@@ -77,7 +99,7 @@ export class CustomerComponent implements OnInit {
       next: () => {
         this.toast.success('Thank you for your feedback!');
         this.showRateModal = false;
-        this.ticketSvc.getAll().subscribe(d => { this.tickets = d; });
+        this.loadTickets();
       },
       error: () => this.toast.error('Rating failed')
     });
@@ -86,6 +108,6 @@ export class CustomerComponent implements OnInit {
   stars(n: number) { return Array(n).fill('⭐').join(''); }
   statusClass(s: string) { const m: Record<string,string>={OPEN:'b-amber',IN_PROGRESS:'b-blue',CLOSED:'b-green'}; return 'badge '+(m[s]||'b-gray'); }
   statusLabel(s: string) { return s==='IN_PROGRESS'?'In Progress':s.charAt(0)+s.slice(1).toLowerCase(); }
-  fmtDate(iso?: string) { if(!iso)return'—'; return new Date(iso).toLocaleDateString('en-US',{month:'short',day:'2-digit',year:'numeric'}); }
+  fmtDate(iso?: string) { if(!iso)return'—'; return new Date(iso).toLocaleDateString('en-IN',{month:'short',day:'2-digit',year:'numeric'}); }
   fmtHrs(h?: number) { if(h==null)return'—'; const hr=Math.floor(h); const m=Math.round((h-hr)*60); return hr>0?`${hr}h ${m}m`:`${m}m`; }
 }

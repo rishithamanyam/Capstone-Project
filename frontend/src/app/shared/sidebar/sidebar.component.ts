@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { ChatService } from '../../services/chat.service';
 
 interface NavItem { icon: string; label: string; route: string; }
 
@@ -42,7 +43,7 @@ export class SidebarComponent {
     ],
   };
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router, private chat: ChatService) {}
 
   get user() { return this.auth.getUser(); }
   get role()  { return this.user?.role || ''; }
@@ -56,20 +57,18 @@ export class SidebarComponent {
   navigate(route: string) {
     if (route === 'profile') { this.router.navigate(['/profile']); return; }
 
-    if (route === 'customer-support') {
-      const win = document.getElementById('chat-window');
-      if (win) win.classList.add('open');
-      return;
-    }
+    if (route === 'customer-support') { this.chat.open(); return; }
 
     const queryParamRoutes: Record<string, { path: string; tab: string }> = {
-      'admin':         { path: '/admin',           tab: 'dashboard' },
-      'admin-emp':     { path: '/admin',           tab: 'employees' },
-      'admin-tickets': { path: '/admin',           tab: 'tickets'   },
-      'admin-outages': { path: '/admin',           tab: 'outages'   },
-      'rep':           { path: '/representative',  tab: 'dashboard' },
-      'rep-tickets':   { path: '/representative',  tab: 'tickets'   },
-      'rep-search':    { path: '/representative',  tab: 'search'    },
+      'admin':             { path: '/admin',           tab: 'dashboard' },
+      'admin-emp':         { path: '/admin',           tab: 'employees' },
+      'admin-tickets':     { path: '/admin',           tab: 'tickets'   },
+      'admin-outages':     { path: '/admin',           tab: 'outages'   },
+      'rep':               { path: '/representative',  tab: 'dashboard' },
+      'rep-tickets':       { path: '/representative',  tab: 'tickets'   },
+      'rep-search':        { path: '/representative',  tab: 'search'    },
+      'customer':          { path: '/customer',        tab: 'dashboard' },
+      'customer-tickets':  { path: '/customer',        tab: 'tickets'   },
     };
     const qr = queryParamRoutes[route];
     if (qr) {
@@ -80,7 +79,6 @@ export class SidebarComponent {
     const scrollTargets: Record<string, string> = {
       'manager-tickets': 'tickets',
       'manager-outage':  'outage',
-      'customer-tickets':'tickets-section',
     };
     const sectionId = scrollTargets[route];
     if (sectionId) {

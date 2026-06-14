@@ -1,6 +1,7 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ChatService } from '../../services/chat.service';
 
 interface Message { text: string; from: 'bot' | 'user'; }
 
@@ -33,12 +34,20 @@ function getBotResponse(input: string): string {
   imports: [CommonModule, FormsModule],
   templateUrl: './chatbot.component.html'
 })
-export class ChatbotComponent {
+export class ChatbotComponent implements OnInit {
   @ViewChild('msgContainer') msgContainer!: ElementRef;
 
   isOpen = false;
   messages: Message[] = [];
   inputText = '';
+
+  constructor(private chat: ChatService) {}
+
+  ngOnInit() {
+    this.chat.open$.subscribe(() => {
+      if (!this.isOpen) this.toggle();
+    });
+  }
 
   toggle() {
     this.isOpen = !this.isOpen;
