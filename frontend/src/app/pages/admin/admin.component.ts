@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Chart, registerables } from 'chart.js';
 import { SidebarComponent } from '../../shared/sidebar/sidebar.component';
 import { TopbarComponent } from '../../shared/topbar/topbar.component';
@@ -43,11 +44,12 @@ export class AdminComponent implements OnInit {
 
   private locationChart?: Chart;
   private domainChart?: Chart;
+  private cachedStats: any = null;
 
   @ViewChild('locationCanvas') locationCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('domainCanvas')   domainCanvas!: ElementRef<HTMLCanvasElement>;
 
-  readonly COLORS = ['#d61f8b','#f06292','#059669','#d97706','#dc2626','#0891b2'];
+  readonly COLORS = ['#8b5cf6','#c4b5fd','#059669','#d97706','#dc2626','#0891b2'];
   readonly LOCATIONS = ['New York','Los Angeles','Chicago','Houston','Phoenix','Philadelphia'];
   readonly DOMAINS   = ['Internet Services','TV & Cable','Phone Services','Mobile Data','Technical Support'];
 
@@ -57,31 +59,46 @@ export class AdminComponent implements OnInit {
     private userSvc: UserService,
     private outageSvc: OutageService,
     private toast: ToastService,
+    private route: ActivatedRoute,
+    private router: Router,
     public auth: AuthService
   ) {}
 
-  ngOnInit() { this.loadDashboard(); }
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      const tab = params['tab'] || 'dashboard';
+      this.activeTab = tab;
+      if (tab === 'dashboard') {
+        if (this.cachedStats) {
+          setTimeout(() => this.buildCharts(this.cachedStats), 100);
+        } else {
+          this.loadDashboard();
+        }
+      }
+      if (tab === 'employees') this.loadEmployees();
+      if (tab === 'tickets')   this.loadTickets();
+      if (tab === 'outages')   this.loadOutages();
+    });
+  }
 
   setTab(tab: string) {
-    this.activeTab = tab;
-    if (tab === 'employees') this.loadEmployees();
-    if (tab === 'tickets')   this.loadTickets();
-    if (tab === 'outages')   this.loadOutages();
+    this.router.navigate(['/admin'], { queryParams: { tab } });
   }
 
   loadDashboard() {
     this.analyticsSvc.admin().subscribe(d => {
-      this.stats = d;
+      this.stats       = d;
+      this.cachedStats = d;
       setTimeout(() => this.buildCharts(d), 100);
     });
     this.outageSvc.getAll().subscribe(d => { this.outages = d; });
   }
 
   buildCharts(stats: any) {
-    if (this.locationChart) this.locationChart.destroy();
-    if (this.domainChart)   this.domainChart.destroy();
+    if (this.locationChart) { this.locationChart.destroy(); this.locationChart = undefined; }
+    if (this.domainChart)   { this.domainChart.destroy();   this.domainChart   = undefined; }
 
-    if (stats.locationTickets && this.locationCanvas?.nativeElement) {
+    if (stats?.locationTickets && this.locationCanvas?.nativeElement) {
       const labels = Object.keys(stats.locationTickets);
       const data   = Object.values(stats.locationTickets) as number[];
       this.locationChart = new Chart(this.locationCanvas.nativeElement, {
@@ -91,7 +108,7 @@ export class AdminComponent implements OnInit {
       });
     }
 
-    if (stats.domainTickets && this.domainCanvas?.nativeElement) {
+    if (stats?.domainTickets && this.domainCanvas?.nativeElement) {
       const labels = Object.keys(stats.domainTickets);
       const data   = Object.values(stats.domainTickets) as number[];
       this.domainChart = new Chart(this.domainCanvas.nativeElement, {
@@ -128,6 +145,7 @@ export class AdminComponent implements OnInit {
   openAddEmp() {
     this.editingEmpId = null;
     this.empForm = { name: '', email: '', phone: '', role: 'MANAGER', managerId: null };
+    if (this.managers.length === 0) this.loadEmployees();
     this.showEmpModal = true;
   }
 

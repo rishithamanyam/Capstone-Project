@@ -1,5 +1,5 @@
 <div class="app">
-  <app-sidebar activePage="admin"></app-sidebar>
+  <app-sidebar [activePage]="activeTab === 'dashboard' ? 'admin' : 'admin-' + (activeTab === 'employees' ? 'emp' : activeTab)"></app-sidebar>
 
   <div class="main">
     <app-topbar title="Admin Dashboard" breadcrumb="Home / Dashboard"></app-topbar>

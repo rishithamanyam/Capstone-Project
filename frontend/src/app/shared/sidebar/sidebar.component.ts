@@ -55,33 +55,43 @@ export class SidebarComponent {
 
   navigate(route: string) {
     if (route === 'profile') { this.router.navigate(['/profile']); return; }
+
     if (route === 'customer-support') {
-      const fab = document.getElementById('chat-fab') as HTMLElement;
-      const win = document.getElementById('chat-window') as HTMLElement;
+      const win = document.getElementById('chat-window');
       if (win) win.classList.add('open');
-      if (fab) fab.scrollIntoView();
       return;
     }
-    const scrollMap: Record<string, string> = {
-      'admin-emp':      'section-employees',
-      'admin-tickets':  'section-tickets',
-      'admin-outages':  'section-outages',
-      'manager-tickets':'tickets',
-      'manager-outage': 'outage',
-      'rep-tickets':    'tickets',
-      'rep-search':     'search',
+
+    const adminTabRoutes: Record<string, string> = {
+      'admin':         'dashboard',
+      'admin-emp':     'employees',
+      'admin-tickets': 'tickets',
+      'admin-outages': 'outages',
+    };
+    if (adminTabRoutes[route] !== undefined) {
+      this.router.navigate(['/admin'], { queryParams: { tab: adminTabRoutes[route] } });
+      return;
+    }
+
+    const scrollTargets: Record<string, string> = {
+      'manager-tickets': 'tickets',
+      'manager-outage':  'outage',
+      'rep-tickets':     'tickets',
+      'rep-search':      'search',
       'customer-tickets':'tickets-section',
     };
-    const sectionId = scrollMap[route];
+    const sectionId = scrollTargets[route];
     if (sectionId) {
-      const el = document.getElementById(sectionId);
-      if (el) { el.scrollIntoView({ behavior: 'smooth' }); }
+      setTimeout(() => {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+      }, 50);
       return;
     }
-    const routeMap: Record<string, string> = {
+
+    const pageRoutes: Record<string, string> = {
       admin: '/admin', manager: '/manager', rep: '/representative', customer: '/customer'
     };
-    if (routeMap[route]) this.router.navigate([routeMap[route]]);
+    if (pageRoutes[route]) this.router.navigate([pageRoutes[route]]);
   }
 
   logout() { this.auth.logout(); }
