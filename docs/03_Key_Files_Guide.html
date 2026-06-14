@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NexCare — Key Files Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:#fff;color:#1e293b;font-size:13.5px;line-height:1.75}
+  .cover{background:linear-gradient(145deg,#0c2a1a,#065f46,#059669);min-height:220px;padding:52px 48px 40px;page-break-after:always}
+  .cover h1{font-size:40px;font-weight:900;color:#fff;letter-spacing:-.03em}
+  .cover h1 span{color:#6ee7b7}
+  .cover p{font-size:14px;color:rgba(255,255,255,.6);margin-top:10px}
+
+  .content{max-width:820px;margin:0 auto;padding:52px 48px}
+  .section{margin-bottom:46px}
+
+  .section-title{font-size:17px;font-weight:800;color:#1e1b4b;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid #d1fae5;display:flex;align-items:center;gap:10px}
+  .section-icon{font-size:20px}
+
+  .file-card{border:1.5px solid #e2e8f0;border-radius:13px;margin-bottom:14px;overflow:hidden}
+  .file-head{background:#f8faff;padding:12px 18px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:10px}
+  .file-path{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:#1e1b4b}
+  .file-tag{font-size:10px;font-weight:800;padding:2px 9px;border-radius:6px;letter-spacing:.05em;flex-shrink:0}
+  .ft-core{background:#fce7f3;color:#9d0b6b}
+  .ft-config{background:#ede9fe;color:#5b21b6}
+  .ft-page{background:#dbeafe;color:#1e40af}
+  .ft-shared{background:#dcfce7;color:#14532d}
+  .ft-svc{background:#fef3c7;color:#92400e}
+  .ft-model{background:#f0fdf4;color:#166534}
+  .ft-java{background:#ffedd5;color:#7c2d12}
+  .file-body{padding:14px 18px}
+  .file-body p{font-size:13px;color:#374151;margin-bottom:6px}
+  .file-body p:last-child{margin-bottom:0}
+  .what{font-size:11px;font-weight:700;color:#059669;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
+  .why{font-size:11px;font-weight:700;color:#7c3aed;text-transform:uppercase;letter-spacing:.07em;margin:8px 0 5px}
+
+  code{font-family:'JetBrains Mono',monospace;font-size:11.5px;background:#1e1b4b;color:#c4b5fd;padding:2px 6px;border-radius:4px}
+
+  .page-break{page-break-before:always;padding-top:52px}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div style="font-size:50px;margin-bottom:18px">📁</div>
+  <h1>Key Files <span>Guide</span></h1>
+  <p>Every important file — what it does, why it exists, and when to look at it</p>
+</div>
+
+<div class="content">
+
+<!-- ══════ BACKEND FILES ══════ -->
+<div class="section">
+  <div class="section-title"><span class="section-icon">☕</span>Backend — Spring Boot Files</div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-core">ENTRY POINT</span><span class="file-path">src/main/java/com/wipro/csd/CsdApplication.java</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>This is the main class of the entire Spring Boot application. It has the <code>public static void main()</code> method that starts the server. Without this file, nothing runs.</p>
+      <div class="why">Why it matters</div>
+      <p>If someone asks "where does the application start?" — point to this file. It's the first thing Java executes.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-config">CONFIG</span><span class="file-path">src/main/resources/application.properties</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>All application settings live here: the server port (8080), database connection (H2), JWT secret key, and token expiry time. Spring Boot reads this file automatically on startup.</p>
+      <div class="why">Why it matters</div>
+      <p>This is the single place to change the database, port, or security settings. To switch to MySQL, you would only change 3 lines in this file.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-config">SECURITY</span><span class="file-path">src/main/java/com/wipro/csd/config/SecurityConfig.java</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>Configures Spring Security for the entire application. Defines which endpoints are public (login, register) and which require authentication. Sets up JWT filter that validates the token on every request. Also configures password encryption using BCrypt.</p>
+      <div class="why">Why it matters</div>
+      <p>This is the backbone of all security. If you're asked "how is the API secured?" — this is the answer. Every API call (except login/register) must pass through the JWT validation filter defined here.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-config">SEED DATA</span><span class="file-path">src/main/java/com/wipro/csd/config/DataInitializer.java</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>Runs automatically on startup (via <code>@PostConstruct</code>). Creates all demo users (1 Admin, 2 Managers, 4 Reps, 4 Customers), 10 sample tickets, 2 outages, and 4 notifications. Only runs once — skips if data already exists.</p>
+      <div class="why">Why it matters</div>
+      <p>This is why the app has data immediately after running — no manual database setup needed. All passwords are encrypted using BCryptPasswordEncoder before saving.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-core">AUTH API</span><span class="file-path">src/main/java/com/wipro/csd/controller/AuthController.java</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>Handles <code>POST /api/auth/login</code> and <code>POST /api/auth/register</code>. On successful login, generates a JWT token and returns the user object plus token to the frontend. On registration, creates a new CUSTOMER user.</p>
+      <div class="why">Why it matters</div>
+      <p>The entry point for all authentication. When a user clicks "Sign In", this is the Java code that runs on the server to validate credentials and issue the token.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-java">MODEL</span><span class="file-path">src/main/java/com/wipro/csd/model/User.java</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>The JPA entity representing a user in the database. Defines all fields: id, name, email, password, role (ADMIN/MANAGER/REPRESENTATIVE/CUSTOMER), phone, location, managerId, firstLogin, createdAt. The <code>@Entity</code> annotation tells Spring to create a database table for this class.</p>
+      <div class="why">Why it matters</div>
+      <p>Every user in the system (admin, manager, rep, customer) is stored as a row in the Users table defined by this class.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-java">MODEL</span><span class="file-path">src/main/java/com/wipro/csd/model/Ticket.java</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>JPA entity for support tickets. Fields include: customerId, customerName, domain, subject, description, status (OPEN/IN_PROGRESS/CLOSED), repId, repName, responseTimeHrs, resolutionTimeHrs, rating, createdAt, resolvedAt.</p>
+      <div class="why">Why it matters</div>
+      <p>The core business entity of the whole application. Every ticket raised by a customer, assigned to a rep, and closed gets stored here.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-java">ANALYTICS</span><span class="file-path">src/main/java/com/wipro/csd/controller/AnalyticsController.java</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>Provides <code>GET /api/analytics/admin</code>, <code>/manager</code>, <code>/rep</code>, <code>/customer</code>. Each endpoint aggregates data (counts, averages) and returns a map of statistics that the frontend uses for the dashboard cards and charts.</p>
+      <div class="why">Why it matters</div>
+      <p>All the numbers on the dashboard cards (Total Customers: 4, Open Tickets: 3, Avg Satisfaction: 4.3) come from this controller.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ FRONTEND STRUCTURE ══════ -->
+<div class="section page-break">
+  <div class="section-title"><span class="section-icon">🅰️</span>Frontend — Angular Key Files</div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-config">ROUTING</span><span class="file-path">frontend/src/app/app.routes.ts</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>Defines all the URL routes of the application: <code>/login</code>, <code>/admin</code>, <code>/manager</code>, <code>/representative</code>, <code>/customer</code>, <code>/profile</code>. Each route is lazy-loaded and protected by the auth guard with a specific role requirement.</p>
+      <div class="why">Why it matters</div>
+      <p>This is the map of the application. If you want to add a new page, this is where you register it. The <code>data: { role: 'ADMIN' }</code> property on each route is what the auth guard reads to enforce access control.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-config">APP CONFIG</span><span class="file-path">frontend/src/app/app.config.ts</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>Bootstraps the Angular application. Registers the router (with hash-based URLs), the HTTP client, and the JWT interceptor as a provider. This is the Angular equivalent of Spring's application context setup.</p>
+      <div class="why">Why it matters</div>
+      <p>The JWT interceptor is registered here globally — <code>withInterceptors([jwtInterceptor])</code>. Without this, no API calls would include the auth token.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-core">JWT INTERCEPTOR</span><span class="file-path">frontend/src/app/interceptors/jwt.interceptor.ts</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>Intercepts every HTTP request going out of Angular. Reads the JWT token from sessionStorage and automatically adds <code>Authorization: Bearer &lt;token&gt;</code> to the request headers. If no token exists, the request is sent as-is (for login/register endpoints).</p>
+      <div class="why">Why it matters</div>
+      <p>This is what makes protected API calls work. Without the interceptor, every call to <code>/api/tickets</code>, <code>/api/users</code>, etc. would fail with 401 Unauthorized because no token is sent.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-core">AUTH GUARD</span><span class="file-path">frontend/src/app/guards/auth.guard.ts</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>A function that runs before Angular renders any protected route. Checks: (1) Is there a token in sessionStorage? (2) Does the user's role match the required role for the route? If either check fails, redirects to <code>/login</code>.</p>
+      <div class="why">Why it matters</div>
+      <p>Prevents unauthorized users from accessing pages. This is the frontend's first line of defense — even before the backend API is called.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-config">PROXY</span><span class="file-path">frontend/proxy.conf.json</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>Tells the Angular development server to forward all requests that start with <code>/api</code> to <code>http://localhost:8080</code>. So when Angular calls <code>/api/auth/login</code>, it silently becomes <code>http://localhost:8080/api/auth/login</code>.</p>
+      <div class="why">Why it matters</div>
+      <p>This solves the CORS problem. Without this, the browser would block requests from port 4200 to port 8080 as a security measure.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-config">GLOBAL STYLES</span><span class="file-path">frontend/src/styles.css</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>The single global stylesheet for the entire application (~480 lines). Defines CSS variables (lilac theme colours), card styles, table styles, sidebar layout, button styles, modal styles, badge colours, animations, and the login page design.</p>
+      <div class="why">Why it matters</div>
+      <p>All visual styling lives here. If the interviewer asks about the lilac theme, animations, or layout — this is the file to point to. Key CSS variable: <code>--primary: #8b5cf6</code>.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-svc">AUTH SERVICE</span><span class="file-path">frontend/src/app/services/auth.service.ts</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>Handles all authentication logic on the frontend: <code>login()</code>, <code>register()</code>, <code>logout()</code>, <code>setSession()</code> (saves token to sessionStorage), <code>getUser()</code>, <code>getToken()</code>, <code>updateProfile()</code>, <code>changePassword()</code>.</p>
+      <div class="why">Why it matters</div>
+      <p>The single source of truth for auth state on the frontend. Every component that needs to know who is logged in uses this service.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ PAGE COMPONENTS ══════ -->
+<div class="section page-break">
+  <div class="section-title"><span class="section-icon">📄</span>Page Components</div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-page">PAGE</span><span class="file-path">frontend/src/app/pages/login/login.component.ts + .html</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>The full-page lilac login screen with Sign In / Sign Up cards. Clicking a card triggers a smooth CSS animation filling the page with the appropriate form. Sign In calls <code>AuthService.login()</code> and redirects by role. Sign Up calls <code>AuthService.register()</code>.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-page">PAGE</span><span class="file-path">frontend/src/app/pages/admin/admin.component.ts + .html</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>Admin dashboard with four tabs (Dashboard, Employees, Tickets, Outages) controlled by Angular query params. Uses Chart.js for bar and doughnut charts. Includes modals for adding/editing employees and reporting outages.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-page">PAGE</span><span class="file-path">frontend/src/app/pages/representative/representative.component.ts + .html</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>Rep dashboard with three tabs (Dashboard, My Tickets, Search). The ticket update modal changes ticket status from OPEN → IN_PROGRESS → CLOSED. The search feature uses a debounced input (400ms delay) to search customers by name, phone, or ID.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-page">PAGE</span><span class="file-path">frontend/src/app/pages/customer/customer.component.ts + .html</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>Customer dashboard with two tabs (Dashboard, My Tickets). Dashboard shows stats, outage alert (if any in their city), plans, and About section. My Tickets tab shows ticket history with the ability to rate closed tickets and raise new ones.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-shared">SHARED</span><span class="file-path">frontend/src/app/shared/sidebar/sidebar.component.ts + .html</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>The left navigation sidebar shared by all dashboards. Reads the logged-in user's role to display role-specific navigation items. All navigation uses Angular Router with query params. The avatar at the bottom logs the user out on click. Live Support routes through ChatService to open the chatbot.</p>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-head"><span class="file-tag ft-shared">SHARED</span><span class="file-path">frontend/src/app/shared/chatbot/chatbot.component.ts + .html</span></div>
+    <div class="file-body">
+      <div class="what">What it does</div>
+      <p>The floating 💬 chat assistant. Opens via a ChatService observable (so the sidebar can trigger it). Has 12 keyword-response pairs covering common customer issues. Unknown messages fall back to a ticket-raising suggestion. Auto-scrolls to the latest message.</p>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

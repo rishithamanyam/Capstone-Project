@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NexCare — How to Run Locally (Beginner Guide)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:#fff;color:#1e293b;font-size:13.5px;line-height:1.75}
+  .cover{background:linear-gradient(145deg,#1a0533,#2e1065,#4c1d95);min-height:260px;padding:56px 48px 48px;display:flex;align-items:flex-start;gap:24px;page-break-after:always}
+  .cover-icon{font-size:60px;line-height:1}
+  .cover-text h1{font-size:42px;font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1.1}
+  .cover-text h1 span{color:#c4b5fd}
+  .cover-text p{font-size:15px;color:rgba(255,255,255,.6);margin-top:10px}
+  .cover-pills{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+  .pill{background:rgba(196,181,253,.18);border:1px solid rgba(196,181,253,.3);color:#c4b5fd;font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 12px;border-radius:100px}
+
+  .content{max-width:820px;margin:0 auto;padding:52px 48px}
+
+  h2{font-size:18px;font-weight:800;color:#1e1b4b;margin-bottom:16px;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+  h2 .num{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#6d28d9,#8b5cf6);color:#fff;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  h3{font-size:14px;font-weight:700;color:#4c1d95;margin:18px 0 8px}
+  p{color:#475569;margin-bottom:10px;font-size:13.5px}
+  strong{color:#1e1b4b}
+
+  .section{margin-bottom:48px;border-bottom:1.5px solid #f0ebff;padding-bottom:40px}
+  .section:last-child{border-bottom:none}
+
+  .step-card{border:1.5px solid #e8e0fa;border-radius:14px;overflow:hidden;margin-bottom:18px}
+  .step-card-head{background:linear-gradient(90deg,#f5f0ff,#faf7ff);padding:13px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #e8e0fa}
+  .step-n{width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .step-title{font-size:13.5px;font-weight:700;color:#1e1b4b}
+  .step-body{padding:16px 18px}
+  .step-body p{font-size:13px;margin-bottom:8px}
+  .step-body p:last-child{margin-bottom:0}
+
+  code{font-family:'JetBrains Mono',monospace;font-size:12px;background:#1e1b4b;color:#c4b5fd;padding:2px 7px;border-radius:5px}
+  .code-block{background:#0f172a;border-radius:10px;padding:16px 18px;margin:10px 0;border-left:3px solid #7c3aed}
+  .code-block pre{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:#e2e8f0;line-height:1.9;white-space:pre-wrap}
+  .code-block .c{color:#4a5568}.code-block .g{color:#68d391}.code-block .y{color:#f6e05e}.code-block .v{color:#c4b5fd}
+
+  .box{border-radius:11px;padding:13px 16px;margin:12px 0;display:flex;gap:10px;font-size:13px}
+  .box-icon{font-size:17px;flex-shrink:0;line-height:1.4}
+  .info{background:#eff6ff;border:1.5px solid #bfdbfe;color:#1d4ed8}
+  .warn{background:#fffbeb;border:1.5px solid #fde68a;color:#78350f}
+  .ok  {background:#f0fdf4;border:1.5px solid #bbf7d0;color:#14532d}
+  .tip {background:#fdf4ff;border:1.5px solid #e9d5ff;color:#581c87}
+
+  .what-box{background:#f8f5ff;border:1.5px solid #ede9fe;border-radius:11px;padding:14px 18px;margin:12px 0}
+  .what-box .what-label{font-size:10px;font-weight:800;color:#7c3aed;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
+  .what-box p{font-size:12.5px;color:#4c1d95;margin:0}
+
+  .cred-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px}
+  .cred-table th{background:linear-gradient(90deg,#4c1d95,#6d28d9);color:#fff;padding:9px 14px;text-align:left;font-size:11.5px;font-weight:700;letter-spacing:.04em}
+  .cred-table tr:nth-child(even){background:#faf8ff}
+  .cred-table td{padding:9px 14px;border-bottom:1px solid #f0ebff;vertical-align:middle}
+  .badge{display:inline-block;padding:2px 9px;border-radius:6px;font-size:11px;font-weight:700}
+  .ba{background:#fce7f3;color:#9d0b6b}.bm{background:#ede9fe;color:#5b21b6}.br{background:#e0e7ff;color:#3730a3}.bc{background:#ecfdf5;color:#065f46}
+
+  .link-box{display:inline-flex;align-items:center;gap:6px;background:#f0ebff;border:1.5px solid #ddd6fe;border-radius:8px;padding:5px 13px;font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:600;color:#5b21b6;margin:3px}
+
+  .screen-mock{background:#1e293b;border-radius:10px;padding:14px 18px;margin:10px 0}
+  .screen-mock .s-bar{display:flex;gap:6px;margin-bottom:12px}
+  .screen-mock .s-dot{width:10px;height:10px;border-radius:50%}
+  .sd-r{background:#ff5f57}.sd-y{background:#ffbd2e}.sd-g{background:#28c840}
+  .screen-mock pre{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#94a3b8;line-height:1.8;white-space:pre-wrap}
+  .screen-mock .s-ok{color:#68d391}.screen-mock .s-dim{color:#4a5568}
+
+  .checklist{list-style:none;margin:8px 0}
+  .checklist li{display:flex;gap:10px;padding:6px 0;border-bottom:1px solid #f5f0ff;font-size:13px;color:#374151}
+  .checklist li:last-child{border-bottom:none}
+  .checklist li::before{content:'☐';color:#a78bfa;font-size:14px;flex-shrink:0}
+
+  .page-break{page-break-before:always;padding-top:52px}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-icon">🖥️</div>
+  <div class="cover-text">
+    <h1>How to Run <span>NexCare</span><br>on Your Computer</h1>
+    <p>Complete step-by-step guide — no prior experience needed</p>
+    <div class="cover-pills">
+      <span class="pill">Beginner Friendly</span>
+      <span class="pill">Spring Boot + Angular</span>
+      <span class="pill">localhost:4200</span>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ─────────────────────────────── WHAT IS LOCALHOST ─── -->
+<div class="section">
+  <h2><span class="num">0</span>Understanding the Basics First</h2>
+
+  <div class="what-box">
+    <div class="what-label">What is localhost?</div>
+    <p>When you run a website on your own computer, it doesn't go on the internet — it runs privately on your machine. "localhost" is just a name your computer uses to refer to itself. The number after it (like :4200 or :8080) is the port — think of it as a door number in a building. Port 4200 is where you view the app. Port 8080 is where the backend (data) lives behind the scenes.</p>
+  </div>
+
+  <div class="what-box">
+    <div class="what-label">What is a Terminal / Command Prompt?</div>
+    <p>A Terminal is a text-based window where you type commands to control your computer. On Windows it's called "Command Prompt" or "PowerShell". On Mac it's called "Terminal". You don't need to be an expert — you will just copy and paste the commands from this guide.</p>
+  </div>
+
+  <div class="what-box">
+    <div class="what-label">Why do we need two terminals?</div>
+    <p>NexCare has two parts running at the same time: the <strong>backend</strong> (Java/Spring Boot, handles data) and the <strong>frontend</strong> (Angular, the visual website). Each needs its own terminal window to run. Think of it like two engines in a car — both must be on for the car to drive.</p>
+  </div>
+</div>
+
+<!-- ─────────────────────────────── STEP 1: INSTALL ─── -->
+<div class="section">
+  <h2><span class="num">1</span>Install the Required Software</h2>
+  <p>You need to install these <strong>four tools</strong> before running the project. Do this only once — you won't need to repeat it.</p>
+
+  <div class="step-card">
+    <div class="step-card-head"><div class="step-n">A</div><div class="step-title">Install Java 17 (JDK)</div></div>
+    <div class="step-body">
+      <p>Java is needed to run the backend (Spring Boot).</p>
+      <p>1. Go to: <span class="link-box">https://adoptium.net</span></p>
+      <p>2. Click <strong>"Latest LTS Release"</strong> → select <strong>Temurin 17</strong></p>
+      <p>3. Download the installer for your OS (Windows .msi or Mac .pkg)</p>
+      <p>4. Run the installer and click Next → Next → Finish</p>
+      <p>5. To verify it worked, open a terminal and type:</p>
+      <div class="code-block"><pre>java --version</pre></div>
+      <p>You should see something like: <code>openjdk 17.0.x …</code></p>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-card-head"><div class="step-n">B</div><div class="step-title">Install Maven</div></div>
+    <div class="step-body">
+      <p>Maven is a build tool for Java projects.</p>
+      <p>1. Go to: <span class="link-box">https://maven.apache.org/download.cgi</span></p>
+      <p>2. Download <strong>"Binary zip archive"</strong> (the .zip file)</p>
+      <p>3. Extract it to a folder like <code>C:\Program Files\Maven</code></p>
+      <p>4. Add Maven's <code>bin</code> folder to your system PATH environment variable</p>
+      <p>5. Verify:</p>
+      <div class="code-block"><pre>mvn --version</pre></div>
+      <div class="box info"><span class="box-icon">💡</span><div><strong>Easier option (Mac):</strong> If you have Homebrew, just run <code>brew install maven</code> in a terminal.</div></div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-card-head"><div class="step-n">C</div><div class="step-title">Install Node.js</div></div>
+    <div class="step-body">
+      <p>Node.js is needed to run the Angular frontend.</p>
+      <p>1. Go to: <span class="link-box">https://nodejs.org</span></p>
+      <p>2. Click the <strong>LTS</strong> version (the left green button)</p>
+      <p>3. Run the installer — click Next all the way through</p>
+      <p>4. Verify:</p>
+      <div class="code-block"><pre>node --version   <span class="c"># should show v18 or higher</span>
+npm --version    <span class="c"># should show 9 or higher</span></pre></div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-card-head"><div class="step-n">D</div><div class="step-title">Install Git</div></div>
+    <div class="step-body">
+      <p>Git is needed to download the project from GitHub.</p>
+      <p>1. Go to: <span class="link-box">https://git-scm.com/downloads</span></p>
+      <p>2. Download and run the installer for your OS</p>
+      <p>3. Verify:</p>
+      <div class="code-block"><pre>git --version</pre></div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────────────────────────────── STEP 2: DOWNLOAD ─── -->
+<div class="section page-break">
+  <h2><span class="num">2</span>Download the Project</h2>
+
+  <h3>How to open a terminal</h3>
+  <p><strong>On Mac:</strong> Press <code>Cmd + Space</code>, type "Terminal", press Enter</p>
+  <p><strong>On Windows:</strong> Press <code>Win key</code>, type "Command Prompt" or "PowerShell", press Enter</p>
+
+  <h3>Download (clone) the project</h3>
+  <p>In the terminal, type these commands one by one and press Enter after each:</p>
+  <div class="code-block"><pre><span class="c"># Go to your Desktop (or wherever you want to save the project)</span>
+cd Desktop
+
+<span class="c"># Download the project from GitHub</span>
+git clone https://github.com/rishithamanyam/Capstone-Project.git
+
+<span class="c"># Go into the project folder</span>
+cd Capstone-Project/SIMS</pre></div>
+
+  <div class="box ok"><span class="box-icon">✅</span><div>You now have the full project on your computer inside a folder called <strong>Capstone-Project</strong>.</div></div>
+
+  <h3>Open in VS Code</h3>
+  <p>Type this command in the same terminal:</p>
+  <div class="code-block"><pre>code .</pre></div>
+  <p>This opens the entire project in VS Code. (If <code>code .</code> doesn't work, open VS Code manually → File → Open Folder → select the SIMS folder.)</p>
+</div>
+
+<!-- ─────────────────────────────── STEP 3: BACKEND ─── -->
+<div class="section">
+  <h2><span class="num">3</span>Start the Backend (Spring Boot)</h2>
+
+  <div class="box info"><span class="box-icon">ℹ️</span><div>Make sure you are in the <strong>SIMS/</strong> folder in your terminal, not in any subfolder.</div></div>
+
+  <p>Type this command and press Enter:</p>
+  <div class="code-block"><pre><span class="c"># This downloads all Java libraries and starts the server</span>
+mvn spring-boot:run</pre></div>
+
+  <div class="box warn"><span class="box-icon">⏳</span><div><strong>First time only:</strong> Maven will download many libraries. This can take 2–5 minutes. Your internet must be on. You'll see lots of text scrolling — that's normal.</div></div>
+
+  <p>When the backend is ready, you will see this line in the terminal:</p>
+  <div class="screen-mock">
+    <div class="s-bar"><div class="s-dot sd-r"></div><div class="s-dot sd-y"></div><div class="s-dot sd-g"></div></div>
+    <pre><span class="s-dim">2024-01-15 10:23:45.123  INFO --- [main] c.w.c.CsdApplication:</span>
+<span class="s-ok">Started CsdApplication in 3.421 seconds (JVM running for 4.012)</span></pre>
+  </div>
+
+  <div class="box ok"><span class="box-icon">✅</span><div>The backend is now running on port 8080. <strong>Leave this terminal open.</strong> Do not close it while using the app.</div></div>
+
+  <div class="box tip"><span class="box-icon">🎯</span><div><strong>VS Code shortcut:</strong> Instead of typing the command, press <code>Ctrl+Shift+B</code> (or <code>Cmd+Shift+B</code> on Mac) and select <strong>"🚀 Run NexCare (Full Stack)"</strong> — this starts both backend AND frontend automatically.</div></div>
+</div>
+
+<!-- ─────────────────────────────── STEP 4: FRONTEND ─── -->
+<div class="section">
+  <h2><span class="num">4</span>Start the Frontend (Angular)</h2>
+
+  <div class="box warn"><span class="box-icon">⚠️</span><div>Open a <strong>new, second terminal window</strong> for this step. Do NOT close the first terminal.</div></div>
+
+  <p>In the new terminal, navigate to the frontend folder:</p>
+  <div class="code-block"><pre><span class="c"># Go into the frontend folder</span>
+cd Desktop/Capstone-Project/SIMS/frontend
+
+<span class="c"># Install frontend packages (first time only — takes ~1 minute)</span>
+npm install
+
+<span class="c"># Start the Angular development server</span>
+npx ng serve --port 4200 --open</pre></div>
+
+  <p>When Angular is ready, you will see:</p>
+  <div class="screen-mock">
+    <div class="s-bar"><div class="s-dot sd-r"></div><div class="s-dot sd-y"></div><div class="s-dot sd-g"></div></div>
+    <pre><span class="s-dim">Building...</span>
+<span class="s-ok">✔ Compiled successfully.</span>
+<span class="s-ok">** Angular Live Development Server is listening on localhost:4200 **</span></pre>
+  </div>
+
+  <div class="box ok"><span class="box-icon">✅</span><div>The browser will open automatically at <strong>http://localhost:4200</strong>. You should see the NexCare login page!</div></div>
+</div>
+
+<!-- ─────────────────────────────── STEP 5: USE THE APP ─── -->
+<div class="section page-break">
+  <h2><span class="num">5</span>Using the App</h2>
+
+  <p>The browser will show the NexCare landing page. Click <strong>Sign In</strong> and use these credentials:</p>
+
+  <table class="cred-table">
+    <tr><th>Role</th><th>Email</th><th>Password</th><th>What you can do</th></tr>
+    <tr><td><span class="badge ba">ADMIN</span></td><td><code>admin@csd.com</code></td><td><code>admin123</code></td><td>Manage employees, all tickets, outages, analytics</td></tr>
+    <tr><td><span class="badge bm">MANAGER</span></td><td><code>john.smith@csd.com</code></td><td><code>Welcome@123</code></td><td>View team tickets and outages</td></tr>
+    <tr><td><span class="badge br">REP</span></td><td><code>mike.rep@csd.com</code></td><td><code>Welcome@123</code></td><td>Update ticket statuses, search customers</td></tr>
+    <tr><td><span class="badge bc">CUSTOMER</span></td><td><code>alice@gmail.com</code></td><td><code>Customer@123</code></td><td>Raise tickets, check plans, live chat</td></tr>
+  </table>
+
+  <div class="box info"><span class="box-icon">💡</span><div>To logout and switch to a different account, click the user avatar (initials) at the bottom of the left sidebar.</div></div>
+
+  <h3>Navigation</h3>
+  <p>Use the sidebar on the left. Click any item — the page updates instantly without reloading (because Angular is a Single Page Application).</p>
+  <p>For the <strong>Admin</strong> dashboard specifically, clicking sidebar items switches between tabs: Dashboard, Employees, Tickets, and Outages.</p>
+</div>
+
+<!-- ─────────────────────────────── STEP 6: STOP ─── -->
+<div class="section">
+  <h2><span class="num">6</span>How to Stop the App</h2>
+  <p>When you're done, stop both terminals:</p>
+  <div class="step-card">
+    <div class="step-card-head"><div class="step-n">1</div><div class="step-title">Stop the Angular server (Terminal 2)</div></div>
+    <div class="step-body"><p>Click inside Terminal 2 and press <code>Ctrl + C</code> on your keyboard. Type <code>Y</code> if asked to confirm.</p></div>
+  </div>
+  <div class="step-card">
+    <div class="step-card-head"><div class="step-n">2</div><div class="step-title">Stop the Spring Boot server (Terminal 1)</div></div>
+    <div class="step-body"><p>Click inside Terminal 1 and press <code>Ctrl + C</code> on your keyboard.</p></div>
+  </div>
+  <div class="box tip"><span class="box-icon">🎯</span><div><strong>VS Code shortcut:</strong> Run Task → <strong>"🛑 Stop All Servers"</strong> to stop both at once.</div></div>
+</div>
+
+<!-- ─────────────────────────────── PROBLEMS ─── -->
+<div class="section">
+  <h2><span class="num">7</span>If Something Goes Wrong</h2>
+
+  <div class="step-card">
+    <div class="step-card-head"><div class="step-n">!</div><div class="step-title">"mvn: command not found" or "mvn is not recognized"</div></div>
+    <div class="step-body"><p>Maven is not installed properly. Re-do Step 1B and make sure you added Maven to your system PATH.</p></div>
+  </div>
+  <div class="step-card">
+    <div class="step-card-head"><div class="step-n">!</div><div class="step-title">Port 8080 already in use</div></div>
+    <div class="step-body"><p>Another app is using port 8080. On Mac, run <code>sudo lsof -i :8080</code> then <code>kill -9 [PID]</code>. On Windows, run <code>netstat -ano | findstr :8080</code> then <code>taskkill /PID [number] /F</code>.</p></div>
+  </div>
+  <div class="step-card">
+    <div class="step-card-head"><div class="step-n">!</div><div class="step-title">Login says "Invalid credentials" even with demo accounts</div></div>
+    <div class="step-body"><p>The database may already have data from a previous run. Delete the <code>csddb.mv.db</code> file in the SIMS folder and restart the backend. It will re-create fresh demo data.</p></div>
+  </div>
+  <div class="step-card">
+    <div class="step-card-head"><div class="step-n">!</div><div class="step-title">Browser shows blank white page</div></div>
+    <div class="step-body"><p>Angular may still be compiling. Wait 30 seconds then refresh. If still blank, check Terminal 2 for error messages.</p></div>
+  </div>
+  <div class="step-card">
+    <div class="step-card-head"><div class="step-n">!</div><div class="step-title">"npm install" fails</div></div>
+    <div class="step-body"><p>Delete the <code>node_modules</code> folder inside <code>frontend/</code> and run <code>npm install</code> again. Make sure your internet connection is working.</p></div>
+  </div>
+</div>
+
+<!-- ─────────────────────────────── QUICK CHECKLIST ─── -->
+<div class="section">
+  <h2><span class="num">8</span>Quick Pre-Demo Checklist</h2>
+  <p>Run through this list 10 minutes before your presentation:</p>
+  <ul class="checklist">
+    <li>Java 17 is installed (java --version shows 17+)</li>
+    <li>Maven is installed (mvn --version works)</li>
+    <li>Node.js is installed (node --version shows 18+)</li>
+    <li>Terminal 1 is open and backend is running (shows "Started CsdApplication")</li>
+    <li>Terminal 2 is open and Angular is running (shows "Compiled successfully")</li>
+    <li>Browser is open at http://localhost:4200</li>
+    <li>Logged in as Admin to show dashboard is working</li>
+    <li>Demo credentials are written down or memorised</li>
+    <li>Internet is not required once both terminals are running</li>
+  </ul>
+</div>
+
+</div>
+</body>
+</html>

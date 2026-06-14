@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NexCare — Technical Q&A Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:#fff;color:#1e293b;font-size:13.5px;line-height:1.75}
+  .cover{background:linear-gradient(145deg,#0c1a3a,#1e3a5f,#1d4ed8);min-height:260px;padding:56px 48px 48px;page-break-after:always}
+  .cover h1{font-size:42px;font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1.1}
+  .cover h1 span{color:#93c5fd}
+  .cover p{font-size:15px;color:rgba(255,255,255,.6);margin-top:10px}
+  .cover-pills{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+  .pill{background:rgba(147,197,253,.15);border:1px solid rgba(147,197,253,.3);color:#93c5fd;font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 12px;border-radius:100px}
+
+  .content{max-width:820px;margin:0 auto;padding:52px 48px}
+  .section{margin-bottom:48px}
+
+  .section-title{font-size:17px;font-weight:800;color:#1e1b4b;margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid #dbeafe;display:flex;align-items:center;gap:10px}
+  .cat-icon{font-size:20px}
+
+  .qa-card{border:1.5px solid #e0e7ff;border-radius:14px;margin-bottom:16px;overflow:hidden}
+  .qa-q{background:linear-gradient(90deg,#eff6ff,#f5f3ff);padding:13px 18px;border-bottom:1px solid #e0e7ff}
+  .qa-q-label{font-size:10px;font-weight:800;color:#3b82f6;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+  .qa-q-text{font-size:14px;font-weight:700;color:#1e1b4b}
+  .qa-a{padding:16px 18px}
+  .qa-a p{font-size:13px;color:#374151;margin-bottom:8px}
+  .qa-a p:last-child{margin-bottom:0}
+  .qa-a strong{color:#1e1b4b}
+
+  code{font-family:'JetBrains Mono',monospace;font-size:12px;background:#1e1b4b;color:#c4b5fd;padding:2px 7px;border-radius:5px}
+  .code-block{background:#0f172a;border-radius:10px;padding:14px 18px;margin:10px 0;border-left:3px solid #3b82f6}
+  .code-block pre{font-family:'JetBrains Mono',monospace;font-size:12px;color:#e2e8f0;line-height:1.9;white-space:pre-wrap}
+  .code-block .c{color:#4a5568}.code-block .g{color:#68d391}.code-block .y{color:#f6e05e}.code-block .v{color:#c4b5fd}.code-block .b{color:#93c5fd}
+
+  .speak-box{background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:12px 16px;margin:10px 0;font-size:12.5px;color:#14532d}
+  .speak-label{font-size:10px;font-weight:800;color:#16a34a;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px}
+
+  .flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:12px 0;padding:12px 16px;background:#f8faff;border-radius:10px;border:1.5px solid #e0e7ff}
+  .flow-step{background:#1d4ed8;color:#fff;padding:5px 12px;border-radius:7px;font-size:11.5px;font-weight:700}
+  .flow-arrow{color:#93c5fd;font-size:14px;font-weight:700}
+
+  .page-break{page-break-before:always;padding-top:52px}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div style="font-size:52px;margin-bottom:20px">🎤</div>
+  <h1>Technical <span>Q&A Guide</span></h1>
+  <p>Questions Rishitha will be asked — with clear, confident answers</p>
+  <div class="cover-pills">
+    <span class="pill">Tech Stack Questions</span>
+    <span class="pill">Code Explanations</span>
+    <span class="pill">Architecture Decisions</span>
+    <span class="pill">Live Demo Tips</span>
+  </div>
+</div>
+
+<div class="content">
+
+<!-- ══════════ SECTION A: TECH STACK ══════════ -->
+<div class="section">
+  <div class="section-title"><span class="cat-icon">🏗️</span>Tech Stack Choices</div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Very likely to be asked</div><div class="qa-q-text">Why did you choose Spring Boot for the backend?</div></div>
+    <div class="qa-a">
+      <p><strong>Say this:</strong> Spring Boot is the industry-standard Java framework for building REST APIs. It comes with built-in security (Spring Security), data handling (JPA/Hibernate), and removes most of the boilerplate configuration. Since this is a Java Full Stack project, Spring Boot was the natural choice.</p>
+      <p>It also has auto-configuration, meaning I didn't have to manually set up the server or database connection — Spring Boot does that automatically based on what's on the classpath.</p>
+      <div class="speak-box"><div class="speak-label">How to say it confidently</div>"I used Spring Boot because it is the most widely used Java backend framework in the industry, especially for REST APIs. It handles authentication, database access, and security out of the box, which let me focus on the business logic."</div>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Likely to be asked</div><div class="qa-q-text">Why Angular for the frontend? Why not React?</div></div>
+    <div class="qa-a">
+      <p><strong>Say this:</strong> Angular is a complete, opinionated framework maintained by Google. It includes everything — routing, forms, HTTP client, and TypeScript by default. React is a library, not a full framework, so it requires piecing together many third-party tools.</p>
+      <p>For an enterprise application like a customer service dashboard, Angular's structure and built-in tools make it easier to maintain and scale. The standalone component model in Angular 17 also reduces unnecessary complexity.</p>
+      <div class="speak-box"><div class="speak-label">How to say it confidently</div>"Angular is a complete framework, not just a library. For a structured, multi-role enterprise application, Angular's built-in routing, forms, and dependency injection are much more suitable than assembling separate libraries."</div>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Very likely to be asked</div><div class="qa-q-text">Why JWT for authentication? What is JWT?</div></div>
+    <div class="qa-a">
+      <p><strong>What JWT means:</strong> JSON Web Token. It's a small encoded string that proves who the user is. After login, the server generates a JWT and sends it to the browser. The browser stores it and sends it with every API request. The server verifies the token without needing to check a database for every request.</p>
+      <p><strong>Why we used it:</strong> JWT is <em>stateless</em> — the server does not need to remember sessions. This makes it faster, more scalable, and perfect for REST APIs. It also carries the user's role inside it, so the backend can check permissions instantly.</p>
+      <div class="code-block"><pre><span class="c">// What a JWT looks like (three parts separated by dots):</span>
+<span class="y">eyJhbGciOiJIUzI1NiJ9</span>.<span class="g">eyJzdWIiOiJhZG1pbkBjc2QuY29tIiwicm9sZSI6IkFETUlOIn0</span>.<span class="b">XxYz...</span>
+
+<span class="c">// Part 1: Header (algorithm used)</span>
+<span class="c">// Part 2: Payload (user email, role, expiry)</span>
+<span class="c">// Part 3: Signature (proves it hasn't been tampered with)</span></pre></div>
+      <div class="speak-box"><div class="speak-label">How to say it confidently</div>"I used JWT because it is stateless — the server does not need to store session data. The token itself contains the user's identity and role, so every API request is self-contained and can be verified instantly."</div>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Might be asked</div><div class="qa-q-text">Why H2 database? Why not MySQL or PostgreSQL?</div></div>
+    <div class="qa-a">
+      <p>H2 is an in-memory / file-based database that is embedded directly in the Java application. It requires zero installation and zero configuration — it just works.</p>
+      <p>For a capstone demo project, H2 is ideal because: (1) anyone can run it without installing a database server, (2) it auto-creates and auto-seeds tables on startup, and (3) switching to MySQL or PostgreSQL in production would require only a one-line change in the configuration file.</p>
+      <div class="speak-box"><div class="speak-label">How to say it confidently</div>"I chose H2 for the demo because it is embedded — no separate database installation is required. For production, switching to MySQL would only require changing the database URL in application.properties."</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SECTION B: AUTHENTICATION FLOW ══════════ -->
+<div class="section page-break">
+  <div class="section-title"><span class="cat-icon">🔐</span>Authentication & Security</div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Very likely to be asked</div><div class="qa-q-text">Explain how the login flow works from start to end.</div></div>
+    <div class="qa-a">
+      <p>Here is the complete flow when a user logs in:</p>
+      <div class="flow">
+        <span class="flow-step">1. User enters email + password</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">2. Angular sends POST /api/auth/login</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">3. Spring Boot checks credentials</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">4. JWT token generated</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">5. Token stored in sessionStorage</span>
+        <span class="flow-arrow">→</span>
+        <span class="flow-step">6. User redirected by role</span>
+      </div>
+      <p>For every subsequent request (like loading tickets), the JWT interceptor automatically adds the token to the request header: <code>Authorization: Bearer &lt;token&gt;</code>. Spring Security validates the token before allowing access.</p>
+      <div class="speak-box"><div class="speak-label">How to say it confidently</div>"When the user logs in, the backend validates the credentials and returns a JWT token. Angular stores this token in sessionStorage and attaches it automatically to every API call through an HTTP interceptor. Spring Security validates the token on every request."</div>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Likely to be asked</div><div class="qa-q-text">What is the JWT interceptor and why did you use it?</div></div>
+    <div class="qa-a">
+      <p>An interceptor in Angular intercepts every HTTP request before it is sent. Instead of manually adding the token to every API call, the interceptor does it automatically.</p>
+      <div class="code-block"><pre><span class="c">// File: frontend/src/app/interceptors/jwt.interceptor.ts</span>
+<span class="b">export const</span> <span class="g">jwtInterceptor</span>: HttpInterceptorFn = (req, next) => {
+  <span class="b">const</span> token = sessionStorage.getItem(<span class="y">'token'</span>);
+  <span class="b">if</span> (token) {
+    req = req.clone({
+      setHeaders: { Authorization: <span class="y">`Bearer ${token}`</span> }
+    });
+  }
+  <span class="b">return</span> next(req);
+};</pre></div>
+      <div class="speak-box"><div class="speak-label">How to say it confidently</div>"The JWT interceptor automatically attaches the token to every HTTP request. Without it, I would have to manually add the Authorization header in every single service call — the interceptor keeps the code clean and DRY."</div>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Might be asked</div><div class="qa-q-text">How does the auth guard work? What happens if someone tries to access the admin page directly?</div></div>
+    <div class="qa-a">
+      <p>The auth guard runs before Angular renders any protected route. It checks two things: (1) is there a valid token in sessionStorage, and (2) does the user's role match the required role for that route.</p>
+      <div class="code-block"><pre><span class="c">// File: frontend/src/app/guards/auth.guard.ts</span>
+<span class="b">export const</span> <span class="g">authGuard</span>: CanActivateFn = (route) => {
+  <span class="b">const</span> token = sessionStorage.getItem(<span class="y">'token'</span>);
+  <span class="b">const</span> user  = JSON.parse(sessionStorage.getItem(<span class="y">'user'</span>) || <span class="y">'null'</span>);
+
+  <span class="b">if</span> (!token || !user) {
+    router.navigate([<span class="y">'/login'</span>]);   <span class="c">// not logged in → go to login</span>
+    <span class="b">return false</span>;
+  }
+
+  <span class="b">const</span> requiredRole = route.data?.[<span class="y">'role'</span>];
+  <span class="b">if</span> (requiredRole && user.role !== requiredRole) {
+    router.navigate([<span class="y">'/login'</span>]);   <span class="c">// wrong role → go to login</span>
+    <span class="b">return false</span>;
+  }
+  <span class="b">return true</span>;
+};</pre></div>
+      <p>If someone types <code>/admin</code> in the URL bar without being logged in, the guard catches it and redirects them to the login page immediately.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SECTION C: KEY CODE EXPLANATIONS ══════════ -->
+<div class="section page-break">
+  <div class="section-title"><span class="cat-icon">💻</span>Key Code Explanations</div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Very likely to be asked</div><div class="qa-q-text">Explain the DataInitializer — how does the demo data get created?</div></div>
+    <div class="qa-a">
+      <p>DataInitializer.java is a Spring component that runs automatically when the application starts up (via the <code>@PostConstruct</code> annotation). It checks if there are already users in the database, and if not, it creates all the demo data.</p>
+      <div class="code-block"><pre><span class="c">// File: src/main/java/com/wipro/csd/config/DataInitializer.java</span>
+
+<span class="b">@PostConstruct</span>          <span class="c">// runs automatically after Spring starts</span>
+<span class="b">public void</span> <span class="g">init</span>() {
+    <span class="b">if</span> (userRepo.count() > 0) <span class="b">return</span>; <span class="c">// skip if data already exists</span>
+
+    <span class="c">// Create users with encrypted passwords</span>
+    User admin = userRepo.save(User.builder()
+        .name(<span class="y">"System Admin"</span>)
+        .email(<span class="y">"admin@csd.com"</span>)
+        .password(passwordEncoder.encode(<span class="y">"admin123"</span>))  <span class="c">// password is HASHED</span>
+        .role(User.Role.ADMIN)
+        .build());
+
+    <span class="c">// Then creates managers, reps, customers, tickets, outages...</span>
+}</pre></div>
+      <div class="speak-box"><div class="speak-label">How to say it confidently</div>"DataInitializer uses the @PostConstruct annotation which tells Spring to run this method immediately after the application context loads. It creates all demo users, tickets, and outages only if the database is empty, preventing duplicate data on restarts."</div>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Very likely to be asked</div><div class="qa-q-text">How does role-based access work — can a customer see admin data?</div></div>
+    <div class="qa-a">
+      <p>Role-based access is enforced at <strong>two levels</strong>:</p>
+      <p><strong>Level 1 — Frontend (Angular Auth Guard):</strong> Routes are protected with <code>canActivate: [authGuard]</code>. The guard checks the user's role from sessionStorage before rendering the page.</p>
+      <p><strong>Level 2 — Backend (Spring Security):</strong> Every API endpoint is secured. Even if someone bypasses the UI, the backend rejects unauthorized requests.</p>
+      <div class="code-block"><pre><span class="c">// In app.routes.ts — admin route is protected</span>
+{
+  path: <span class="y">'admin'</span>,
+  loadComponent: () => <span class="b">import</span>(<span class="y">'./pages/admin/admin.component'</span>),
+  canActivate: [authGuard],
+  data: { role: <span class="y">'ADMIN'</span> }   <span class="c">// only ADMIN role can access this</span>
+}</pre></div>
+      <div class="speak-box"><div class="speak-label">How to say it confidently</div>"Role-based access is enforced at two levels — the Angular auth guard blocks the wrong role from even seeing the page, and Spring Security independently verifies the JWT role on every API call. So even if someone manipulates the URL, the backend will reject the request."</div>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Might be asked</div><div class="qa-q-text">What is lazy loading and why did you use it in Angular?</div></div>
+    <div class="qa-a">
+      <p>Lazy loading means Angular only downloads the code for a page when the user actually navigates to it — not all at once when the app first loads. This makes the initial load faster.</p>
+      <div class="code-block"><pre><span class="c">// Instead of importing AdminComponent directly, we use:</span>
+{
+  path: <span class="y">'admin'</span>,
+  loadComponent: () =>
+    <span class="b">import</span>(<span class="y">'./pages/admin/admin.component'</span>)
+    .then(m => m.AdminComponent)
+    <span class="c">// ^ code only downloaded when user goes to /admin</span>
+}</pre></div>
+      <div class="speak-box"><div class="speak-label">How to say it confidently</div>"Lazy loading splits the application into smaller chunks. The admin dashboard code is only downloaded if the user navigates to the admin page. This reduces the initial load time significantly."</div>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Might be asked</div><div class="qa-q-text">How does the chatbot work?</div></div>
+    <div class="qa-a">
+      <p>The chatbot is a rule-based keyword matching system. It has 12 predefined topic categories (internet, billing, TV, mobile, etc.). When the user types a message, the system converts it to lowercase and checks if any keyword from any category is present in the message. If a match is found, it returns the pre-written response for that category.</p>
+      <div class="code-block"><pre><span class="c">// File: frontend/src/app/shared/chatbot/chatbot.component.ts</span>
+<span class="b">function</span> <span class="g">getBotResponse</span>(input: string): string {
+  <span class="b">const</span> lower = input.toLowerCase();
+  <span class="b">for</span> (<span class="b">const</span> entry of BOT_RESPONSES) {
+    <span class="b">if</span> (entry.k.some(k => lower.includes(k))) {
+      <span class="b">return</span> entry.r;  <span class="c">// return matching response</span>
+    }
+  }
+  <span class="c">// no match → generic fallback response</span>
+  <span class="b">return</span> <span class="y">`I understand you need help with "${input}". Please raise a ticket.`</span>;
+}</pre></div>
+      <div class="speak-box"><div class="speak-label">How to say it confidently</div>"The chatbot uses keyword matching — when a user types a message, it scans for known keywords like 'internet', 'billing', or 'slow' and returns the appropriate pre-defined response. If no keyword matches, it falls back to suggesting the user raise a support ticket."</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SECTION D: ARCHITECTURE ══════════ -->
+<div class="section page-break">
+  <div class="section-title"><span class="cat-icon">🏛️</span>Architecture Questions</div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Very likely to be asked</div><div class="qa-q-text">Explain the overall architecture of the project.</div></div>
+    <div class="qa-a">
+      <p>NexCare uses a <strong>client-server architecture</strong> with complete separation between frontend and backend:</p>
+      <div class="flow">
+        <span class="flow-step">Browser (Angular :4200)</span>
+        <span class="flow-arrow">→ HTTP/REST →</span>
+        <span class="flow-step">Spring Boot API (:8080)</span>
+        <span class="flow-arrow">→ JPA →</span>
+        <span class="flow-step">H2 Database</span>
+      </div>
+      <p>The Angular frontend communicates with the Spring Boot backend exclusively through REST APIs. A proxy configuration in development (proxy.conf.json) forwards all <code>/api</code> requests from port 4200 to 8080, eliminating CORS issues during development.</p>
+      <p>Spring Security wraps every API endpoint, validating the JWT token on every request before allowing access to any data.</p>
+      <div class="speak-box"><div class="speak-label">How to say it confidently</div>"The architecture is a standard three-tier design: presentation tier (Angular), application tier (Spring Boot REST APIs), and data tier (H2 database). These are completely decoupled — the frontend only knows the API contract, not the implementation details."</div>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Might be asked</div><div class="qa-q-text">What is the proxy config and why is it needed?</div></div>
+    <div class="qa-a">
+      <p>By default, browsers block requests from one port (4200) to another port (8080) for security reasons — this is called the CORS (Cross-Origin Resource Sharing) policy.</p>
+      <p>The proxy config (<code>frontend/proxy.conf.json</code>) tells the Angular development server: "Any request starting with /api should be forwarded to port 8080." The browser only ever talks to port 4200, so it never triggers the CORS restriction.</p>
+      <div class="code-block"><pre><span class="c">// File: frontend/proxy.conf.json</span>
+{
+  <span class="y">"/api"</span>: {
+    <span class="y">"target"</span>: <span class="y">"http://localhost:8080"</span>,  <span class="c">// forward to backend</span>
+    <span class="y">"secure"</span>: <span class="b">false</span>,
+    <span class="y">"changeOrigin"</span>: <span class="b">true</span>
+  }
+}</pre></div>
+      <div class="speak-box"><div class="speak-label">How to say it confidently</div>"The proxy config solves the CORS problem by routing all API calls through the Angular dev server itself. The browser sees all traffic on port 4200, so no cross-origin request is made."</div>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Might be asked</div><div class="qa-q-text">Why did you use standalone components in Angular instead of NgModules?</div></div>
+    <div class="qa-a">
+      <p>Angular 17 introduced standalone components as the new recommended approach. Traditional NgModules required declaring and importing every component in a module file, which added boilerplate code.</p>
+      <p>Standalone components declare their own imports directly, making them self-contained. This means each component explicitly lists what it needs (e.g., <code>CommonModule</code>, <code>FormsModule</code>) without relying on a shared module.</p>
+      <div class="speak-box"><div class="speak-label">How to say it confidently</div>"Angular 17 recommends standalone components because they are self-contained and eliminate the need for NgModule declarations. Each component is independent and imports only what it needs, which makes the code cleaner and tree-shaking more effective."</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SECTION E: LIVE DEMO QUESTIONS ══════════ -->
+<div class="section">
+  <div class="section-title"><span class="cat-icon">🎯</span>Live Demo — "Show Me" Questions</div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Very likely during demo</div><div class="qa-q-text">Show me how a ticket gets created and how a representative resolves it.</div></div>
+    <div class="qa-a">
+      <p><strong>Steps to demonstrate:</strong></p>
+      <p>1. Log in as <strong>Customer</strong> (alice@gmail.com / Customer@123)</p>
+      <p>2. Click <strong>My Tickets</strong> in sidebar → click <strong>"+ Raise New Ticket"</strong></p>
+      <p>3. Select domain (e.g. Internet Services), enter subject and description → Submit</p>
+      <p>4. Log out → Log in as <strong>Representative</strong> (mike.rep@csd.com / Welcome@123)</p>
+      <p>5. Click <strong>My Tickets</strong> → find the new ticket with status OPEN</p>
+      <p>6. Click <strong>Update</strong> → set status to <strong>In Progress</strong> → save</p>
+      <p>7. Click <strong>Update</strong> again → set status to <strong>Closed</strong> → save</p>
+      <p>8. Log out → Log back in as Customer → ticket now shows as Resolved with a Rate button</p>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Very likely during demo</div><div class="qa-q-text">Show me how the admin manages employees.</div></div>
+    <div class="qa-a">
+      <p><strong>Steps to demonstrate:</strong></p>
+      <p>1. Log in as <strong>Admin</strong> (admin@csd.com / admin123)</p>
+      <p>2. Click <strong>Employees</strong> in the sidebar</p>
+      <p>3. Click <strong>"+ Add Employee"</strong> → fill in name, email, role = Representative, assign to a manager → Save</p>
+      <p>4. The new employee appears in the table</p>
+      <p>5. Click <strong>Edit</strong> on any employee to modify details</p>
+      <p>6. Click <strong>Delete</strong> → confirm to remove</p>
+    </div>
+  </div>
+
+  <div class="qa-card">
+    <div class="qa-q"><div class="qa-q-label">Might be asked during demo</div><div class="qa-q-text">What happens if I try to access the admin URL directly without logging in?</div></div>
+    <div class="qa-a">
+      <p>Type <code>http://localhost:4200/#/admin</code> in the browser address bar while not logged in.</p>
+      <p><strong>What happens:</strong> The Angular auth guard intercepts the navigation, sees there is no token in sessionStorage, and immediately redirects to the login page. The admin page never loads.</p>
+      <p>Even if you somehow got a token from a different role (e.g., customer token), the guard checks the role and would still redirect.</p>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
