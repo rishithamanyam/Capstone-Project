@@ -12,7 +12,7 @@ import { ToastService } from '../../services/toast.service';
   templateUrl: './login.component.html'
 })
 export class LoginComponent {
-  hovered: 'login' | 'signup' | null = null;
+  active: 'login' | 'signup' | null = null;
 
   loginEmail    = '';
   loginPassword = '';

@@ -1,22 +1,44 @@
-<div class="lp" [class.show-login]="hovered==='login'" [class.show-signup]="hovered==='signup'">
+<div class="lp" [class.lp-login]="active==='login'" [class.lp-signup]="active==='signup'" (mouseleave)="active=null">
 
-  <div class="lp-panel lp-left" (mouseenter)="hovered='login'" (mouseleave)="hovered=null">
-    <div class="lp-particles">
-      <div class="lp-blob lb1"></div>
-      <div class="lp-blob lb2"></div>
+  <div class="lp-bg">
+    <div class="lp-blob lb1"></div>
+    <div class="lp-blob lb2"></div>
+    <div class="lp-blob lb3"></div>
+  </div>
+
+  <!-- Landing: brand + option cards -->
+  <div class="lp-landing" [class.lp-gone]="active!==null">
+    <div class="lp-brand">
+      <div class="lp-brand-icon">🎯</div>
+      <h1>NexCare</h1>
+      <p>Customer Service Operations Dashboard</p>
+      <span class="lp-tagline">Intelligent · Real-time · Connected</span>
     </div>
 
-    <div class="lp-hint" [class.lp-hidden]="hovered==='login'">
-      <div class="lp-hint-icon">🔑</div>
+    <div class="lp-cards">
+      <div class="lp-card" (mouseenter)="active='login'">
+        <div class="lp-card-glow lp-glow-l"></div>
+        <div class="lp-card-icon">🔑</div>
+        <h3>Sign In</h3>
+        <p>Already have an account? Access your personalised dashboard.</p>
+        <div class="lp-card-cta">Hover to sign in →</div>
+      </div>
+      <div class="lp-card" (mouseenter)="active='signup'">
+        <div class="lp-card-glow lp-glow-r"></div>
+        <div class="lp-card-icon">✨</div>
+        <h3>Sign Up</h3>
+        <p>New to NexCare? Create a customer account in seconds.</p>
+        <div class="lp-card-cta">Hover to sign up ←</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login form overlay -->
+  <div class="lp-form-overlay" [class.lp-form-show]="active==='login'" (mouseenter)="active='login'">
+    <div class="lp-form-inner">
+      <div class="lp-form-brand">🎯 NexCare</div>
       <h2>Welcome Back</h2>
-      <p>Sign in to your account</p>
-      <div class="lp-caret">→</div>
-    </div>
-
-    <div class="lp-form-wrap" [class.lp-visible]="hovered==='login'">
-      <div class="lp-logo">🎯 NexCare</div>
-      <h3>Sign In</h3>
-      <p class="lp-sub">Access your dashboard</p>
+      <p class="lp-form-sub">Sign in to your dashboard</p>
 
       <div class="lp-field">
         <label>Email</label>
@@ -26,7 +48,6 @@
         <label>Password</label>
         <input type="password" [(ngModel)]="loginPassword" placeholder="••••••••" (keyup.enter)="login()">
       </div>
-
       <button class="lp-btn" (click)="login()" [disabled]="loginLoading">
         @if (loginLoading) { Signing in… } @else { Sign In → }
       </button>
@@ -38,26 +59,17 @@
         <div>Rep: mike.rep&#64;csd.com / Welcome&#64;123</div>
         <div>Customer: alice&#64;gmail.com / Customer&#64;123</div>
       </div>
+
+      <button class="lp-back" (click)="active=null">← Back to NexCare</button>
     </div>
   </div>
 
-  <div class="lp-panel lp-right" (mouseenter)="hovered='signup'" (mouseleave)="hovered=null">
-    <div class="lp-particles">
-      <div class="lp-blob rb1"></div>
-      <div class="lp-blob rb2"></div>
-    </div>
-
-    <div class="lp-hint" [class.lp-hidden]="hovered==='signup'">
-      <div class="lp-hint-icon">✨</div>
-      <h2>New Here?</h2>
-      <p>Create your account</p>
-      <div class="lp-caret">←</div>
-    </div>
-
-    <div class="lp-form-wrap" [class.lp-visible]="hovered==='signup'">
-      <div class="lp-logo">🎯 NexCare</div>
-      <h3>Create Account</h3>
-      <p class="lp-sub">Join as a customer today</p>
+  <!-- Sign Up form overlay -->
+  <div class="lp-form-overlay" [class.lp-form-show]="active==='signup'" (mouseenter)="active='signup'">
+    <div class="lp-form-inner">
+      <div class="lp-form-brand">🎯 NexCare</div>
+      <h2>Create Account</h2>
+      <p class="lp-form-sub">Join as a customer today</p>
 
       <div class="lp-field">
         <label>Full Name *</label>
@@ -81,10 +93,11 @@
         <label>Password *</label>
         <input type="password" [(ngModel)]="signupPassword" placeholder="Create a password" (keyup.enter)="signup()">
       </div>
-
-      <button class="lp-btn lp-btn-light" (click)="signup()" [disabled]="signupLoading">
+      <button class="lp-btn lp-btn-outline" (click)="signup()" [disabled]="signupLoading">
         @if (signupLoading) { Creating… } @else { Create Account → }
       </button>
+
+      <button class="lp-back" (click)="active=null">← Back to NexCare</button>
     </div>
   </div>
 
