@@ -239,6 +239,43 @@ code{font-family:'JetBrains Mono',monospace;font-size:11.5px;background:#0c1f3d;
 }</pre>
 <p>This snippet, taken from <code>TicketService.updateStatus()</code>, demonstrates how the response time metric is derived purely from timestamps already present on the entity — no separate manual entry step exists in the system, which removes a whole category of potential data-quality issues found in the spreadsheet-based approach described in Section 5.</p>
 
+<div class="sh">10.4 Code Snapshot — JwtAuthFilter (runs on every request)</div>
+<pre style="background:#0c1f3d;color:#bfdbfe;padding:16px 20px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:11.5px;overflow-x:auto">@Component
+public class JwtAuthFilter extends OncePerRequestFilter {
+
+    protected void doFilterInternal(HttpServletRequest req,
+            HttpServletResponse res, FilterChain chain) {
+        String token = extractToken(req);
+        if (token != null && jwtUtil.isValid(token)) {
+            String role = jwtUtil.extractRole(token);
+            setAuthentication(token, role);
+        }
+        chain.doFilter(req, res);
+    }
+}</pre>
+<p><code>JwtAuthFilter</code> extends Spring's <code>OncePerRequestFilter</code>, which guarantees the filter runs exactly once per incoming HTTP request, before that request is allowed to reach any <code>@RestController</code>. If the token is missing, expired, or has an invalid signature, the Spring Security context is simply never populated, and the downstream <code>@PreAuthorize</code> check on the controller method rejects the request with a 401 or 403 response.</p>
+
+<div class="sh">10.5 Code Snapshot — Angular Functional Guard and Interceptor</div>
+<pre style="background:#0c1f3d;color:#bfdbfe;padding:16px 20px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:11.5px;overflow-x:auto">export const authGuard: CanActivateFn = (route) => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+  const role = auth.getRole();
+  const allowed = route.data['roles'] as string[];
+
+  if (!auth.isLoggedIn()) { router.navigate(['/login']); return false; }
+  if (allowed && !allowed.includes(role)) { router.navigate(['/login']); return false; }
+  return true;
+};
+
+export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
+  const token = sessionStorage.getItem('token');
+  if (token) {
+    req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+  }
+  return next(req);
+};</pre>
+<p>Both <code>authGuard</code> and <code>jwtInterceptor</code> are written as plain functions using Angular 17's <code>inject()</code> API rather than as classes implementing <code>CanActivate</code> or <code>HttpInterceptor</code> — this is the modern, recommended Angular pattern and removes the constructor-injection boilerplate that older Angular versions required. The guard is a usability layer that prevents the UI from rendering a page the user is not authorised to see; the interceptor removes the need for every individual service method to manually attach an authentication header, since it is applied globally to all outgoing HTTP requests in <code>app.config.ts</code>.</p>
+
 <!-- SECURITY -->
 <div class="ch page-break"><span class="ch-num">11</span>Security Implementation</div>
 <p>Security in NexCare operates at three layers, each independent of the others so that a failure in one layer does not compromise the system:</p>

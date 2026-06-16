@@ -30,6 +30,10 @@
   .point-box ul{margin-left:18px;color:#374151;font-size:12.5px}
   .point-box li{margin-bottom:5px}
 
+  .code-box{background:#0f172a;border-radius:10px;padding:14px 18px;margin:10px 0;border-left:3px solid #3b82f6}
+  .code-box pre{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#e2e8f0;line-height:1.7;white-space:pre-wrap}
+  .code-label{font-size:10px;font-weight:800;color:#93c5fd;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
+
   .anticipate-box{background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:12px 16px;margin:10px 0}
   .anticipate-label{font-size:10px;font-weight:800;color:#c2410c;text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px}
   .anticipate-box p{font-size:12.5px;color:#7c2d12;margin-bottom:6px}
@@ -54,12 +58,12 @@
 <div class="cover">
   <div style="font-size:52px;margin-bottom:20px">🎙️</div>
   <h1>Presentation <span>Script</span></h1>
-  <p>Word-for-word speaking notes for all 13 slides — NexCare_Capstone_Presentation.pptx</p>
+  <p>Word-for-word speaking notes for all 16 slides — NexCare_Capstone_Presentation.pptx (v2, code-deep-dive edition)</p>
   <div class="cover-pills">
     <span class="pill">Slide-by-Slide Script</span>
-    <span class="pill">Timing Guide (~12 min)</span>
+    <span class="pill">Code Walkthroughs</span>
+    <span class="pill">Timing Guide (~16 min)</span>
     <span class="pill">Anticipated Questions</span>
-    <span class="pill">Delivery Tips</span>
   </div>
 </div>
 
@@ -67,7 +71,7 @@
 
 <div class="tip-banner">
   <h3>How to use this document</h3>
-  <p>Each slide below has four parts: <strong>What to Say</strong> (read this almost word-for-word until you're comfortable, then put it in your own words), <strong>Key Points to Hit</strong> (don't skip these even if you reword the script), <strong>If Asked</strong> (likely follow-up questions with short answers), and a timing estimate. Total deck run-time target: <strong>10–13 minutes</strong>, leaving time for Q&A. Practice out loud at least twice before presenting — reading silently is not the same as speaking it.</p>
+  <p>The deck was redesigned to be more technical — it now includes two dedicated "Code Deep Dive" slides showing real backend and frontend code, a proper database/API reference slide, and a testing summary slide, instead of plain bullet lists. Each slide below has: <strong>What to Say</strong>, <strong>Key Points to Hit</strong>, and <strong>If Asked</strong> (follow-up Q&A). For the two code slides, read the code out loud line-by-line the first time you practice — once you can explain every line without looking at notes, you're ready. Total run-time target: <strong>14–17 minutes</strong>, leaving time for Q&A.</p>
 </div>
 
 <!-- SLIDE 1 -->
@@ -75,99 +79,85 @@
   <div class="slide-head"><span class="slide-num">1</span><span class="slide-title">Cover — NexCare</span><span class="slide-time">~40 sec</span></div>
   <div class="say-box">
     <div class="say-label">What to say</div>
-    "Good morning/afternoon everyone. My name is Rishitha Manyam, and today I'll be presenting my capstone project for the Wipro RGA Program 2025 — it's called NexCare, an Interactive Dashboard System for Customer Service Operations. This project was built using the Java Full Stack technologies I learned during the program — specifically Angular on the frontend and Spring Boot on the backend."
+    "Good morning/afternoon everyone. My name is Rishitha Manyam, and today I'll be presenting my capstone project for the Wipro RGA Program 2025 — it's called NexCare, an Interactive Dashboard System for Customer Service Operations. It's built entirely with the Java Full Stack technologies from the program — Angular 17 on the frontend, Spring Boot 3.2.5 on the backend, secured end-to-end with JWT."
   </div>
   <div class="point-box">
     <div class="point-label">Key points to hit</div>
     <ul>
-      <li>State your name and the program name clearly — this is the formal opening.</li>
-      <li>Say the project name "NexCare" and its one-line description once, clearly.</li>
-      <li>Mention it's a Java Full Stack project — sets audience expectations for the tech questions ahead.</li>
+      <li>Name + program name clearly, project name once.</li>
+      <li>Naming the exact versions (Angular 17, Spring Boot 3.2.5, JWT) up front signals technical precision.</li>
     </ul>
   </div>
-  <p class="gesture">Pause here, make eye contact, then click to Slide 2.</p>
 </div>
 
 <!-- SLIDE 2 -->
 <div class="section">
-  <div class="slide-head"><span class="slide-num">2</span><span class="slide-title">Agenda</span><span class="slide-time">~25 sec</span></div>
+  <div class="slide-head"><span class="slide-num">2</span><span class="slide-title">Agenda</span><span class="slide-time">~30 sec</span></div>
   <div class="say-box">
     <div class="say-label">What to say</div>
-    "Here's what I'll cover today — I'll start with the problem this project solves, then walk through my solution and tech stack, explain the system architecture and security model, show you the database design, walk through the key features, talk about challenges I faced, and close with what I learned. I'll leave time at the end for questions."
+    "Here's the roadmap — I'll cover the problem and my solution, the tech stack and architecture, then go deep on security with an actual JWT flow diagram. After that I'll walk through real backend and frontend code, the database design and API endpoints, the four role-based dashboards, key features, the challenges I hit while building this, a summary of my testing, and close with key learnings and conclusions."
   </div>
   <div class="point-box">
     <div class="point-label">Key points to hit</div>
-    <ul><li>Just a quick read-through of the bullet list — don't over-explain, this slide is a map, not content.</li></ul>
+    <ul><li>Specifically mention "I'll walk through real code" — this previews the two code-deep-dive slides and sets evaluator expectations that this isn't just a slideshow of bullet points.</li></ul>
   </div>
 </div>
 
 <!-- SLIDE 3 -->
 <div class="section">
-  <div class="slide-head"><span class="slide-num">3</span><span class="slide-title">Problem Statement</span><span class="slide-time">~50 sec</span></div>
+  <div class="slide-head"><span class="slide-num">3</span><span class="slide-title">Problem Statement</span><span class="slide-time">~55 sec</span></div>
   <div class="say-box">
     <div class="say-label">What to say</div>
-    "Let's start with the problem. Telecom customer service teams in India today rely on disconnected tools. Representatives use spreadsheets to track tickets, which means there's no single, unified view of what's happening with any customer. Managers have no real-time way to see how their team is performing — no visibility into who's overloaded or who's resolving tickets quickly. Customers themselves have no way to track their own complaint status, so they end up calling back repeatedly just to ask 'what's the status of my ticket?' — which wastes everyone's time. And when there's a service outage in an area, there's no targeted way to inform just the customers who are actually affected."
+    "Telecom customer service teams in India today rely on disconnected tools. Representatives track tickets in spreadsheets, so there's no unified, searchable view of what's happening with any customer. Managers have no real-time dashboard showing response time, resolution time, or workload per representative. Customers have no visibility into their own ticket status, so they call back repeatedly just to ask for an update — which eats into representative time that should go to new issues. There's also no role-based access control in ad-hoc tooling — any staff member could potentially see data belonging to any customer, which is both a privacy and a compliance risk. And when there's a service outage, it's communicated informally and untargeted — every customer gets notified, even ones in completely unaffected cities. My goal was to build one secure, role-based, real-time application that solves all five of these problems together."
   </div>
   <div class="point-box">
     <div class="point-label">Key points to hit</div>
     <ul>
-      <li>Spreadsheets → no unified view</li>
-      <li>Managers → no real-time visibility</li>
-      <li>Customers → no self-service tracking, leads to repeat calls</li>
-      <li>Outages → no targeted communication</li>
+      <li>Five distinct problems, each later mapped to a specific NexCare feature — say them in order so the "Solution" slide feels like a direct answer.</li>
     </ul>
   </div>
   <div class="anticipate-box">
     <div class="anticipate-label">If asked</div>
-    <p><strong>"Is this based on a real company?"</strong> → "It's modeled on common pain points reported across small and mid-sized Indian telecom service desks — it's a representative problem, not one specific company's internal system."</p>
+    <p><strong>"Is this based on a real company?"</strong> → "It's modeled on common pain points reported across small and mid-sized Indian telecom service desks — a representative problem, not one specific company's internal system."</p>
   </div>
 </div>
 
 <!-- SLIDE 4 -->
 <div class="section page-break">
-  <div class="slide-head"><span class="slide-num">4</span><span class="slide-title">Solution Overview — NexCare</span><span class="slide-time">~60 sec</span></div>
+  <div class="slide-head"><span class="slide-num">4</span><span class="slide-title">Solution Overview — NexCare</span><span class="slide-time">~65 sec</span></div>
   <div class="say-box">
     <div class="say-label">What to say</div>
-    "My solution is NexCare — a full-stack web application purpose-built for Indian telecom customer service operations. It gives every user role a dashboard tailored to exactly what they need. The entire API is secured with JWT tokens, so every user only ever sees the data they're authorised to see — a customer cannot see another customer's tickets, and a representative cannot see another representative's workload. Ticket management happens in real time with a full audit trail — every status change is timestamped. There's also a live chatbot that can answer twelve common customer questions instantly without needing a human representative. For visibility, I built analytics charts — bar charts and doughnut charts — so managers can see performance at a glance. Outage alerts are smart — they only appear to customers in the affected city, not everyone. And the whole application is localised for India — INR currency, Indian city names, Indian phone number formats. Finally, there's zero setup required for the database — it seeds all its own demo data automatically the first time it runs."
+    "NexCare is a full-stack Java and Angular web application built specifically for Indian telecom customer service operations. It gives four role-based dashboards — Admin, Manager, Representative, and Customer. The entire API is JWT-secured, so every request is authenticated and every user only ever sees data they're authorised for. Ticket management happens with a full audit trail — every status change is timestamped automatically. There's a live chatbot covering twelve common customer intents, reducing repetitive load on representatives. I built live analytics using Chart.js — bar and doughnut charts — for performance monitoring. Outage alerts are smart: they only surface to customers in the affected city. The whole application is localised for India — INR currency, Indian city names, Indian phone number formats. And the database requires zero setup — it's an H2 file database that auto-seeds all demo data the first time the application runs."
   </div>
   <div class="point-box">
     <div class="point-label">Key points to hit</div>
     <ul>
-      <li>Four role-based dashboards</li>
-      <li>JWT security — strict data isolation</li>
-      <li>Real-time tickets with audit trail</li>
-      <li>Chatbot + analytics charts</li>
-      <li>City-targeted outage alerts</li>
-      <li>India localisation + zero-setup database</li>
+      <li>Read the eight feature cards left-to-right, top-to-bottom — they map directly back to the five problems from slide 3.</li>
+      <li>End on "zero-setup database" — a strong, concrete, memorable closing fact for this slide.</li>
     </ul>
-  </div>
-  <div class="anticipate-box">
-    <div class="anticipate-label">If asked</div>
-    <p><strong>"What does 'full audit trail' mean exactly?"</strong> → "Every ticket records when it was created, when a representative first responded, and when it was resolved — these timestamps are never entered manually, they're captured automatically by the system the moment the status changes."</p>
   </div>
 </div>
 
 <!-- SLIDE 5 -->
 <div class="section">
-  <div class="slide-head"><span class="slide-num">5</span><span class="slide-title">Tech Stack</span><span class="slide-time">~70 sec</span></div>
+  <div class="slide-head"><span class="slide-num">5</span><span class="slide-title">Tech Stack</span><span class="slide-time">~75 sec</span></div>
   <div class="say-box">
     <div class="say-label">What to say</div>
-    "On the frontend, I used Angular 17 with standalone components, meaning there's no NgModule anywhere in the application — that's the modern Angular approach. Everything is written in strict TypeScript. For visual analytics I used Chart.js for the bar and doughnut charts. Styling is plain CSS3 with a lilac theme and smooth cubic-bezier animations. Routing uses Angular Router with lazy loading, so a dashboard's code only downloads when a user actually visits it, plus hash-based URLs for easy hosting. I used RxJS for reactive state management and for communication between components that aren't directly related. And there's a proxy configuration so the Angular dev server forwards any '/api' request straight to the backend on port 8080 — no CORS headaches during development.
+    "On the frontend: Angular 17 using standalone components, meaning there's no NgModule anywhere in this codebase — that's the modern Angular approach. Everything is strict TypeScript. Chart.js powers the bar and doughnut charts. Styling is plain CSS3 with a lilac theme and cubic-bezier animation curves. Routing uses Angular Router with lazy loading and hash-based URLs. RxJS handles reactive state and communication between components that aren't directly related. And a proxy configuration makes the dev server forward any '/api' call straight to port 8080, avoiding CORS issues during development.
 
-    On the backend, it's Spring Boot 3.2.5 powering the REST API. Spring Security handles the JWT filter chain. I used the JJWT library, version 0.12.3, for generating and validating tokens. Spring Data JPA is the ORM layer for all my entities. The database is H2, running in file mode, so no external database server is needed at all. Passwords are hashed using BCryptPasswordEncoder — never stored in plain text. And the whole project is built and managed with Maven."
+    On the backend: Spring Boot 3.2.5 as the REST API, running on an embedded Tomcat server. Spring Security enforces a JWT filter chain on every request. I used the JJWT library, version 0.12.3, for generating, signing, and validating tokens. Spring Data JPA is the ORM for every entity — no hand-written SQL anywhere. The database is H2 running in file mode, so no external database server is needed at all. Passwords are hashed with BCryptPasswordEncoder — never stored in plain text. And the whole project builds with Maven."
   </div>
   <div class="point-box">
     <div class="point-label">Key points to hit</div>
     <ul>
-      <li>Frontend: Angular 17 standalone, TypeScript, Chart.js, RxJS, lazy loading</li>
-      <li>Backend: Spring Boot, Spring Security, JJWT, Spring Data JPA, H2, BCrypt</li>
-      <li>Say "standalone components, no NgModule" — this signals you know modern Angular, not textbook Angular</li>
+      <li>Say "standalone components, no NgModule" explicitly — signals modern Angular knowledge.</li>
+      <li>Say "embedded Tomcat" for Spring Boot — shows you know it's not a separately deployed server.</li>
     </ul>
   </div>
   <div class="anticipate-box">
     <div class="anticipate-label">If asked</div>
-    <p><strong>"Why Angular over React?"</strong> → "Angular is a complete framework — routing, forms, and the HTTP client are all built in. React is just a library, so you'd need to add several third-party packages to get the same coverage. For an enterprise-style dashboard like this, Angular's structure made more sense."</p>
-    <p><strong>"Why H2 and not MySQL/PostgreSQL?"</strong> → "H2 needed zero installation — it runs as a file right inside the project, which made the application instantly runnable for demo and evaluation purposes. For a real production deployment, I'd migrate to PostgreSQL, which I mention in my future scope."</p>
+    <p><strong>"Why Angular over React?"</strong> → "Angular is a complete framework — routing, forms, and an HTTP client are all built in. React is just a library, so you'd need several third-party packages for the same coverage. For an enterprise dashboard like this, Angular's structure made more sense."</p>
+    <p><strong>"Why H2 and not MySQL/PostgreSQL?"</strong> → "H2 needed zero installation — it runs as a file inside the project, making the app instantly runnable for demo and evaluation. For real production use I'd migrate to PostgreSQL, which I list under future scope."</p>
   </div>
 </div>
 
@@ -176,166 +166,211 @@
   <div class="slide-head"><span class="slide-num">6</span><span class="slide-title">System Architecture</span><span class="slide-time">~60 sec</span></div>
   <div class="say-box">
     <div class="say-label">What to say</div>
-    "NexCare follows a three-tier architecture. At the top is the Presentation layer — that's the Angular 17 single-page application, handling all the components, routing, interceptors, and guards. Below that is the Service or API layer — the Spring Boot REST controllers for Authentication, Users, Tickets, Analytics, and Outages. At the bottom is the Data layer — Spring Data JPA on top of the H2 file database, storing Users, Tickets, Outages, and Notifications.
+    "NexCare follows a three-tier architecture, shown here top to bottom. The Presentation layer is the Angular 17 single-page application — components, the router, functional guards, and functional interceptors. Below that is the Service/API layer — Spring Boot REST controllers: AuthController, TicketController, AnalyticsController, OutageController. At the bottom is the Data layer — Spring Data JPA on top of an H2 file database, storing the User, Ticket, Outage, and Notification entities.
 
-    These layers talk to each other purely over HTTP using JSON. During development, the proxy I mentioned handles the connection; in production it would be direct CORS-enabled communication. And critically — every single request between the frontend and backend carries a JWT bearer token, so authentication is checked on every call, not just at login."
+    These layers communicate purely over HTTP using JSON — a proxy handles it in development, direct CORS configuration handles it in production. And critically, every single request between frontend and backend carries a JWT bearer token, validated on every protected endpoint, not just at login."
   </div>
   <div class="point-box">
     <div class="point-label">Key points to hit</div>
     <ul>
-      <li>Three tiers: Presentation (Angular) → Service/API (Spring Boot) → Data (JPA + H2)</li>
-      <li>Communication: HTTP/JSON, proxy in dev, CORS in prod</li>
-      <li>JWT bearer token on every request — not just login</li>
+      <li>Point at each tier on screen as you describe it — this slide is a literal top-to-bottom diagram, follow it visually.</li>
+      <li>Close on the orange callout box: "JWT bearer token on every request" — this is the bridge into the next slide.</li>
     </ul>
   </div>
   <div class="anticipate-box">
     <div class="anticipate-label">If asked</div>
-    <p><strong>"Why three tiers instead of putting everything in one app?"</strong> → "Separating frontend and backend means they can be deployed, scaled, and even rewritten independently. It's also the standard pattern in the industry for any application that might need a mobile client later — the same backend API could serve a mobile app without any changes."</p>
+    <p><strong>"Why three tiers instead of one app?"</strong> → "Separating frontend and backend means each can be deployed, scaled, or even rewritten independently — and the same backend API could serve a mobile app later with zero changes."</p>
   </div>
 </div>
 
 <!-- SLIDE 7 -->
 <div class="section">
-  <div class="slide-head"><span class="slide-num">7</span><span class="slide-title">Role-Based Dashboards</span><span class="slide-time">~55 sec</span></div>
+  <div class="slide-head"><span class="slide-num">7</span><span class="slide-title">Security Implementation — JWT Authentication Flow</span><span class="slide-time">~95 sec (most-asked-about slide)</span></div>
   <div class="say-box">
     <div class="say-label">What to say</div>
-    "There are four roles in NexCare, each with its own dedicated dashboard. The Admin manages all employees, can view every ticket in the system, reports service outages, and sees an overall analytics view. The Manager monitors their team's tickets, resolves outages, views individual representative performance, and manages escalations. The Representative views and updates only their assigned tickets, can search for customers, and tracks their own resolution time. And the Customer can raise new tickets, track their status, rate the support they received, view outage alerts for their city, and use the chatbot."
+    "This is the most important technical slide, so I'll walk through all eight steps.
+
+    One — the user submits email and password through the Angular Sign-In form. Two — my AuthController calls a UserDetailsService, which uses BCrypt to verify the submitted password against the hashed password in the database; the plain password is never stored anywhere. Three — JwtUtil generates a signed token containing the user's ID, email, role, and a 24-hour expiry. Four — that token is returned to the frontend and stored in sessionStorage, which clears automatically when the browser tab closes — a deliberate choice over localStorage. Five — from that point on, a JWT Interceptor automatically attaches the token as an 'Authorization: Bearer' header to every outgoing request, so I never manually add it anywhere. Six — on the backend, JwtAuthFilter validates that token's signature on every protected endpoint before the request even reaches a controller. Seven — on the frontend, an Auth Guard checks the role from that token before the Angular router allows navigation to a protected page. And eight — logging out clears sessionStorage, so even an intercepted token becomes unusable immediately."
   </div>
   <div class="point-box">
     <div class="point-label">Key points to hit</div>
     <ul>
-      <li>Four roles, four dashboards — not one dashboard with toggled visibility</li>
-      <li>Each role's permissions map directly back to the problem statement</li>
+      <li>Walk all 8 numbered cards in order — evaluators will probe this slide hardest.</li>
+      <li>Emphasize: passwords never stored in plaintext (BCrypt one-way hash).</li>
+      <li>Emphasize: enforcement happens at BOTH the frontend guard AND backend filter — two independent layers, not one.</li>
     </ul>
   </div>
   <div class="anticipate-box">
     <div class="anticipate-label">If asked</div>
-    <p><strong>"What stops a Representative from just changing the URL to access the Admin page?"</strong> → "Two layers stop that — first, an Angular route guard checks the role stored from the JWT and redirects them immediately. Second, even if they bypassed the frontend entirely and called the API directly, the backend's @PreAuthorize checks would reject the request with a 403 — the frontend guard is just a convenience, the backend is the real enforcement."</p>
+    <p><strong>"What's inside the JWT exactly?"</strong> → "Three Base64-encoded parts joined by dots: a header naming the signing algorithm, a payload with user ID/email/role/expiry, and a signature. The signature is what prevents tampering — regenerating a valid one requires a secret key only the server holds."</p>
+    <p><strong>"What happens after the token expires?"</strong> → "Any further API call returns 401, the frontend interceptor catches that and redirects the user back to login to re-authenticate."</p>
   </div>
 </div>
 
-<!-- SLIDE 8 -->
+<!-- SLIDE 8 — NEW CODE DEEP DIVE BACKEND -->
 <div class="section page-break">
-  <div class="slide-head"><span class="slide-num">8</span><span class="slide-title">Security Implementation — JWT</span><span class="slide-time">~90 sec (most technical slide)</span></div>
+  <div class="slide-head"><span class="slide-num">8</span><span class="slide-title">Code Deep Dive — Backend (JWT Filter & Ticket Service)</span><span class="slide-time">~90 sec</span></div>
   <div class="say-box">
     <div class="say-label">What to say</div>
-    "This is the most important technical slide, so let me walk through the full flow step by step.
+    "Let me show actual code instead of just describing it. On the left is JwtAuthFilter — notice it extends OncePerRequestFilter, which is a Spring Security base class that guarantees this filter runs exactly once per incoming request, before that request reaches any controller. Inside doFilterInternal, I extract the token from the request, and if it's present and valid, I pull the role out of it and set the Spring Security authentication context — then the request continues down the filter chain. If the token is missing or invalid, I simply don't set the authentication, so the request gets rejected further down by the role check.
 
-    One — the user submits their email and password through the Angular Sign In form. Two — my AuthController calls a UserDetailsService, which uses BCrypt to verify the submitted password against the hashed password stored in the database — the plain password is never stored anywhere. Three — once verified, my JwtService generates a signed token containing the user's ID, email, role, and a 24-hour expiry. Four — that token is returned to the frontend and stored in sessionStorage, which automatically clears when the browser tab closes — that's a deliberate security choice over localStorage. Five — from that point on, every single API call from the frontend goes through a JWT interceptor that automatically attaches the token as an 'Authorization: Bearer' header — I never have to manually add it in any service. Six — on the backend, my JwtAuthFilter validates that token's signature on every protected endpoint before the request is even allowed to reach the controller. Seven — on the frontend, an Auth Guard checks the role stored from that token before allowing the Angular router to render a protected page. And eight — when the user logs out, sessionStorage is cleared, so even if that token were somehow intercepted, it becomes unusable immediately."
+    On the right is TicketService.updateStatus — this is where the response-time metric I mentioned earlier actually gets calculated. When a ticket moves to IN_PROGRESS for the first time, I capture the current timestamp, then calculate the duration in hours between ticket creation and this moment using Java's Duration class, and store that on the ticket. This number is never typed in by a human — it's purely derived from two timestamps the system already has."
   </div>
   <div class="point-box">
     <div class="point-label">Key points to hit</div>
     <ul>
-      <li>Walk through all 8 steps in order — this is the slide evaluators will probe hardest</li>
-      <li>Emphasize: password never stored in plaintext (BCrypt)</li>
-      <li>Emphasize: sessionStorage over localStorage was a deliberate choice</li>
-      <li>Emphasize: security enforced at BOTH frontend (guard) AND backend (filter) — two independent layers</li>
+      <li>Name the exact class (OncePerRequestFilter) — shows you understand Spring Security internals, not just "there's a filter."</li>
+      <li>Walk the ticket service logic conditionally: "if it's the FIRST time moving to IN_PROGRESS" — explain why the null check on firstResponseAt matters (prevents recalculating on every subsequent status change).</li>
+      <li>Close with the callout box: explicit getters/setters instead of a code-generation library, for build portability across JDK versions.</li>
     </ul>
   </div>
   <div class="anticipate-box">
     <div class="anticipate-label">If asked</div>
-    <p><strong>"What's inside the JWT token exactly?"</strong> → "Three parts: a header describing the signing algorithm, a payload with the user's ID, email, role, and expiry timestamp, and a signature — all three are Base64-encoded and joined with dots. The signature is what prevents anyone from tampering with the payload, because regenerating a valid signature requires a secret key only the server has."</p>
-    <p><strong>"Why sessionStorage instead of localStorage?"</strong> → "localStorage persists even after the browser is closed, which is a bigger attack surface if the device is shared. sessionStorage clears the moment the tab closes, which is safer for a demo/internal tool context."</p>
-    <p><strong>"What happens after the token expires?"</strong> → "Any further API call returns 401 Unauthorized, and the frontend interceptor catches that and redirects the user back to the login page to re-authenticate."</p>
+    <p><strong>"What if the token is expired but still has a valid signature?"</strong> → "JwtUtil.isValid() checks both the signature AND the expiry claim — an expired token fails validation even with a perfectly correct signature, so isValid() returns false and the filter never sets authentication."</p>
+    <p><strong>"Why Duration instead of just subtracting LocalDateTime fields?"</strong> → "Duration.between() handles date-boundary and time-zone edge cases correctly — manual subtraction of LocalDateTime fields is error-prone across day boundaries."</p>
   </div>
 </div>
 
-<!-- SLIDE 9 -->
+<!-- SLIDE 9 — NEW CODE DEEP DIVE FRONTEND -->
 <div class="section">
-  <div class="slide-head"><span class="slide-num">9</span><span class="slide-title">Database & Data Flow</span><span class="slide-time">~65 sec</span></div>
+  <div class="slide-head"><span class="slide-num">9</span><span class="slide-title">Code Deep Dive — Frontend (Guard & Interceptor)</span><span class="slide-time">~85 sec</span></div>
   <div class="say-box">
     <div class="say-label">What to say</div>
-    "For data, I'm using an H2 file database that persists across restarts — so demo data isn't lost every time the server stops. There are four main tables. Users — all four roles live in one table, distinguished by a role enum, which keeps authentication logic simple. Tickets — storing the customer ID, assigned representative ID, status, domain, and customer rating. Outages — storing location, affected areas, domain, and severity. And Notifications — storing the recipient's user ID, the message, a read flag, and when it was created. All of this is seeded automatically on startup through a DataInitializer class using Spring's @PostConstruct annotation — by default it loads 11 demo users, 10 tickets, 2 outages, and 4 notifications, so the app is immediately demo-ready.
+    "On the left is authGuard, written as a plain function — this is the Angular 17 functional style, using inject() instead of a class with constructor injection. It pulls the current user's role and checks two things: is the user logged in at all, and if the route declares an allowed-roles list, is this user's role in that list? If either check fails, it redirects to login and returns false, blocking navigation.
 
-    On the API side, here are the core endpoints: POST /api/auth/login returns a JWT token. POST /api/auth/register creates a new customer account. GET /api/tickets returns tickets already filtered by the caller's role — a customer only gets their own, a representative only gets their assigned ones. PUT /api/tickets/{id} updates status and automatically stamps the audit fields. GET /api/analytics/{role} returns an aggregated statistics map for dashboards. And GET /api/outages/location filters outages down to just one city for the customer view."
+    On the right is jwtInterceptor, also a plain function. Every single outgoing HTTP request passes through this — it reads the token from sessionStorage and, if present, clones the request with an Authorization header attached. This is registered once in app.config.ts and applies globally, so no individual service anywhere in the app needs to remember to attach a token manually."
   </div>
   <div class="point-box">
     <div class="point-label">Key points to hit</div>
     <ul>
-      <li>4 tables: Users (single table, role enum), Tickets, Outages, Notifications</li>
-      <li>Auto-seeding via @PostConstruct — emphasize "zero manual setup"</li>
-      <li>Role-based filtering happens server-side in the service layer, not just hidden in the UI</li>
+      <li>Emphasize "functional pattern" and inject() by name — this is the detail that distinguishes Angular 17 knowledge from older Angular tutorials.</li>
+      <li>Make the distinction explicit: the guard is a UX convenience, the backend filter from the previous slide is the actual security boundary — repeating this ties slides 7, 8, and 9 together into one coherent security story.</li>
     </ul>
   </div>
   <div class="anticipate-box">
     <div class="anticipate-label">If asked</div>
-    <p><strong>"Why one Users table for all roles instead of separate tables?"</strong> → "All roles share the same core fields — name, email, password, phone, location — so one table with a role enum column avoids duplicate schema and makes authentication a single, simple query regardless of who's logging in."</p>
-    <p><strong>"Does the seed data get duplicated if I restart the server multiple times?"</strong> → "No — DataInitializer checks if the admin account already exists before seeding anything, so restarts are safe and idempotent."</p>
+    <p><strong>"What stops someone from bypassing the guard by calling the API directly with curl or Postman?"</strong> → "Nothing on the frontend — and that's by design. The guard never touches the server. The backend's JwtAuthFilter and @PreAuthorize checks are what actually enforce security; the frontend guard only improves the user experience by not letting the UI render a page it doesn't need to."</p>
   </div>
 </div>
 
-<!-- SLIDE 10 -->
+<!-- SLIDE 10 — DATABASE & API -->
 <div class="section page-break">
-  <div class="slide-head"><span class="slide-num">10</span><span class="slide-title">Key Features Walkthrough</span><span class="slide-time">~75 sec (pairs well with a live demo)</span></div>
+  <div class="slide-head"><span class="slide-num">10</span><span class="slide-title">Database Design & API Reference</span><span class="slide-time">~70 sec</span></div>
   <div class="say-box">
     <div class="say-label">What to say</div>
-    "Let me highlight ten features that I think best show the depth of this project. The login page has a fully animated full-page lilac overlay transition between Sign In and Sign Up, built with CSS cubic-bezier easing. Every dashboard route is lazy-loaded — Angular only downloads a dashboard's code when a user actually navigates to it. Tab navigation inside dashboards uses URL query parameters, so every tab is bookmarkable and survives a page refresh. Analytics are powered by live Chart.js bar charts for tickets by domain and doughnut charts for status breakdown. The outage alert banner is smart — it only appears to customers whose city actually matches the outage location, nobody else sees it. There's an AI chatbot recognising twelve different intent keywords, with auto-scroll, and it can even be triggered from the sidebar using an RxJS Subject as an event bus. Customers can rate closed tickets, and that score immediately shows up on the representative's own dashboard. Representatives can search customers by name, phone, or ID, with a 400-millisecond debounce so we're not spamming the API on every keystroke. First-time representative logins are detected and they're prompted to change their password before doing anything else. And the whole thing is localised for India — Rupee currency symbols, Indian city names, and Indian phone number formatting."
+    "Four tables back this whole application. Users — all four roles in one table distinguished by a role enum, with passwords stored as BCrypt hashes. Tickets — storing customer ID, rep ID, manager ID, status, the three audit timestamps, and the two computed metrics I just walked through in the code. Outages — location, affected areas, domain, and severity. Notifications — recipient user ID, message, and a read flag, created automatically by the ticket and outage services as side effects, not by any direct user action.
+
+    For the API, here are the core endpoints. POST /api/auth/login returns a JWT. POST /api/auth/register creates a new customer. GET /api/tickets returns tickets already filtered by the caller's role on the server — a customer only ever gets their own tickets back, never a flag the frontend has to enforce. PUT /api/tickets/{id} updates status and stamps the audit fields automatically. GET /api/analytics/{role} returns a pre-aggregated statistics map for dashboard charts. And GET /api/outages/location filters outages down to one city for the customer-facing alert banner."
   </div>
   <div class="point-box">
     <div class="point-label">Key points to hit</div>
     <ul>
-      <li>If you have time for a live demo, this is the slide to pause on and actually show 2-3 of these live</li>
-      <li>Debounce and lazy-loading show performance awareness, not just feature-completeness</li>
-      <li>City-matched outage banner reinforces the "Solution Overview" promise from slide 4</li>
+      <li>Emphasize "filtered by role on the server" for GET /api/tickets — this is the data-isolation guarantee from the problem statement, made concrete.</li>
+      <li>Color-coded HTTP method pills (POST green, GET blue, PUT orange) — just read method + path + one-line description per row, don't over-explain each one.</li>
     </ul>
   </div>
   <div class="anticipate-box">
     <div class="anticipate-label">If asked</div>
-    <p><strong>"Is the chatbot using a real AI model?"</strong> → "No — it's a keyword/intent matching system covering 12 common questions like 'how do I raise a ticket' or 'what's my ticket status'. It's instant and doesn't need an external API, which fits a self-contained capstone project. I've noted upgrading it to an NLP-based model as future scope."</p>
+    <p><strong>"Why one Users table for all four roles?"</strong> → "All roles share the same core fields — name, email, password, phone, location — so one table with a role enum column avoids duplicate schema and keeps authentication a single, simple query regardless of who's logging in."</p>
   </div>
 </div>
 
 <!-- SLIDE 11 -->
 <div class="section">
-  <div class="slide-head"><span class="slide-num">11</span><span class="slide-title">Challenges & Solutions</span><span class="slide-time">~70 sec</span></div>
+  <div class="slide-head"><span class="slide-num">11</span><span class="slide-title">Role-Based Dashboards</span><span class="slide-time">~55 sec</span></div>
   <div class="say-box">
     <div class="say-label">What to say</div>
-    "No project goes perfectly the first time, so let me share five real challenges I ran into. First — the sidebar and the chatbot are sibling components with no direct parent-child relationship, so they couldn't easily talk to each other; direct DOM manipulation kept getting overridden by Angular's own change detection. I solved this by creating a shared ChatService using an RxJS Subject as an event bus. Second — I originally used scrollIntoView for tab navigation, but it wasn't reliable across page refreshes. I switched entirely to Angular Router query parameters instead, which is reliable across refreshes and roles. Third — Chart.js needs an actual canvas element in the DOM before it can draw, but my charts were inside Angular @if blocks that hadn't rendered yet. I fixed this with a short setTimeout after the tab switch to make sure the DOM element existed first. Fourth — Angular's dev server on port 4200 and Spring Boot on port 8080 triggered CORS errors during development. I added a proxy.conf.json so the dev server transparently forwards all /api requests, eliminating the cross-origin issue entirely. And fifth — my database seed was re-running every time I restarted the server. I fixed that by adding an existsById check in DataInitializer so it only seeds data if the admin account doesn't already exist."
+    "Four roles, four dedicated dashboards — not one generic dashboard with hidden sections. Admin manages all employees, views every ticket system-wide, reports outages, and sees the full analytics overview. Manager monitors their team's tickets, resolves outages, views individual rep performance metrics, and manages escalations. Representative views and updates only their assigned tickets, searches customers by name or phone, and tracks their own resolution time — plus they're forced to change their password on first login. Customer raises tickets, tracks status live, rates closed tickets, and uses the chatbot and outage alerts."
   </div>
   <div class="point-box">
     <div class="point-label">Key points to hit</div>
-    <ul>
-      <li>This slide is your chance to prove you debugged real problems, not just followed a tutorial</li>
-      <li>Each challenge should have a crisp one-line "why it broke" + "what fixed it"</li>
-    </ul>
+    <ul><li>Say "four dedicated dashboards, not one generic dashboard" — this is a deliberate design decision worth stating explicitly.</li></ul>
   </div>
   <div class="anticipate-box">
     <div class="anticipate-label">If asked</div>
-    <p><strong>"What was the hardest bug to fix?"</strong> → "Honestly the Chart.js timing issue — it wasn't an error message, the chart would just silently not appear, so it took a while to realise the canvas element didn't exist yet when the chart code ran."</p>
+    <p><strong>"What stops a Representative from changing the URL to reach the Admin page?"</strong> → "The Angular route guard from slide 9 redirects them immediately based on role. And even if they bypassed the frontend entirely and called the API directly, the backend's @PreAuthorize annotations reject the request with a 403 — the frontend guard is convenience, the backend is enforcement."</p>
   </div>
 </div>
 
 <!-- SLIDE 12 -->
 <div class="section page-break">
-  <div class="slide-head"><span class="slide-num">12</span><span class="slide-title">Key Learnings & Conclusion</span><span class="slide-time">~65 sec</span></div>
+  <div class="slide-head"><span class="slide-num">12</span><span class="slide-title">Key Features Walkthrough</span><span class="slide-time">~80 sec (pairs well with a live demo)</span></div>
   <div class="say-box">
     <div class="say-label">What to say</div>
-    "This project taught me a number of things I couldn't have fully learned from coursework alone. I learned how Spring Security combined with JWT enables stateless authentication that can scale — no server-side session storage required. I learned Angular's standalone component model, which removes all the NgModule boilerplate that older Angular tutorials are full of. I learned that RxJS Subjects are the correct pattern for communication between components that aren't directly related. I learned to write functional interceptors and guards, which is the modern Angular 17 style rather than the older class-based approach. I learned how a proxy configuration bridges frontend and backend cleanly during development. I learned that Chart.js has to respect Angular's own rendering lifecycle, not fight against it. And I learned to rely on @PostConstruct for dependable application startup behaviour.
-
-    To conclude — NexCare demonstrates a production-grade Java Full Stack application. It's secure, role-based, and real-time, purpose-built for Indian telecom operations. It follows a clean architecture — an Angular single-page application, a Spring Boot REST API, and an H2 database. It requires zero manual setup, running with just two commands after installing the prerequisites. And it covers the full software development lifecycle — design, development, security, testing, and documentation. I've also prepared comprehensive supporting guides covering setup, a technical Q&A reference, and a full code walkthrough."
+    "Ten features worth highlighting. The login page has a full-page animated lilac overlay transition between Sign In and Sign Up, built with CSS cubic-bezier easing. Every dashboard route is lazy-loaded using Angular's loadComponent — code only downloads when a user actually visits that route. Tab navigation uses URL query parameters, so every tab is bookmarkable and survives a refresh. Chart.js powers live bar charts for tickets-by-domain and doughnut charts for status breakdown. The outage alert banner only appears to customers whose city matches the outage location. The AI chatbot recognises twelve intent keywords and can be triggered from the sidebar via an RxJS Subject event bus. Customers rate closed tickets, and that score immediately appears on the representative's own dashboard. Representatives search customers with a 400-millisecond debounce so we're not spamming the API on every keystroke. First-time representative logins are detected and they're prompted to change their password. And the whole thing is India-localised — Rupee symbols, Indian cities, Indian phone formats."
   </div>
   <div class="point-box">
     <div class="point-label">Key points to hit</div>
     <ul>
-      <li>Tie learnings back to specific challenges from slide 11 if you have time — shows reflection, not just a list</li>
-      <li>End on the "zero manual setup, two commands" line — strong, concrete closing fact</li>
+      <li>If time allows, pause here and actually demo 2-3 of these live — debounced search and the outage banner are the most visually convincing.</li>
+      <li>Debounce and lazy-loading show performance awareness, not just feature-completeness.</li>
     </ul>
+  </div>
+  <div class="anticipate-box">
+    <div class="anticipate-label">If asked</div>
+    <p><strong>"Is the chatbot a real AI model?"</strong> → "No — it's keyword/intent matching covering 12 common questions. It's instant and self-contained, with no external API dependency. Upgrading it to an NLP-based model is in my future scope."</p>
   </div>
 </div>
 
 <!-- SLIDE 13 -->
 <div class="section">
-  <div class="slide-head"><span class="slide-num">13</span><span class="slide-title">Thank You / Q&A</span><span class="slide-time">~15 sec + open floor</span></div>
+  <div class="slide-head"><span class="slide-num">13</span><span class="slide-title">Challenges & Solutions</span><span class="slide-time">~75 sec</span></div>
   <div class="say-box">
     <div class="say-label">What to say</div>
-    "Thank you for your time. That concludes my presentation on NexCare. I'd be happy to take any questions, and I'm also glad to walk through a live demo or any part of the code in more detail."
+    "Five real challenges. First — the sidebar and chatbot are sibling components with no parent-child relationship, so direct DOM manipulation kept getting overridden by Angular's own change detection. I solved it with a shared ChatService using an RxJS Subject as an event bus. Second — I originally used scrollIntoView for tab navigation, which broke on page refresh; I switched entirely to Angular Router query parameters. Third — Chart.js needs an actual canvas element to exist before it can draw, but my charts were inside Angular @if blocks that hadn't rendered yet; I fixed this with a short setTimeout after the tab switch so the DOM element exists first. Fourth — Angular's dev server on port 4200 and Spring Boot on 8080 triggered CORS errors; I added a proxy.conf.json so the dev server transparently forwards every /api request. And fifth — my database seed was re-running on every restart; I fixed that with an existsById check in DataInitializer so it only seeds when the admin account doesn't already exist."
   </div>
   <div class="point-box">
     <div class="point-label">Key points to hit</div>
-    <ul>
-      <li>Smile, slow down, make eye contact — this is the line people remember</li>
-      <li>Offering a live demo proactively signals confidence — only say it if you're ready to actually do it</li>
-    </ul>
+    <ul><li>This slide proves you debugged real problems rather than following a tutorial — give each pair a crisp "why it broke" then "what fixed it," don't rush past it.</li></ul>
+  </div>
+  <div class="anticipate-box">
+    <div class="anticipate-label">If asked</div>
+    <p><strong>"What was the hardest bug to fix?"</strong> → "The Chart.js timing issue — it wasn't an error message, the chart would just silently not appear, so it took a while to realise the canvas element didn't exist yet when the chart code ran."</p>
+  </div>
+</div>
+
+<!-- SLIDE 14 — NEW TESTING SUMMARY -->
+<div class="section page-break">
+  <div class="slide-head"><span class="slide-num">14</span><span class="slide-title">Testing Summary</span><span class="slide-time">~50 sec</span></div>
+  <div class="say-box">
+    <div class="say-label">What to say</div>
+    "Before treating this as demo-ready, I manually tested seven core scenarios. Valid admin login issues a JWT and redirects correctly. An incorrect password returns 401. A customer trying to access /admin directly through the URL gets redirected by the route guard. When a representative resolves a ticket, resolutionTimeHrs is calculated automatically. Reporting an outage in Mumbai means only Mumbai customers see the alert — Delhi and Bangalore customers see nothing. Token expiry after 24 hours correctly forces a re-login. And restarting the application twice in a row does not duplicate the seed data, confirming DataInitializer's existsById guard works as intended. All seven passed."
+  </div>
+  <div class="point-box">
+    <div class="point-label">Key points to hit</div>
+    <ul><li>Say "manually tested" honestly — don't claim automated test suites exist if they don't; the formal report lists this as future scope, which is the correct, honest answer if asked.</li></ul>
+  </div>
+  <div class="anticipate-box">
+    <div class="anticipate-label">If asked</div>
+    <p><strong>"Do you have automated unit tests?"</strong> → "Not yet — testing was done manually against these seven scenarios for this capstone phase. Adding JUnit tests for the backend and Karma/Jasmine tests for the frontend is explicitly listed in my future scope."</p>
+  </div>
+</div>
+
+<!-- SLIDE 15 -->
+<div class="section">
+  <div class="slide-head"><span class="slide-num">15</span><span class="slide-title">Key Learnings & Conclusion</span><span class="slide-time">~65 sec</span></div>
+  <div class="say-box">
+    <div class="say-label">What to say</div>
+    "This project taught me things coursework alone couldn't. How Spring Security combined with JWT enables stateless authentication that scales without server-side session storage. Angular's standalone component model, which removes all the NgModule boilerplate older tutorials are full of. That RxJS Subjects are the correct pattern for communication between unrelated components. Functional interceptors and guards as the modern Angular 17 style. How a proxy configuration cleanly bridges frontend and backend in development. That Chart.js has to respect Angular's own rendering lifecycle, not fight it. And relying on @PostConstruct for dependable startup behaviour.
+
+    To conclude — NexCare is a production-grade Java Full Stack application: secure, role-based, real-time, purpose-built for Indian telecom operations. It follows a clean three-tier architecture, requires zero manual setup, runs with two commands after installing prerequisites, and covers the full software development lifecycle — design, development, security, testing, and documentation. I've also prepared comprehensive supporting material: a setup guide, a technical Q&A reference, a full code walkthrough, and a formal capstone report."
+  </div>
+  <div class="point-box">
+    <div class="point-label">Key points to hit</div>
+    <ul><li>End on "zero manual setup, two commands" — concrete, memorable closing fact.</li></ul>
+  </div>
+</div>
+
+<!-- SLIDE 16 -->
+<div class="section">
+  <div class="slide-head"><span class="slide-num">16</span><span class="slide-title">Thank You / Q&A</span><span class="slide-time">~15 sec + open floor</span></div>
+  <div class="say-box">
+    <div class="say-label">What to say</div>
+    "Thank you for your time. That concludes my presentation on NexCare. I'd be happy to take any questions, and I'm glad to walk through a live demo or any part of the code in more detail."
+  </div>
+  <div class="point-box">
+    <div class="point-label">Key points to hit</div>
+    <ul><li>Smile, slow down, make eye contact. Only offer a live demo if you're genuinely ready to do it.</li></ul>
   </div>
 </div>
 
@@ -344,13 +379,14 @@
   <div class="slide-head"><span class="slide-title" style="font-size:18px">Final Pre-Presentation Checklist</span></div>
   <ul class="checklist">
     <li>Practiced the full script out loud at least twice, end to end, with a timer</li>
+    <li>Can explain every line of both Code Deep Dive slides (8 and 9) without reading from notes</li>
     <li>Backend running locally and confirmed reachable (login test with admin@csd.com works)</li>
     <li>Frontend running locally at http://localhost:4200 and confirmed loading</li>
     <li>Demo credentials memorised or written on a sticky note: admin@csd.com / admin123</li>
     <li>Laptop charger plugged in, brightness up, notifications silenced before presenting</li>
     <li>PPTX opened and tested in Presenter View at least once beforehand</li>
     <li>Read through the Technical Q&A Guide (docs/02) the night before for extra confidence</li>
-    <li>Know which 2-3 features you'll demo live on slide 10 if time allows</li>
+    <li>Know which 2-3 features you'll demo live on slide 12 if time allows</li>
   </ul>
 </div>
 
