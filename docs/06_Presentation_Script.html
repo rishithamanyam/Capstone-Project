@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NexCare — Presentation Script</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:#fff;color:#1e293b;font-size:13.5px;line-height:1.75}
+  .cover{background:linear-gradient(145deg,#0c1a3a,#1e3a5f,#1d4ed8);min-height:260px;padding:56px 48px 48px;page-break-after:always}
+  .cover h1{font-size:42px;font-weight:900;color:#fff;letter-spacing:-.03em;line-height:1.1}
+  .cover h1 span{color:#93c5fd}
+  .cover p{font-size:15px;color:rgba(255,255,255,.6);margin-top:10px}
+  .cover-pills{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+  .pill{background:rgba(147,197,253,.15);border:1px solid rgba(147,197,253,.3);color:#93c5fd;font-size:11px;font-weight:700;letter-spacing:.06em;padding:4px 12px;border-radius:100px}
+
+  .content{max-width:820px;margin:0 auto;padding:52px 48px}
+  .section{margin-bottom:40px}
+
+  .slide-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid #dbeafe}
+  .slide-num{background:#1d4ed8;color:#fff;font-size:13px;font-weight:800;padding:5px 11px;border-radius:8px;flex-shrink:0}
+  .slide-title{font-size:17px;font-weight:800;color:#1e1b4b}
+  .slide-time{margin-left:auto;font-size:11px;font-weight:700;color:#94a3b8;background:#f1f5f9;padding:4px 10px;border-radius:6px}
+
+  .say-box{background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:14px 18px;margin:10px 0;font-size:13.5px;color:#14532d;line-height:1.85}
+  .say-label{font-size:10px;font-weight:800;color:#16a34a;text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px}
+
+  .point-box{background:#f8faff;border:1.5px solid #e0e7ff;border-radius:10px;padding:12px 16px;margin:10px 0}
+  .point-label{font-size:10px;font-weight:800;color:#3b82f6;text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px}
+  .point-box ul{margin-left:18px;color:#374151;font-size:12.5px}
+  .point-box li{margin-bottom:5px}
+
+  .anticipate-box{background:#fff7ed;border:1.5px solid #fed7aa;border-radius:10px;padding:12px 16px;margin:10px 0}
+  .anticipate-label{font-size:10px;font-weight:800;color:#c2410c;text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px}
+  .anticipate-box p{font-size:12.5px;color:#7c2d12;margin-bottom:6px}
+  .anticipate-box p:last-child{margin-bottom:0}
+
+  .gesture{font-size:11.5px;color:#94a3b8;font-style:italic;margin:6px 0 0}
+
+  code{font-family:'JetBrains Mono',monospace;font-size:12px;background:#1e1b4b;color:#c4b5fd;padding:2px 7px;border-radius:5px}
+  .page-break{page-break-before:always;padding-top:52px}
+
+  .tip-banner{background:linear-gradient(90deg,#eff6ff,#f5f3ff);border:1.5px solid #e0e7ff;border-radius:12px;padding:16px 20px;margin-bottom:20px}
+  .tip-banner h3{font-size:13px;font-weight:800;color:#1e1b4b;margin-bottom:6px}
+  .tip-banner p{font-size:12.5px;color:#374151}
+
+  .checklist{margin:10px 0;padding:0;list-style:none}
+  .checklist li{padding:7px 0 7px 28px;position:relative;font-size:12.5px;color:#374151;border-bottom:1px dotted #e2e8f0}
+  .checklist li:before{content:"☐";position:absolute;left:0;color:#1d4ed8;font-size:15px}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div style="font-size:52px;margin-bottom:20px">🎙️</div>
+  <h1>Presentation <span>Script</span></h1>
+  <p>Word-for-word speaking notes for all 13 slides — NexCare_Capstone_Presentation.pptx</p>
+  <div class="cover-pills">
+    <span class="pill">Slide-by-Slide Script</span>
+    <span class="pill">Timing Guide (~12 min)</span>
+    <span class="pill">Anticipated Questions</span>
+    <span class="pill">Delivery Tips</span>
+  </div>
+</div>
+
+<div class="content">
+
+<div class="tip-banner">
+  <h3>How to use this document</h3>
+  <p>Each slide below has four parts: <strong>What to Say</strong> (read this almost word-for-word until you're comfortable, then put it in your own words), <strong>Key Points to Hit</strong> (don't skip these even if you reword the script), <strong>If Asked</strong> (likely follow-up questions with short answers), and a timing estimate. Total deck run-time target: <strong>10–13 minutes</strong>, leaving time for Q&A. Practice out loud at least twice before presenting — reading silently is not the same as speaking it.</p>
+</div>
+
+<!-- SLIDE 1 -->
+<div class="section">
+  <div class="slide-head"><span class="slide-num">1</span><span class="slide-title">Cover — NexCare</span><span class="slide-time">~40 sec</span></div>
+  <div class="say-box">
+    <div class="say-label">What to say</div>
+    "Good morning/afternoon everyone. My name is Rishitha Manyam, and today I'll be presenting my capstone project for the Wipro RGA Program 2025 — it's called NexCare, an Interactive Dashboard System for Customer Service Operations. This project was built using the Java Full Stack technologies I learned during the program — specifically Angular on the frontend and Spring Boot on the backend."
+  </div>
+  <div class="point-box">
+    <div class="point-label">Key points to hit</div>
+    <ul>
+      <li>State your name and the program name clearly — this is the formal opening.</li>
+      <li>Say the project name "NexCare" and its one-line description once, clearly.</li>
+      <li>Mention it's a Java Full Stack project — sets audience expectations for the tech questions ahead.</li>
+    </ul>
+  </div>
+  <p class="gesture">Pause here, make eye contact, then click to Slide 2.</p>
+</div>
+
+<!-- SLIDE 2 -->
+<div class="section">
+  <div class="slide-head"><span class="slide-num">2</span><span class="slide-title">Agenda</span><span class="slide-time">~25 sec</span></div>
+  <div class="say-box">
+    <div class="say-label">What to say</div>
+    "Here's what I'll cover today — I'll start with the problem this project solves, then walk through my solution and tech stack, explain the system architecture and security model, show you the database design, walk through the key features, talk about challenges I faced, and close with what I learned. I'll leave time at the end for questions."
+  </div>
+  <div class="point-box">
+    <div class="point-label">Key points to hit</div>
+    <ul><li>Just a quick read-through of the bullet list — don't over-explain, this slide is a map, not content.</li></ul>
+  </div>
+</div>
+
+<!-- SLIDE 3 -->
+<div class="section">
+  <div class="slide-head"><span class="slide-num">3</span><span class="slide-title">Problem Statement</span><span class="slide-time">~50 sec</span></div>
+  <div class="say-box">
+    <div class="say-label">What to say</div>
+    "Let's start with the problem. Telecom customer service teams in India today rely on disconnected tools. Representatives use spreadsheets to track tickets, which means there's no single, unified view of what's happening with any customer. Managers have no real-time way to see how their team is performing — no visibility into who's overloaded or who's resolving tickets quickly. Customers themselves have no way to track their own complaint status, so they end up calling back repeatedly just to ask 'what's the status of my ticket?' — which wastes everyone's time. And when there's a service outage in an area, there's no targeted way to inform just the customers who are actually affected."
+  </div>
+  <div class="point-box">
+    <div class="point-label">Key points to hit</div>
+    <ul>
+      <li>Spreadsheets → no unified view</li>
+      <li>Managers → no real-time visibility</li>
+      <li>Customers → no self-service tracking, leads to repeat calls</li>
+      <li>Outages → no targeted communication</li>
+    </ul>
+  </div>
+  <div class="anticipate-box">
+    <div class="anticipate-label">If asked</div>
+    <p><strong>"Is this based on a real company?"</strong> → "It's modeled on common pain points reported across small and mid-sized Indian telecom service desks — it's a representative problem, not one specific company's internal system."</p>
+  </div>
+</div>
+
+<!-- SLIDE 4 -->
+<div class="section page-break">
+  <div class="slide-head"><span class="slide-num">4</span><span class="slide-title">Solution Overview — NexCare</span><span class="slide-time">~60 sec</span></div>
+  <div class="say-box">
+    <div class="say-label">What to say</div>
+    "My solution is NexCare — a full-stack web application purpose-built for Indian telecom customer service operations. It gives every user role a dashboard tailored to exactly what they need. The entire API is secured with JWT tokens, so every user only ever sees the data they're authorised to see — a customer cannot see another customer's tickets, and a representative cannot see another representative's workload. Ticket management happens in real time with a full audit trail — every status change is timestamped. There's also a live chatbot that can answer twelve common customer questions instantly without needing a human representative. For visibility, I built analytics charts — bar charts and doughnut charts — so managers can see performance at a glance. Outage alerts are smart — they only appear to customers in the affected city, not everyone. And the whole application is localised for India — INR currency, Indian city names, Indian phone number formats. Finally, there's zero setup required for the database — it seeds all its own demo data automatically the first time it runs."
+  </div>
+  <div class="point-box">
+    <div class="point-label">Key points to hit</div>
+    <ul>
+      <li>Four role-based dashboards</li>
+      <li>JWT security — strict data isolation</li>
+      <li>Real-time tickets with audit trail</li>
+      <li>Chatbot + analytics charts</li>
+      <li>City-targeted outage alerts</li>
+      <li>India localisation + zero-setup database</li>
+    </ul>
+  </div>
+  <div class="anticipate-box">
+    <div class="anticipate-label">If asked</div>
+    <p><strong>"What does 'full audit trail' mean exactly?"</strong> → "Every ticket records when it was created, when a representative first responded, and when it was resolved — these timestamps are never entered manually, they're captured automatically by the system the moment the status changes."</p>
+  </div>
+</div>
+
+<!-- SLIDE 5 -->
+<div class="section">
+  <div class="slide-head"><span class="slide-num">5</span><span class="slide-title">Tech Stack</span><span class="slide-time">~70 sec</span></div>
+  <div class="say-box">
+    <div class="say-label">What to say</div>
+    "On the frontend, I used Angular 17 with standalone components, meaning there's no NgModule anywhere in the application — that's the modern Angular approach. Everything is written in strict TypeScript. For visual analytics I used Chart.js for the bar and doughnut charts. Styling is plain CSS3 with a lilac theme and smooth cubic-bezier animations. Routing uses Angular Router with lazy loading, so a dashboard's code only downloads when a user actually visits it, plus hash-based URLs for easy hosting. I used RxJS for reactive state management and for communication between components that aren't directly related. And there's a proxy configuration so the Angular dev server forwards any '/api' request straight to the backend on port 8080 — no CORS headaches during development.
+
+    On the backend, it's Spring Boot 3.2.5 powering the REST API. Spring Security handles the JWT filter chain. I used the JJWT library, version 0.12.3, for generating and validating tokens. Spring Data JPA is the ORM layer for all my entities. The database is H2, running in file mode, so no external database server is needed at all. Passwords are hashed using BCryptPasswordEncoder — never stored in plain text. And the whole project is built and managed with Maven."
+  </div>
+  <div class="point-box">
+    <div class="point-label">Key points to hit</div>
+    <ul>
+      <li>Frontend: Angular 17 standalone, TypeScript, Chart.js, RxJS, lazy loading</li>
+      <li>Backend: Spring Boot, Spring Security, JJWT, Spring Data JPA, H2, BCrypt</li>
+      <li>Say "standalone components, no NgModule" — this signals you know modern Angular, not textbook Angular</li>
+    </ul>
+  </div>
+  <div class="anticipate-box">
+    <div class="anticipate-label">If asked</div>
+    <p><strong>"Why Angular over React?"</strong> → "Angular is a complete framework — routing, forms, and the HTTP client are all built in. React is just a library, so you'd need to add several third-party packages to get the same coverage. For an enterprise-style dashboard like this, Angular's structure made more sense."</p>
+    <p><strong>"Why H2 and not MySQL/PostgreSQL?"</strong> → "H2 needed zero installation — it runs as a file right inside the project, which made the application instantly runnable for demo and evaluation purposes. For a real production deployment, I'd migrate to PostgreSQL, which I mention in my future scope."</p>
+  </div>
+</div>
+
+<!-- SLIDE 6 -->
+<div class="section page-break">
+  <div class="slide-head"><span class="slide-num">6</span><span class="slide-title">System Architecture</span><span class="slide-time">~60 sec</span></div>
+  <div class="say-box">
+    <div class="say-label">What to say</div>
+    "NexCare follows a three-tier architecture. At the top is the Presentation layer — that's the Angular 17 single-page application, handling all the components, routing, interceptors, and guards. Below that is the Service or API layer — the Spring Boot REST controllers for Authentication, Users, Tickets, Analytics, and Outages. At the bottom is the Data layer — Spring Data JPA on top of the H2 file database, storing Users, Tickets, Outages, and Notifications.
+
+    These layers talk to each other purely over HTTP using JSON. During development, the proxy I mentioned handles the connection; in production it would be direct CORS-enabled communication. And critically — every single request between the frontend and backend carries a JWT bearer token, so authentication is checked on every call, not just at login."
+  </div>
+  <div class="point-box">
+    <div class="point-label">Key points to hit</div>
+    <ul>
+      <li>Three tiers: Presentation (Angular) → Service/API (Spring Boot) → Data (JPA + H2)</li>
+      <li>Communication: HTTP/JSON, proxy in dev, CORS in prod</li>
+      <li>JWT bearer token on every request — not just login</li>
+    </ul>
+  </div>
+  <div class="anticipate-box">
+    <div class="anticipate-label">If asked</div>
+    <p><strong>"Why three tiers instead of putting everything in one app?"</strong> → "Separating frontend and backend means they can be deployed, scaled, and even rewritten independently. It's also the standard pattern in the industry for any application that might need a mobile client later — the same backend API could serve a mobile app without any changes."</p>
+  </div>
+</div>
+
+<!-- SLIDE 7 -->
+<div class="section">
+  <div class="slide-head"><span class="slide-num">7</span><span class="slide-title">Role-Based Dashboards</span><span class="slide-time">~55 sec</span></div>
+  <div class="say-box">
+    <div class="say-label">What to say</div>
+    "There are four roles in NexCare, each with its own dedicated dashboard. The Admin manages all employees, can view every ticket in the system, reports service outages, and sees an overall analytics view. The Manager monitors their team's tickets, resolves outages, views individual representative performance, and manages escalations. The Representative views and updates only their assigned tickets, can search for customers, and tracks their own resolution time. And the Customer can raise new tickets, track their status, rate the support they received, view outage alerts for their city, and use the chatbot."
+  </div>
+  <div class="point-box">
+    <div class="point-label">Key points to hit</div>
+    <ul>
+      <li>Four roles, four dashboards — not one dashboard with toggled visibility</li>
+      <li>Each role's permissions map directly back to the problem statement</li>
+    </ul>
+  </div>
+  <div class="anticipate-box">
+    <div class="anticipate-label">If asked</div>
+    <p><strong>"What stops a Representative from just changing the URL to access the Admin page?"</strong> → "Two layers stop that — first, an Angular route guard checks the role stored from the JWT and redirects them immediately. Second, even if they bypassed the frontend entirely and called the API directly, the backend's @PreAuthorize checks would reject the request with a 403 — the frontend guard is just a convenience, the backend is the real enforcement."</p>
+  </div>
+</div>
+
+<!-- SLIDE 8 -->
+<div class="section page-break">
+  <div class="slide-head"><span class="slide-num">8</span><span class="slide-title">Security Implementation — JWT</span><span class="slide-time">~90 sec (most technical slide)</span></div>
+  <div class="say-box">
+    <div class="say-label">What to say</div>
+    "This is the most important technical slide, so let me walk through the full flow step by step.
+
+    One — the user submits their email and password through the Angular Sign In form. Two — my AuthController calls a UserDetailsService, which uses BCrypt to verify the submitted password against the hashed password stored in the database — the plain password is never stored anywhere. Three — once verified, my JwtService generates a signed token containing the user's ID, email, role, and a 24-hour expiry. Four — that token is returned to the frontend and stored in sessionStorage, which automatically clears when the browser tab closes — that's a deliberate security choice over localStorage. Five — from that point on, every single API call from the frontend goes through a JWT interceptor that automatically attaches the token as an 'Authorization: Bearer' header — I never have to manually add it in any service. Six — on the backend, my JwtAuthFilter validates that token's signature on every protected endpoint before the request is even allowed to reach the controller. Seven — on the frontend, an Auth Guard checks the role stored from that token before allowing the Angular router to render a protected page. And eight — when the user logs out, sessionStorage is cleared, so even if that token were somehow intercepted, it becomes unusable immediately."
+  </div>
+  <div class="point-box">
+    <div class="point-label">Key points to hit</div>
+    <ul>
+      <li>Walk through all 8 steps in order — this is the slide evaluators will probe hardest</li>
+      <li>Emphasize: password never stored in plaintext (BCrypt)</li>
+      <li>Emphasize: sessionStorage over localStorage was a deliberate choice</li>
+      <li>Emphasize: security enforced at BOTH frontend (guard) AND backend (filter) — two independent layers</li>
+    </ul>
+  </div>
+  <div class="anticipate-box">
+    <div class="anticipate-label">If asked</div>
+    <p><strong>"What's inside the JWT token exactly?"</strong> → "Three parts: a header describing the signing algorithm, a payload with the user's ID, email, role, and expiry timestamp, and a signature — all three are Base64-encoded and joined with dots. The signature is what prevents anyone from tampering with the payload, because regenerating a valid signature requires a secret key only the server has."</p>
+    <p><strong>"Why sessionStorage instead of localStorage?"</strong> → "localStorage persists even after the browser is closed, which is a bigger attack surface if the device is shared. sessionStorage clears the moment the tab closes, which is safer for a demo/internal tool context."</p>
+    <p><strong>"What happens after the token expires?"</strong> → "Any further API call returns 401 Unauthorized, and the frontend interceptor catches that and redirects the user back to the login page to re-authenticate."</p>
+  </div>
+</div>
+
+<!-- SLIDE 9 -->
+<div class="section">
+  <div class="slide-head"><span class="slide-num">9</span><span class="slide-title">Database & Data Flow</span><span class="slide-time">~65 sec</span></div>
+  <div class="say-box">
+    <div class="say-label">What to say</div>
+    "For data, I'm using an H2 file database that persists across restarts — so demo data isn't lost every time the server stops. There are four main tables. Users — all four roles live in one table, distinguished by a role enum, which keeps authentication logic simple. Tickets — storing the customer ID, assigned representative ID, status, domain, and customer rating. Outages — storing location, affected areas, domain, and severity. And Notifications — storing the recipient's user ID, the message, a read flag, and when it was created. All of this is seeded automatically on startup through a DataInitializer class using Spring's @PostConstruct annotation — by default it loads 11 demo users, 10 tickets, 2 outages, and 4 notifications, so the app is immediately demo-ready.
+
+    On the API side, here are the core endpoints: POST /api/auth/login returns a JWT token. POST /api/auth/register creates a new customer account. GET /api/tickets returns tickets already filtered by the caller's role — a customer only gets their own, a representative only gets their assigned ones. PUT /api/tickets/{id} updates status and automatically stamps the audit fields. GET /api/analytics/{role} returns an aggregated statistics map for dashboards. And GET /api/outages/location filters outages down to just one city for the customer view."
+  </div>
+  <div class="point-box">
+    <div class="point-label">Key points to hit</div>
+    <ul>
+      <li>4 tables: Users (single table, role enum), Tickets, Outages, Notifications</li>
+      <li>Auto-seeding via @PostConstruct — emphasize "zero manual setup"</li>
+      <li>Role-based filtering happens server-side in the service layer, not just hidden in the UI</li>
+    </ul>
+  </div>
+  <div class="anticipate-box">
+    <div class="anticipate-label">If asked</div>
+    <p><strong>"Why one Users table for all roles instead of separate tables?"</strong> → "All roles share the same core fields — name, email, password, phone, location — so one table with a role enum column avoids duplicate schema and makes authentication a single, simple query regardless of who's logging in."</p>
+    <p><strong>"Does the seed data get duplicated if I restart the server multiple times?"</strong> → "No — DataInitializer checks if the admin account already exists before seeding anything, so restarts are safe and idempotent."</p>
+  </div>
+</div>
+
+<!-- SLIDE 10 -->
+<div class="section page-break">
+  <div class="slide-head"><span class="slide-num">10</span><span class="slide-title">Key Features Walkthrough</span><span class="slide-time">~75 sec (pairs well with a live demo)</span></div>
+  <div class="say-box">
+    <div class="say-label">What to say</div>
+    "Let me highlight ten features that I think best show the depth of this project. The login page has a fully animated full-page lilac overlay transition between Sign In and Sign Up, built with CSS cubic-bezier easing. Every dashboard route is lazy-loaded — Angular only downloads a dashboard's code when a user actually navigates to it. Tab navigation inside dashboards uses URL query parameters, so every tab is bookmarkable and survives a page refresh. Analytics are powered by live Chart.js bar charts for tickets by domain and doughnut charts for status breakdown. The outage alert banner is smart — it only appears to customers whose city actually matches the outage location, nobody else sees it. There's an AI chatbot recognising twelve different intent keywords, with auto-scroll, and it can even be triggered from the sidebar using an RxJS Subject as an event bus. Customers can rate closed tickets, and that score immediately shows up on the representative's own dashboard. Representatives can search customers by name, phone, or ID, with a 400-millisecond debounce so we're not spamming the API on every keystroke. First-time representative logins are detected and they're prompted to change their password before doing anything else. And the whole thing is localised for India — Rupee currency symbols, Indian city names, and Indian phone number formatting."
+  </div>
+  <div class="point-box">
+    <div class="point-label">Key points to hit</div>
+    <ul>
+      <li>If you have time for a live demo, this is the slide to pause on and actually show 2-3 of these live</li>
+      <li>Debounce and lazy-loading show performance awareness, not just feature-completeness</li>
+      <li>City-matched outage banner reinforces the "Solution Overview" promise from slide 4</li>
+    </ul>
+  </div>
+  <div class="anticipate-box">
+    <div class="anticipate-label">If asked</div>
+    <p><strong>"Is the chatbot using a real AI model?"</strong> → "No — it's a keyword/intent matching system covering 12 common questions like 'how do I raise a ticket' or 'what's my ticket status'. It's instant and doesn't need an external API, which fits a self-contained capstone project. I've noted upgrading it to an NLP-based model as future scope."</p>
+  </div>
+</div>
+
+<!-- SLIDE 11 -->
+<div class="section">
+  <div class="slide-head"><span class="slide-num">11</span><span class="slide-title">Challenges & Solutions</span><span class="slide-time">~70 sec</span></div>
+  <div class="say-box">
+    <div class="say-label">What to say</div>
+    "No project goes perfectly the first time, so let me share five real challenges I ran into. First — the sidebar and the chatbot are sibling components with no direct parent-child relationship, so they couldn't easily talk to each other; direct DOM manipulation kept getting overridden by Angular's own change detection. I solved this by creating a shared ChatService using an RxJS Subject as an event bus. Second — I originally used scrollIntoView for tab navigation, but it wasn't reliable across page refreshes. I switched entirely to Angular Router query parameters instead, which is reliable across refreshes and roles. Third — Chart.js needs an actual canvas element in the DOM before it can draw, but my charts were inside Angular @if blocks that hadn't rendered yet. I fixed this with a short setTimeout after the tab switch to make sure the DOM element existed first. Fourth — Angular's dev server on port 4200 and Spring Boot on port 8080 triggered CORS errors during development. I added a proxy.conf.json so the dev server transparently forwards all /api requests, eliminating the cross-origin issue entirely. And fifth — my database seed was re-running every time I restarted the server. I fixed that by adding an existsById check in DataInitializer so it only seeds data if the admin account doesn't already exist."
+  </div>
+  <div class="point-box">
+    <div class="point-label">Key points to hit</div>
+    <ul>
+      <li>This slide is your chance to prove you debugged real problems, not just followed a tutorial</li>
+      <li>Each challenge should have a crisp one-line "why it broke" + "what fixed it"</li>
+    </ul>
+  </div>
+  <div class="anticipate-box">
+    <div class="anticipate-label">If asked</div>
+    <p><strong>"What was the hardest bug to fix?"</strong> → "Honestly the Chart.js timing issue — it wasn't an error message, the chart would just silently not appear, so it took a while to realise the canvas element didn't exist yet when the chart code ran."</p>
+  </div>
+</div>
+
+<!-- SLIDE 12 -->
+<div class="section page-break">
+  <div class="slide-head"><span class="slide-num">12</span><span class="slide-title">Key Learnings & Conclusion</span><span class="slide-time">~65 sec</span></div>
+  <div class="say-box">
+    <div class="say-label">What to say</div>
+    "This project taught me a number of things I couldn't have fully learned from coursework alone. I learned how Spring Security combined with JWT enables stateless authentication that can scale — no server-side session storage required. I learned Angular's standalone component model, which removes all the NgModule boilerplate that older Angular tutorials are full of. I learned that RxJS Subjects are the correct pattern for communication between components that aren't directly related. I learned to write functional interceptors and guards, which is the modern Angular 17 style rather than the older class-based approach. I learned how a proxy configuration bridges frontend and backend cleanly during development. I learned that Chart.js has to respect Angular's own rendering lifecycle, not fight against it. And I learned to rely on @PostConstruct for dependable application startup behaviour.
+
+    To conclude — NexCare demonstrates a production-grade Java Full Stack application. It's secure, role-based, and real-time, purpose-built for Indian telecom operations. It follows a clean architecture — an Angular single-page application, a Spring Boot REST API, and an H2 database. It requires zero manual setup, running with just two commands after installing the prerequisites. And it covers the full software development lifecycle — design, development, security, testing, and documentation. I've also prepared comprehensive supporting guides covering setup, a technical Q&A reference, and a full code walkthrough."
+  </div>
+  <div class="point-box">
+    <div class="point-label">Key points to hit</div>
+    <ul>
+      <li>Tie learnings back to specific challenges from slide 11 if you have time — shows reflection, not just a list</li>
+      <li>End on the "zero manual setup, two commands" line — strong, concrete closing fact</li>
+    </ul>
+  </div>
+</div>
+
+<!-- SLIDE 13 -->
+<div class="section">
+  <div class="slide-head"><span class="slide-num">13</span><span class="slide-title">Thank You / Q&A</span><span class="slide-time">~15 sec + open floor</span></div>
+  <div class="say-box">
+    <div class="say-label">What to say</div>
+    "Thank you for your time. That concludes my presentation on NexCare. I'd be happy to take any questions, and I'm also glad to walk through a live demo or any part of the code in more detail."
+  </div>
+  <div class="point-box">
+    <div class="point-label">Key points to hit</div>
+    <ul>
+      <li>Smile, slow down, make eye contact — this is the line people remember</li>
+      <li>Offering a live demo proactively signals confidence — only say it if you're ready to actually do it</li>
+    </ul>
+  </div>
+</div>
+
+<!-- FINAL PREP CHECKLIST -->
+<div class="section page-break">
+  <div class="slide-head"><span class="slide-title" style="font-size:18px">Final Pre-Presentation Checklist</span></div>
+  <ul class="checklist">
+    <li>Practiced the full script out loud at least twice, end to end, with a timer</li>
+    <li>Backend running locally and confirmed reachable (login test with admin@csd.com works)</li>
+    <li>Frontend running locally at http://localhost:4200 and confirmed loading</li>
+    <li>Demo credentials memorised or written on a sticky note: admin@csd.com / admin123</li>
+    <li>Laptop charger plugged in, brightness up, notifications silenced before presenting</li>
+    <li>PPTX opened and tested in Presenter View at least once beforehand</li>
+    <li>Read through the Technical Q&A Guide (docs/02) the night before for extra confidence</li>
+    <li>Know which 2-3 features you'll demo live on slide 10 if time allows</li>
+  </ul>
+</div>
+
+</div>
+</body>
+</html>

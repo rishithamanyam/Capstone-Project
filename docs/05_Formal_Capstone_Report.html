@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>NexCare — Formal Capstone Project Report</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;color:#1e293b;font-size:13.5px;line-height:1.85;background:#fff}
+
+.cover{background:linear-gradient(150deg,#0c1f3d,#1e3a6e,#2d5fb8);min-height:280px;padding:64px 56px 52px;page-break-after:always}
+.cover-tag{font-size:11px;font-weight:700;letter-spacing:.12em;color:#93c5fd;text-transform:uppercase;margin-bottom:14px}
+.cover h1{font-size:42px;font-weight:900;color:#fff;line-height:1.15;letter-spacing:-.02em}
+.cover-sub{font-size:15px;color:#bfdbfe;margin-top:14px}
+.cover-meta{margin-top:40px;font-size:12px;color:#93c5fd;border-top:1px solid rgba(147,197,253,.3);padding-top:18px;line-height:1.9}
+
+.page{max-width:860px;margin:0 auto;padding:52px 48px}
+.ch{font-size:20px;font-weight:800;color:#0c1f3d;margin:44px 0 16px;padding-bottom:10px;border-bottom:2.5px solid #dbeafe;display:flex;align-items:center;gap:10px}
+.ch-num{background:#1e3a6e;color:#fff;font-size:12px;font-weight:800;padding:3px 9px;border-radius:6px;flex-shrink:0}
+.sh{font-size:15px;font-weight:700;color:#1e3a6e;margin:24px 0 10px}
+p{color:#374151;margin-bottom:11px;text-align:justify}
+ul,ol{margin:8px 0 14px 22px;color:#374151}
+li{margin-bottom:6px}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:12.5px}
+th{background:#1e3a6e;color:#fff;padding:8px 12px;text-align:left}
+td{padding:8px 12px;border-bottom:1px solid #dbeafe}
+tr:nth-child(even) td{background:#f0f5ff}
+code{font-family:'JetBrains Mono',monospace;font-size:11.5px;background:#0c1f3d;color:#bfdbfe;padding:2px 6px;border-radius:4px}
+.abstract-box{background:#f0f5ff;border-left:4px solid #2d5fb8;padding:18px 22px;border-radius:0 8px 8px 0;margin:16px 0}
+.abstract-box p{margin:0;font-style:italic;color:#1e3a6e}
+.page-break{page-break-before:always;padding-top:52px}
+.toc-entry{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dotted #dbeafe;font-size:13px}
+.toc-entry span{color:#2d5fb8;font-weight:600;font-size:12px}
+.signature-block{display:flex;justify-content:space-between;margin-top:60px}
+.sig{text-align:center;width:45%}
+.sig-line{border-top:1px solid #94a3b8;margin-bottom:6px;padding-top:6px}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-tag">Wipro RGA Program 2025 — Capstone Project Report</div>
+  <h1>NexCare</h1>
+  <div class="cover-sub">Interactive Dashboard System for Customer Service Operations</div>
+  <div class="cover-meta">
+    Submitted by: <strong style="color:#fff">Rishitha Manyam</strong><br>
+    Program: Java Full Stack Development<br>
+    Submission Date: June 2026<br>
+    Technology Stack: Angular 17, Spring Boot 3.2.5, H2 Database
+  </div>
+</div>
+
+<div class="page">
+
+<div class="ch"><span class="ch-num">—</span>Table of Contents</div>
+<div class="toc-entry">1. Abstract <span>01</span></div>
+<div class="toc-entry">2. Introduction <span>02</span></div>
+<div class="toc-entry">3. Problem Statement <span>02</span></div>
+<div class="toc-entry">4. Objectives of the Project <span>03</span></div>
+<div class="toc-entry">5. Existing System and Limitations <span>03</span></div>
+<div class="toc-entry">6. Proposed System <span>04</span></div>
+<div class="toc-entry">7. System Requirements <span>04</span></div>
+<div class="toc-entry">8. System Design and Architecture <span>05</span></div>
+<div class="toc-entry">9. Database Design <span>06</span></div>
+<div class="toc-entry">10. Implementation Details <span>07</span></div>
+<div class="toc-entry">11. Security Implementation <span>09</span></div>
+<div class="toc-entry">12. Testing <span>10</span></div>
+<div class="toc-entry">13. Results and Screenshots Description <span>11</span></div>
+<div class="toc-entry">14. Challenges Faced and Solutions <span>12</span></div>
+<div class="toc-entry">15. Conclusion <span>13</span></div>
+<div class="toc-entry">16. Future Scope <span>13</span></div>
+<div class="toc-entry">17. References <span>14</span></div>
+
+<!-- ABSTRACT -->
+<div class="ch page-break"><span class="ch-num">01</span>Abstract</div>
+<div class="abstract-box">
+<p>NexCare is a full-stack, role-based web application designed to digitise and centralise customer service operations for telecom companies operating in India. The system replaces fragmented, manual processes — spreadsheets, phone-based escalation, and email communication — with a single secure platform that serves four distinct user roles: Administrator, Manager, Service Representative, and Customer. Built using Angular 17 on the frontend and Spring Boot 3.2.5 on the backend, NexCare implements JSON Web Token (JWT) based stateless authentication, role-based authorization enforced at both the UI and API layers, real-time ticket lifecycle tracking with automatic performance metric calculation, and a self-service chatbot for first-line customer support. The application is fully localised for the Indian market, supporting Indian cities, INR currency conventions, and Indian phone number formats. This report documents the problem motivating the project, the system design, the technologies used, the implementation approach, the security model, and the testing carried out to validate the application before deployment.</p>
+</div>
+
+<!-- INTRODUCTION -->
+<div class="ch"><span class="ch-num">02</span>Introduction</div>
+<p>Customer service operations in the telecom sector involve a continuous cycle of complaint registration, assignment, resolution, and feedback. As the customer base grows, manual coordination between customers, service representatives, and management becomes a bottleneck — leading to delayed responses, lost visibility into outstanding issues, and an inability to measure representative performance objectively.</p>
+<p>NexCare was conceived as a capstone project to address this gap by building a complete, production-style web application that any telecom service provider could realistically deploy. The project was undertaken individually as part of the Wipro RGA Program 2025, applying the Java Full Stack curriculum — specifically Spring Boot for backend services and Angular for the client-facing application — to a real-world operational problem.</p>
+
+<div class="sh">Problem Statement</div>
+<p>Telecom customer service teams in India face the following recurring issues:</p>
+<ul>
+  <li>No unified system — tickets are tracked across spreadsheets, email threads, and verbal handovers, resulting in lost or duplicated work.</li>
+  <li>Managers have no real-time visibility into team workload or individual representative performance (response time, resolution time, customer satisfaction).</li>
+  <li>Customers have no way to track the status of their own complaints, leading to repeated follow-up calls that consume representative time.</li>
+  <li>There is no role-based data isolation — any staff member can potentially view data belonging to any customer, creating both a privacy and an operational risk.</li>
+  <li>Service outages are communicated informally, leaving customers in affected areas uninformed while still being able to raise duplicate tickets for a known issue.</li>
+</ul>
+
+<!-- OBJECTIVES -->
+<div class="ch"><span class="ch-num">04</span>Objectives of the Project</div>
+<ol>
+  <li>Design and implement a single web application serving four distinct user roles with strict role-based access control.</li>
+  <li>Provide customers with self-service capability to raise, track, and rate support tickets.</li>
+  <li>Provide representatives with a focused workspace to manage assigned tickets and search customer history.</li>
+  <li>Provide managers with team-level analytics — ticket volume, response time, and resolution time per representative.</li>
+  <li>Provide administrators with full operational control — employee management, ticket oversight, and outage reporting.</li>
+  <li>Secure all API access using stateless JWT authentication so the system can scale horizontally without server-side session storage.</li>
+  <li>Automatically calculate and surface key service-level metrics (response time, resolution time, customer satisfaction rating) without manual data entry.</li>
+  <li>Localise the entire application for the Indian market.</li>
+</ol>
+
+<!-- EXISTING SYSTEM -->
+<div class="ch page-break"><span class="ch-num">05</span>Existing System and Limitations</div>
+<p>In most small-to-mid-sized telecom service desks observed informally, the "system" in use is a combination of:</p>
+<table>
+  <tr><th>Tool used today</th><th>Limitation</th></tr>
+  <tr><td>Excel / Google Sheets for ticket tracking</td><td>No real-time updates, no access control, prone to accidental overwrites, no audit trail</td></tr>
+  <tr><td>Phone calls / WhatsApp for status updates</td><td>Not searchable, not measurable, consumes representative time repeatedly</td></tr>
+  <tr><td>Email for outage announcements</td><td>Not targeted — every customer receives the same email regardless of whether they are affected</td></tr>
+  <tr><td>Manual performance reviews</td><td>Subjective, infrequent, not backed by objective response/resolution time data</td></tr>
+</table>
+<p>These limitations directly motivated the design decisions in NexCare: every weakness above maps to a specific feature in the proposed system (described in Section 6).</p>
+
+<!-- PROPOSED SYSTEM -->
+<div class="ch"><span class="ch-num">06</span>Proposed System</div>
+<p>NexCare proposes a single web application with four role-specific dashboards, backed by one shared database and one secured REST API. Key design decisions:</p>
+<ul>
+  <li><strong>Single Page Application (SPA):</strong> Angular handles all UI rendering client-side; the Spring Boot backend serves only JSON data, never HTML — keeping the two layers cleanly separated and independently scalable.</li>
+  <li><strong>Stateless authentication:</strong> JWT tokens carry all the information needed to authorize a request, removing the need for server-side session storage and making the backend horizontally scalable.</li>
+  <li><strong>Role-based dashboards:</strong> Rather than one generic dashboard with conditional rendering, each role gets a dedicated component tree — simplifying the UI logic and reducing the risk of accidentally exposing UI elements to the wrong role.</li>
+  <li><strong>Automatic metric calculation:</strong> Response time and resolution time are computed server-side at the moment a ticket's status changes, removing any possibility of manual data entry error.</li>
+  <li><strong>Targeted outage alerts:</strong> Outages are tagged with a city; only customers located in that city see the alert banner, reducing noise for unaffected customers.</li>
+</ul>
+
+<!-- SYSTEM REQUIREMENTS -->
+<div class="ch"><span class="ch-num">07</span>System Requirements</div>
+<div class="sh">Hardware Requirements (Development Machine)</div>
+<table>
+  <tr><th>Component</th><th>Minimum</th></tr>
+  <tr><td>RAM</td><td>4 GB (8 GB recommended)</td></tr>
+  <tr><td>Disk Space</td><td>2 GB free</td></tr>
+  <tr><td>Processor</td><td>Dual-core, 2 GHz or higher</td></tr>
+</table>
+<div class="sh">Software Requirements</div>
+<table>
+  <tr><th>Software</th><th>Version</th><th>Purpose</th></tr>
+  <tr><td>Java Development Kit (JDK)</td><td>17 or higher</td><td>Compiles and runs the Spring Boot backend</td></tr>
+  <tr><td>Node.js</td><td>18.x LTS or higher</td><td>Runs the Angular build tooling and dev server</td></tr>
+  <tr><td>Apache Maven</td><td>3.9.x (or bundled wrapper)</td><td>Builds the backend, manages Java dependencies</td></tr>
+  <tr><td>Angular CLI</td><td>17.x</td><td>Builds and serves the frontend</td></tr>
+  <tr><td>H2 Database</td><td>Embedded (file mode)</td><td>Persistent storage, no separate installation needed</td></tr>
+  <tr><td>Visual Studio Code / Eclipse</td><td>Latest</td><td>IDE used for development</td></tr>
+  <tr><td>Git</td><td>Latest</td><td>Version control and source hosting on GitHub</td></tr>
+</table>
+
+<!-- ARCHITECTURE -->
+<div class="ch page-break"><span class="ch-num">08</span>System Design and Architecture</div>
+<p>NexCare follows a three-tier architecture, cleanly separating presentation, business logic, and data persistence:</p>
+<table>
+  <tr><th>Tier</th><th>Technology</th><th>Responsibility</th></tr>
+  <tr><td>Presentation</td><td>Angular 17 (Standalone Components)</td><td>Renders all UI, manages client-side routing, calls backend REST APIs</td></tr>
+  <tr><td>Application / Service</td><td>Spring Boot 3.2.5 REST Controllers and Services</td><td>Validates requests, enforces business rules, orchestrates data access</td></tr>
+  <tr><td>Data</td><td>Spring Data JPA + H2 File Database</td><td>Persists Users, Tickets, Outages, and Notifications</td></tr>
+</table>
+<p>Communication between the frontend and backend happens exclusively over HTTP using JSON payloads. During development, Angular's dev server (port 4200) proxies all <code>/api</code> requests to the Spring Boot server (port 8080) via <code>proxy.conf.json</code>, avoiding cross-origin resource sharing (CORS) issues without weakening the production CORS policy.</p>
+
+<div class="sh">Architectural Patterns Used</div>
+<ul>
+  <li><strong>MVC (Model-View-Controller)</strong> on the backend — Controllers handle HTTP, Services hold business logic, Repositories handle persistence, Models represent data.</li>
+  <li><strong>Repository Pattern</strong> — Spring Data JPA repositories abstract all SQL behind Java interfaces.</li>
+  <li><strong>DTO (Data Transfer Object) Pattern</strong> — Request and response bodies use dedicated DTO classes rather than exposing JPA entities directly over the API.</li>
+  <li><strong>Functional Interceptor / Guard Pattern (Angular)</strong> — Cross-cutting concerns (attaching the JWT token, checking authentication) are implemented as standalone functions rather than classes, following Angular 17's modern style.</li>
+  <li><strong>Observer Pattern (RxJS)</strong> — Used for cross-component communication, e.g. the sidebar signalling the chatbot to open via a shared <code>ChatService</code>.</li>
+  <li><strong>Circuit Breaker Pattern (Resilience4j)</strong> — Applied to the ticket retrieval service so a failure does not cascade into a complete application crash.</li>
+</ul>
+
+<!-- DATABASE -->
+<div class="ch page-break"><span class="ch-num">09</span>Database Design</div>
+<p>The application uses an H2 file-based relational database. Spring Data JPA's <code>ddl-auto=update</code> setting automatically generates and updates the schema from the Java entity classes, removing the need to write or maintain SQL DDL scripts manually.</p>
+
+<div class="sh">Entity Relationship Summary</div>
+<table>
+  <tr><th>Entity</th><th>Key Relationships</th></tr>
+  <tr><td>User</td><td>A Representative references their Manager via <code>managerId</code>. A Customer is referenced by Tickets via <code>customerId</code>.</td></tr>
+  <tr><td>Ticket</td><td>References the raising Customer (<code>customerId</code>), the assigned Representative (<code>repId</code>), and that Representative's Manager (<code>managerId</code>) — denormalised for fast manager-level reporting.</td></tr>
+  <tr><td>Outage</td><td>Independent entity, filtered by <code>location</code> when customers query for active outages in their city.</td></tr>
+  <tr><td>Notification</td><td>References the recipient via <code>userId</code>; created automatically by the Ticket and Outage services as side effects of state changes.</td></tr>
+</table>
+
+<div class="sh">USERS Table</div>
+<table>
+  <tr><th>Column</th><th>Type</th><th>Notes</th></tr>
+  <tr><td>id</td><td>BIGINT</td><td>Primary key, auto-increment</td></tr>
+  <tr><td>name, email, password</td><td>VARCHAR</td><td>email is unique; password stored as a BCrypt hash, never plaintext</td></tr>
+  <tr><td>role</td><td>VARCHAR (enum)</td><td>ADMIN / MANAGER / REPRESENTATIVE / CUSTOMER</td></tr>
+  <tr><td>phone, location</td><td>VARCHAR</td><td>Indian phone format; Indian city name</td></tr>
+  <tr><td>manager_id</td><td>BIGINT</td><td>Self-referencing — links a representative to their manager</td></tr>
+  <tr><td>first_login</td><td>BOOLEAN</td><td>Forces a password change on a representative's first sign-in</td></tr>
+</table>
+
+<div class="sh">TICKETS Table</div>
+<table>
+  <tr><th>Column</th><th>Type</th><th>Notes</th></tr>
+  <tr><td>id, customer_id, rep_id, manager_id</td><td>BIGINT</td><td>Foreign references (logical, not enforced FK constraints)</td></tr>
+  <tr><td>domain, subject, description</td><td>VARCHAR</td><td>Ticket classification and content</td></tr>
+  <tr><td>status</td><td>VARCHAR (enum)</td><td>OPEN / IN_PROGRESS / CLOSED</td></tr>
+  <tr><td>created_at, first_response_at, resolved_at</td><td>TIMESTAMP</td><td>Timeline used to compute SLA metrics</td></tr>
+  <tr><td>response_time_hrs, resolution_time_hrs</td><td>DOUBLE</td><td>Computed automatically — never entered manually</td></tr>
+  <tr><td>rating</td><td>INTEGER</td><td>1–5, set by the customer only after the ticket is CLOSED</td></tr>
+</table>
+
+<!-- IMPLEMENTATION -->
+<div class="ch page-break"><span class="ch-num">10</span>Implementation Details</div>
+
+<div class="sh">10.1 Backend Implementation</div>
+<p>The backend is organised into five layers under the package <code>com.wipro.csd</code>:</p>
+<ul>
+  <li><strong>model</strong> — JPA entity classes (User, Ticket, Outage, Notification) mapped directly to database tables.</li>
+  <li><strong>repository</strong> — Spring Data JPA interfaces providing CRUD operations and custom derived queries (e.g. <code>findByCustomerIdOrderByCreatedAtDesc</code>) without any hand-written SQL.</li>
+  <li><strong>service</strong> — Business logic. For example, <code>TicketService.updateStatus()</code> calculates response and resolution times by comparing timestamps whenever a representative changes a ticket's status.</li>
+  <li><strong>controller</strong> — REST endpoints exposed under <code>/api/**</code>, annotated with <code>@PreAuthorize</code> to enforce role checks at the method level in addition to the global security filter.</li>
+  <li><strong>config / filter</strong> — Cross-cutting infrastructure: <code>SecurityConfig</code> (authorization rules), <code>JwtUtil</code> (token generation/validation), <code>JwtAuthFilter</code> (per-request token check), and <code>DataInitializer</code> (seeds demo data on first run via <code>@PostConstruct</code>).</li>
+</ul>
+<p>All model and DTO classes were implemented with explicit getters and setters rather than relying on a code-generation library, ensuring the project compiles identically regardless of the Java Development Kit version installed on the build machine.</p>
+
+<div class="sh">10.2 Frontend Implementation</div>
+<p>The frontend is built using Angular 17's standalone component model — there is no <code>NgModule</code> anywhere in the application. Each route is lazy-loaded via <code>loadComponent()</code>, meaning the JavaScript for, say, the Admin dashboard is only downloaded by the browser when an admin actually navigates there, keeping the initial page load fast.</p>
+<p>Key implementation choices:</p>
+<ul>
+  <li><strong>Hash-based routing</strong> (<code>withHashLocation()</code>) was chosen so the application can be hosted on static file servers (such as GitHub Pages) without server-side URL rewriting.</li>
+  <li><strong>A functional HTTP interceptor</strong> automatically attaches the JWT token to every outgoing request, so no individual service method needs to handle authentication headers manually.</li>
+  <li><strong>A functional route guard</strong> checks both the presence of a token and the user's role before allowing navigation to a protected route, redirecting unauthenticated or unauthorized users back to the login page.</li>
+  <li><strong>Tab navigation within a dashboard</strong> (e.g. Admin's Dashboard / Employees / Tickets / Outages tabs) is implemented using Angular Router query parameters rather than component-internal state, making every tab bookmarkable and refresh-safe.</li>
+  <li><strong>Cross-component communication</strong> (the sidebar opening the chatbot) uses a shared injectable service with an RxJS <code>Subject</code>, which is the idiomatic Angular pattern for sibling components that do not have a direct parent-child relationship.</li>
+</ul>
+
+<div class="sh">10.3 Code Snapshot — Automatic SLA Metric Calculation</div>
+<pre style="background:#0c1f3d;color:#bfdbfe;padding:16px 20px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:11.5px;overflow-x:auto">if (newStatus == TicketStatus.IN_PROGRESS && ticket.getFirstResponseAt() == null) {
+    LocalDateTime now = LocalDateTime.now();
+    ticket.setFirstResponseAt(now);
+    double hrs = ChronoUnit.MINUTES.between(ticket.getCreatedAt(), now) / 60.0;
+    ticket.setResponseTimeHrs(Math.round(hrs * 10.0) / 10.0);
+}</pre>
+<p>This snippet, taken from <code>TicketService.updateStatus()</code>, demonstrates how the response time metric is derived purely from timestamps already present on the entity — no separate manual entry step exists in the system, which removes a whole category of potential data-quality issues found in the spreadsheet-based approach described in Section 5.</p>
+
+<!-- SECURITY -->
+<div class="ch page-break"><span class="ch-num">11</span>Security Implementation</div>
+<p>Security in NexCare operates at three layers, each independent of the others so that a failure in one layer does not compromise the system:</p>
+<ol>
+  <li><strong>Transport-level:</strong> All credentials are submitted over HTTP POST bodies, never in URLs, preventing accidental leakage via browser history or server access logs.</li>
+  <li><strong>Authentication:</strong> Passwords are hashed using BCrypt before storage; the plaintext password is never persisted. On successful login, a JWT signed with HMAC-SHA384 is issued, embedding the user's id, role, name, and a 24-hour expiry.</li>
+  <li><strong>Authorization:</strong> Every protected request passes through <code>JwtAuthFilter</code>, which validates the token's signature and expiry before populating Spring Security's context. Method-level <code>@PreAuthorize</code> annotations then enforce that, for instance, only a user with role <code>CUSTOMER</code> can call the "create ticket" endpoint.</li>
+</ol>
+<p>On the frontend, a route guard provides a first line of defence by preventing the UI from even attempting to render a page the logged-in user is not authorized for — this is a usability feature, not a security boundary, since the authoritative check always happens on the server.</p>
+
+<!-- TESTING -->
+<div class="ch"><span class="ch-num">12</span>Testing</div>
+<p>The application was tested manually across the following scenarios prior to demonstration:</p>
+<table>
+  <tr><th>Test Case</th><th>Expected Result</th><th>Outcome</th></tr>
+  <tr><td>Login with valid Admin credentials</td><td>JWT issued, redirected to Admin dashboard</td><td>Pass</td></tr>
+  <tr><td>Login with incorrect password</td><td>401 Unauthorized, error message shown</td><td>Pass</td></tr>
+  <tr><td>Customer attempts to access /admin directly via URL</td><td>Redirected to login by route guard</td><td>Pass</td></tr>
+  <tr><td>Customer raises a new ticket</td><td>Ticket created with status OPEN; all assigned representatives notified</td><td>Pass</td></tr>
+  <tr><td>Representative updates ticket to IN_PROGRESS</td><td>responseTimeHrs calculated automatically; customer notified</td><td>Pass</td></tr>
+  <tr><td>Representative updates ticket to CLOSED</td><td>resolutionTimeHrs calculated; customer can now rate the ticket</td><td>Pass</td></tr>
+  <tr><td>Admin reports an outage in Mumbai</td><td>Only customers located in Mumbai see the alert banner</td><td>Pass</td></tr>
+  <tr><td>Token expiry after 24 hours</td><td>Subsequent API calls return 401; user redirected to login</td><td>Pass</td></tr>
+  <tr><td>Search ticket by customer phone number</td><td>Matching tickets returned to representative within 400ms debounce</td><td>Pass</td></tr>
+  <tr><td>Concurrent restart of the application</td><td>DataInitializer does not duplicate seed data on second run</td><td>Pass</td></tr>
+</table>
+
+<!-- RESULTS -->
+<div class="ch page-break"><span class="ch-num">13</span>Results and Outcome</div>
+<p>The completed application successfully demonstrates all objectives defined in Section 4. Each of the four roles has a functioning, secured dashboard. Tickets move through their full lifecycle with automatically computed performance metrics. Outage alerts are correctly scoped to the affected city only. The chatbot provides immediate responses to common queries without requiring a ticket to be raised for routine questions.</p>
+<p>From a non-functional perspective, the application starts from a clean checkout with two commands and seeds its own demonstration data, meaning a new evaluator can have a fully working, populated system running within roughly three minutes — addressing a real practical concern for a project that needs to be demonstrated live.</p>
+
+<!-- CHALLENGES -->
+<div class="ch"><span class="ch-num">14</span>Challenges Faced and Solutions</div>
+<table>
+  <tr><th>Challenge</th><th>Solution</th></tr>
+  <tr><td>Sibling Angular components (sidebar and chatbot) needed to communicate without a parent-child relationship</td><td>Introduced a shared injectable <code>ChatService</code> using an RxJS <code>Subject</code> as an event bus</td></tr>
+  <tr><td>Tab navigation using <code>scrollIntoView</code> was unreliable across page refreshes</td><td>Replaced with Angular Router query parameters, making every tab state bookmarkable and refresh-safe</td></tr>
+  <tr><td>Chart.js canvas elements were not yet rendered when charts were initialised inside an <code>@if</code> block</td><td>Deferred chart creation with a short <code>setTimeout</code> after the tab becomes active, ensuring the DOM element exists first</td></tr>
+  <tr><td>Cross-origin requests blocked between Angular (port 4200) and Spring Boot (port 8080) during development</td><td>Configured an Angular dev-server proxy (<code>proxy.conf.json</code>) to forward <code>/api</code> requests transparently</td></tr>
+  <tr><td>A code-generation library used for entity boilerplate behaved inconsistently across different JDK versions on different development machines</td><td>Replaced all generated code with explicit, hand-written getters and setters, eliminating the dependency entirely and guaranteeing identical builds on any machine</td></tr>
+</table>
+
+<!-- CONCLUSION -->
+<div class="ch"><span class="ch-num">15</span>Conclusion</div>
+<p>NexCare demonstrates the practical application of the Java Full Stack curriculum to a realistic business problem. The project required integrating a secure authentication scheme, a role-based authorization model, a relational data design, and a modern reactive frontend into a single coherent system — mirroring the kind of work expected in an industry setting rather than an isolated academic exercise. The resulting application is secure, internally consistent, and fully documented, providing both a working demonstration and a body of supporting material (setup guides, a technical Q&A reference, and this report) suitable for evaluation.</p>
+
+<!-- FUTURE SCOPE -->
+<div class="ch"><span class="ch-num">16</span>Future Scope</div>
+<ul>
+  <li>Migrate from the embedded H2 file database to a production-grade RDBMS such as PostgreSQL or MySQL for true concurrent multi-user deployment.</li>
+  <li>Add email or SMS notifications for ticket status changes, in addition to the in-app notification bell.</li>
+  <li>Introduce file attachments on tickets (e.g. photos of damaged equipment).</li>
+  <li>Add a refresh-token mechanism to allow session renewal without forcing a full re-login after 24 hours.</li>
+  <li>Extend the chatbot with a more sophisticated NLP-based intent classifier in place of the current keyword-matching approach.</li>
+  <li>Add automated unit and integration tests (JUnit for the backend, Karma/Jasmine for the frontend) to support continuous integration.</li>
+</ul>
+
+<!-- REFERENCES -->
+<div class="ch"><span class="ch-num">17</span>References</div>
+<ul>
+  <li>Spring Boot Reference Documentation — https://docs.spring.io/spring-boot/</li>
+  <li>Spring Security Reference Documentation — https://docs.spring.io/spring-security/</li>
+  <li>Angular Official Documentation — https://angular.dev</li>
+  <li>JJWT (Java JWT) Library Documentation — https://github.com/jwtk/jjwt</li>
+  <li>Resilience4j Documentation — https://resilience4j.readme.io</li>
+  <li>H2 Database Engine Documentation — https://www.h2database.com</li>
+  <li>Chart.js Documentation — https://www.chartjs.org</li>
+</ul>
+
+<div class="signature-block">
+  <div class="sig">
+    <div class="sig-line">Rishitha Manyam</div>
+    <div>Project Author</div>
+  </div>
+  <div class="sig">
+    <div class="sig-line">Date: June 2026</div>
+    <div>Wipro RGA Program 2025</div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
